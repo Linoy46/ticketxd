@@ -1,0 +1,67 @@
+// Botón de acción principal (verde)
+.btn-green {
+  background-color: #2cb027;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background-color: #28a023;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    background-color: #229a1e;
+    transform: translateY(1px);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(44, 176, 39, 0.25);
+  }
+
+  &:disabled {
+    background-color: #8fd98b;
+    cursor: not-allowed;
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+// Botón de cancelar consistente
+.btn-outline-secondary {
+  border-color: #d1d5db;
+  color: #4b5563;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover:not(:disabled) {
+    background-color: #f3f4f6;
+    color: #111827;
+    border-color: #d1d5db;
+  }
+
+  &:active:not(:disabled) {
+    background-color: #e5e7eb;
+    transform: translateY(1px);
+  }
+
+  &:focus:not(:disabled) {
+    box-shadow: 0 0 0 0.2rem rgba(209, 213, 219, 0.25);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}

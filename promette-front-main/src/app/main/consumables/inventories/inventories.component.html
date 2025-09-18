@@ -1,0 +1,229 @@
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h1 class="my-4 text-center inventory-title">
+        Inventario de Consumibles
+      </h1>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="input-group mb-3" id="buscador">
+        <span class="input-group-text">
+          <i class="bi bi-search"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar por cualquier campo..."
+          [(ngModel)]="searchText"
+          (input)="onSearchChange()"
+        />
+        <button
+          *ngIf="searchText"
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="searchText = ''; onSearchChange()"
+          title="Limpiar búsqueda"
+        >
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+    <div class="col-md-6 text-end">
+      <button class="btn btn-primary" (click)="onAddNew()" id="nuevo">
+        <i class="bi bi-plus-lg me-1"></i> Nueva Entrada
+      </button>
+    </div>
+  </div>
+
+  <!-- Template para stock con badge coloreado -->
+  <ng-template #stockTemplate let-row="row" let-value="value">
+    <div class="d-flex justify-content-center align-items-center w-100">
+      <span
+        class="badge rounded-pill text-white"
+        [ngClass]="{
+          'bg-danger': isOutOfStock(row),
+          'bg-warning': hasLowStock(row) && !isOutOfStock(row),
+          'bg-success': !hasLowStock(row)
+        }"
+      >
+        {{ value || 0 }}
+      </span>
+      <button
+        *ngIf="hasLowStock(row) || isOutOfStock(row)"
+        class="btn btn-sm btn-outline-primary ms-1"
+        title="Reponer stock"
+        (click)="replenishStock(row); $event.stopPropagation()"
+      >
+        <i class="bi bi-plus-circle"></i>
+      </button>
+    </div>
+  </ng-template>
+
+  <!-- Template para partida con tooltip -->
+  <ng-template #partidaTemplate let-row="row" let-value="value">
+    <div class="partida-cell" [title]="value || 'Sin partida'">
+      {{ value || "Sin partida" }}
+    </div>
+  </ng-template>
+
+  <!-- Template para acciones -->
+  <ng-template #actionsTemplate let-row="row">
+    <div class="d-flex justify-content-center w-100">
+      <button
+        class="btn btn-sm btn-outline-primary"
+        title="Editar"
+        (click)="editItem(row); $event.stopPropagation()"
+      >
+        <i class="bi bi-pencil"></i>
+      </button>
+    </div>
+  </ng-template>
+  <!-- Tabla de inventarios -->
+  <div class="table-container" *ngIf="filteredData.length > 0">
+    <ngx-datatable
+      #inventoryTable
+      class="material custom-theme responsive-table"
+      [rows]="filteredData"
+      [columnMode]="ColumnMode.flex"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      rowHeight="auto"
+      [scrollbarH]="true"
+      [scrollbarV]="false"
+      [count]="filteredData.length"
+      [offset]="offset"
+      [limit]="limit"
+      [selectionType]="SelectionType.single"
+      [selected]="selected"
+      (page)="onPageChange($event)"
+      id="tabla-consumibles"
+    >
+      <ngx-datatable-column
+        *ngFor="let col of columns"
+        [name]="col.name"
+        [prop]="col.prop"
+        [flexGrow]="col.flexGrow ?? 1"
+        [minWidth]="col.minWidth ?? 80"
+        [maxWidth]="col.maxWidth ?? 300"
+        [resizeable]="false"
+        [sortable]="col.sortable ?? false"
+      >
+        <ng-template
+          let-value="value"
+          let-row="row"
+          ngx-datatable-cell-template
+        >
+          <ng-container *ngIf="col.prop === 'available'">
+            <div class="d-flex justify-content-center align-items-center w-100">
+              <span
+                class="badge rounded-pill text-white"
+                [ngClass]="{
+                  'bg-danger': isOutOfStock(row),
+                  'bg-warning': hasLowStock(row) && !isOutOfStock(row),
+                  'bg-success': !hasLowStock(row)
+                }"
+              >
+                {{ value || 0 }}
+              </span>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="col.prop === 'partida'">
+            <div class="partida-cell" [title]="value || 'Sin partida'">
+              {{ value || "Sin partida" }}
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="col.prop === 'observaciones'">
+            <div
+              class="observaciones-cell"
+              [title]="value || 'Sin observaciones'"
+            >
+              {{ value || "Sin observaciones" }}
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="col.prop === 'actions'">
+            <div class="d-flex justify-content-center w-100">
+              <button
+                class="btn btn-sm btn-outline-primary"
+                title="Editar"
+                (click)="editItem(row); $event.stopPropagation()"
+                id="editar"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
+            </div>
+          </ng-container>
+
+          <ng-container
+            *ngIf="
+              col.prop !== 'available' &&
+              col.prop !== 'partida' &&
+              col.prop !== 'observaciones' &&
+              col.prop !== 'actions'
+            "
+          >
+            {{ value }}
+          </ng-container>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+
+  <!-- Mensaje cuando no hay datos -->
+  <div
+    *ngIf="filteredData.length === 0"
+    class="text-center py-5 border-top border-bottom my-3"
+  >
+    <h4 class="text-center text-muted fw-lighter mt-3">
+      No se encontraron registros en el inventario
+    </h4>
+    <p class="text-muted">
+      Intenta ajustar los filtros de búsqueda o verifica que existan registros
+      en el sistema.
+    </p>
+  </div>
+
+  <!-- Paginación personalizada -->
+  <div
+    *ngIf="filteredData.length > 0"
+    class="d-flex justify-content-between align-items-center mt-3 border-top pt-3"
+  >
+    <div class="text-muted small">
+      Mostrando {{ filteredData.length ? offset * limit + 1 : 0 }} -
+      {{ Math.min((offset + 1) * limit, filteredData.length) }} de
+      {{ filteredData.length }} registros
+    </div>
+    <div class="d-flex align-items-center">
+      <span class="me-2">Mostrar</span>
+      <select
+        class="form-select form-select-sm custom-width-auto page-size-select"
+        id="pageSizeSelect"
+        aria-label="Registros por página"
+        [(ngModel)]="limit"
+        (ngModelChange)="onLimitChange()"
+        id="por-pagina"
+      >
+        <option *ngFor="let value of limits" [value]="value">
+          {{ value }}
+        </option>
+      </select>
+      <span class="ms-2">por página</span>
+    </div>
+  </div>
+</div>
+
+<!-- Botón de ayuda debajo de la tabla y paginación -->
+<!-- Modal component -->
+<shared-custom-modal-component></shared-custom-modal-component>
+
+<!-- Botón de ayuda flotante -->
+<app-tutorial
+  [config]="tutorialConfig"
+  buttonText="Ayuda"
+  [showButton]="true"
+></app-tutorial>

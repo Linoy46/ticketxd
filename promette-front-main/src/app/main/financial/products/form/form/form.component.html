@@ -1,0 +1,224 @@
+<div class="container">
+  <!-- Loading indicator -->
+  <div *ngIf="loadingService.loading$ | async" class="loading-overlay">
+    <div class="spinner-container">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-2">Procesando solicitud...</p>
+    </div>
+  </div>
+
+  <!-- Formulario para crear/editar productos -->
+  <form
+    *ngIf="product"
+    #productForm="ngForm"
+    (ngSubmit)="handleSave()"
+    class="product-form"
+  >
+    <!-- Campo para nombre del producto -->
+    <div class="mb-3">
+      <label for="nombre_producto" class="form-label required"
+        >Nombre del producto</label
+      >
+      <input
+        [(ngModel)]="product.nombre_producto"
+        id="nombre_producto"
+        name="nombre_producto"
+        placeholder="Ingrese el nombre del producto"
+        class="form-control"
+        required
+        #nombreField="ngModel"
+        autofocus
+      />
+      <div
+        *ngIf="
+          nombreField.invalid && (nombreField.dirty || nombreField.touched)
+        "
+        class="text-danger small mt-1"
+      >
+        El nombre del producto es obligatorio.
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <!-- Selector de Partida -->
+      <div class="col-md-6">
+        <label for="partida" class="form-label required">Partida</label>
+        <p-dropdown
+          id="partida"
+          [options]="partidas"
+          [(ngModel)]="product.ct_partida_id"
+          name="ct_partida_id"
+          optionLabel="nombre_partida"
+          optionValue="id_partida"
+          placeholder="Seleccionar partida"
+          [filter]="true"
+          filterBy="nombre_partida,clave_partida"
+          [showClear]="false"
+          [required]="true"
+          #partidaField="ngModel"
+          styleClass="w-100"
+          [class.ng-invalid]="
+            partidaField.invalid && (partidaField.dirty || partidaField.touched)
+          "
+          [class.ng-touched]="partidaField.touched"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div
+              *ngIf="product.ct_partida_id && partidaField.valid"
+              class="flex align-items-center gap-2"
+            >
+              <div>
+                {{ getSelectedPartida()?.clave_partida }} -
+                {{ getSelectedPartida()?.nombre_partida }}
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-template let-partida pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <div class="fw-medium">
+                {{ partida.clave_partida }} - {{ partida.nombre_partida }}
+              </div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+        <div
+          *ngIf="
+            partidaField.invalid && (partidaField.dirty || partidaField.touched)
+          "
+          class="text-danger small mt-1"
+        >
+          La partida es obligatoria.
+        </div>
+      </div>
+
+      <!-- Selector de Unidad de Medida-->
+      <div class="col-md-6">
+        <label for="unidad" class="form-label required">Unidad de Medida</label>
+        <p-dropdown
+          id="unidad"
+          [options]="unidades"
+          [(ngModel)]="product.ct_unidad_id"
+          name="ct_unidad_id"
+          optionLabel="nombre_unidad"
+          optionValue="id_unidad"
+          placeholder="Seleccionar unidad"
+          [filter]="true"
+          filterBy="nombre_unidad,clave_unidad"
+          [showClear]="false"
+          [required]="true"
+          styleClass="w-100"
+          #unidadField="ngModel"
+          [class.ng-invalid]="
+            unidadField.invalid && (unidadField.dirty || unidadField.touched)
+          "
+          [class.ng-touched]="unidadField.touched"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div
+              *ngIf="product.ct_unidad_id && unidadField.valid"
+              class="flex align-items-center gap-2"
+            >
+              <div>{{ getUnidadDisplayText(getSelectedUnidad()) }}</div>
+            </div>
+          </ng-template>
+
+          <ng-template let-unidad pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <div class="fw-medium">{{ getUnidadDisplayText(unidad) }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+        <div
+          *ngIf="
+            unidadField.invalid && (unidadField.dirty || unidadField.touched)
+          "
+          class="text-danger small mt-1"
+        >
+          La unidad de medida es obligatoria.
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <!-- Campo para precio -->
+      <div class="col-md-6">
+        <label for="precio" class="form-label required">Precio</label>
+        <div class="input-group">
+          <input
+          [(ngModel)]="product.precio"
+          id="precio"
+          name="precio"
+          type="number"
+          placeholder="$ 0.00"
+          class="form-control"
+          required
+          min="0.01"
+          step="0.01"
+          #precioField="ngModel"
+        />
+        </div>
+        <div
+          *ngIf="
+            precioField.invalid && (precioField.dirty || precioField.touched)
+          "
+          class="text-danger small mt-1"
+        >
+          El precio debe ser mayor a 0.
+        </div>
+      </div>
+
+      <!-- Estado activo/inactivo -->
+      <div class="col-md-6">
+        <label for="estado" class="form-label">Estado</label>
+        <div class="form-control">
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="estado"
+              name="estado"
+              [checked]="product.estado === 1"
+              (change)="onEstadoChange($event)"
+            />
+            <label class="form-check-label" for="estado">
+              {{ product.estado === 1 ? "Activo" : "Inactivo" }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <button type="button" class="btn btn-secondary" (click)="close()">
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="
+          productForm.invalid ||
+          isLoading ||
+          product.ct_partida_id === 0 ||
+          product.ct_unidad_id === 0
+        "
+      >
+        <span
+          *ngIf="isLoading"
+          class="spinner-border spinner-border-sm me-1"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        Guardar
+      </button>
+    </div>
+  </form>
+</div>

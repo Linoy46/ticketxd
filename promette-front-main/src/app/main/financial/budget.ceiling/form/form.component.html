@@ -1,0 +1,199 @@
+<div [ngClass]="{ 'max-w-7xl mx-auto': !isModal }">
+  <!-- Solo mostrar el encabezado si no estamos en un modal -->
+  <header *ngIf="!isModal" class="header text-center text-secondary mb-4">
+    <h1>{{ isEdit ? "Editar" : "Nuevo" }} Techo Presupuestal</h1>
+  </header>
+
+  <div [ngClass]="{ 'card bg-white rounded-lg shadow-lg': !isModal }">
+    <div [ngClass]="{ 'card-body p-4': !isModal }">
+      <!-- Loading spinner -->
+      <div *ngIf="loading" class="text-center my-5">
+        <div class="spinner-border text-purple" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="text-muted mt-2">Cargando datos...</p>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!loading">
+        <div class="row mb-3">
+          <!-- Área -->
+          <div class="col-md-12 mb-3">
+            <label for="areaSelect" class="form-label">Área</label>
+            <p-dropdown
+              id="areaSelect"
+              formControlName="ct_area_id"
+              [options]="areasDropdown"
+              panelClass="p-dropdown-panel"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Seleccionar área"
+              [filter]="true"
+              filterBy="label"
+              [showClear]="true"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  form.get('ct_area_id')?.invalid &&
+                  form.get('ct_area_id')?.touched
+              }"
+            ></p-dropdown>
+            <small
+              class="text-danger"
+              *ngIf="
+                form.get('ct_area_id')?.invalid &&
+                form.get('ct_area_id')?.touched
+              "
+            >
+              El área es requerida
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <!-- Capítulo -->
+          <div class="col-md-6 mb-3">
+            <label for="capituloSelect" class="form-label">Capítulo</label>
+            <p-dropdown
+              id="capituloSelect"
+              formControlName="ct_capitulo_id"
+              [options]="capitulosDropdown"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Seleccionar capítulo"
+              [filter]="true"
+              filterBy="label"
+              [showClear]="true"
+              scrollHeight="200"
+              [panelStyle]="{ width: '100%', maxWidth: '450px' }"
+              styleClass="w-100 fixed-dropdown"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  form.get('ct_capitulo_id')?.invalid &&
+                  form.get('ct_capitulo_id')?.touched
+              }"
+            ></p-dropdown>
+            <small
+              class="text-danger"
+              *ngIf="
+                form.get('ct_capitulo_id')?.invalid &&
+                form.get('ct_capitulo_id')?.touched
+              "
+            >
+              El capítulo es requerido
+            </small>
+          </div>
+
+          <!-- Financiamiento -->
+          <div class="col-md-6 mb-3">
+            <label for="financiamientoSelect" class="form-label"
+              >Financiamiento</label
+            >
+            <p-dropdown
+              id="financiamientoSelect"
+              formControlName="ct_financiamiento_id"
+              [options]="financiamientosDropdown"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Seleccionar financiamiento"
+              [filter]="true"
+              filterBy="label"
+              [showClear]="true"
+              scrollHeight="200"
+              [panelStyle]="{ width: '100%', maxWidth: '450px' }"
+              styleClass="w-100 fixed-dropdown"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  form.get('ct_financiamiento_id')?.invalid &&
+                  form.get('ct_financiamiento_id')?.touched
+              }"
+            ></p-dropdown>
+            <small
+              class="text-danger"
+              *ngIf="
+                form.get('ct_financiamiento_id')?.invalid &&
+                form.get('ct_financiamiento_id')?.touched
+              "
+            >
+              El financiamiento es requerido
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <!-- Cantidad Presupuestada -->
+          <div class="col-md-12 mb-3">
+            <label for="presupuestoInput" class="form-label"
+              >Cantidad Presupuestada</label
+            >
+            <div class="amount-field">
+              <p-inputNumber
+                id="presupuestoInput"
+                formControlName="cantidad_presupuestada"
+                [minFractionDigits]="3"
+                [maxFractionDigits]="3"
+                [min]="0"
+                mode="decimal"
+                locale="es-MX"
+                [style]="{ width: '100%' }"
+                [inputStyle]="{ width: '100%', 'text-align': 'right' }"
+                [showButtons]="false"
+                [useGrouping]="true"
+                [allowEmpty]="false"
+                [ngClass]="{
+                  'ng-invalid ng-dirty':
+                    form.get('cantidad_presupuestada')?.invalid &&
+                    form.get('cantidad_presupuestada')?.touched
+                }"
+              ></p-inputNumber>
+            </div>
+            <small
+              class="text-danger"
+              *ngIf="
+                form.get('cantidad_presupuestada')?.invalid &&
+                form.get('cantidad_presupuestada')?.touched
+              "
+            >
+              La cantidad presupuestada debe ser un número mayor o igual a cero
+            </small>
+          </div>
+        </div>
+
+        <!-- Total (calculado) -->
+        <div class="total-section mb-4 p-3 bg-light rounded border">
+          <div class="d-flex justify-content-between align-items-center">
+            <label class="form-label mb-0 fw-bold">Total:</label>
+            <div class="total-amount text-purple">
+              {{ formatCurrency(calculateTotal()) }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-end gap-2 mt-4">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="cancel()"
+            [disabled]="submitting"
+          >
+            <i class="bi bi-x-circle me-2"></i>Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-purple"
+            [disabled]="submitting || form.invalid"
+          >
+            <span
+              *ngIf="submitting"
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            <i *ngIf="!submitting" class="bi bi-check-circle me-2"></i>
+            {{ isEdit ? "Actualizar" : "Guardar" }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

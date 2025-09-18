@@ -1,0 +1,257 @@
+@use "@angular/material" as mat;
+@use "./uset_colors" as my-theme; // ubicación del archivo generado
+
+/* Importar sistema de colores */
+@import "./uset_colors.scss";
+
+/* Font Awesome - Add this import */
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* PrimeNG */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+/* Global Styles */
+:root {
+  --surface-a: #FFFFFF;
+  --surface-b: #F8F9FA;
+  --surface-card: #FFFFFF;
+  --surface-border: #E9ECEF;
+  --primary-color: var(--uset-primary);
+  --primary-hover: var(--uset-primary-hover);
+  --primary-active: var(--uset-primary-active);
+
+  /* Add these variables for products component utility classes */
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgba(59, 130, 246, 0.5);
+  --ring-offset-background: #fff;
+  --ring-ring: rgba(59, 130, 246, 0.5);
+  --bg-secondary: #6c757d;
+  --text-secondary-foreground: #fff;
+  --bg-destructive: #dc3545;
+  --text-destructive-foreground: #fff;
+  --bg-popover: #fff;
+  --text-popover-foreground: #212529;
+  --bg-card: #fff;
+  --text-card-foreground: #212529;
+  --border-input: #ced4da;
+  --bg-accent: #f8f9fa;
+  --text-accent-foreground: #212529;
+  --bg-background: #fff;
+  --bg-primary: #0d6efd;
+}
+
+// Sobreescribir estilos de PrimeNG
+.p-button {
+  &.p-button-rounded.custom-purple-button {
+    background: var(--uset-primary);
+    border-color: var(--uset-primary);
+    color: var(--uset-on-primary);
+
+    &:hover {
+      background: var(--uset-primary-hover);
+      border-color: var(--uset-primary-hover);
+    }
+
+    &:active {
+      background: var(--uset-primary-active);
+      border-color: var(--uset-primary-active);
+    }
+  }
+
+  &.p-button-rounded {
+    border-radius: 2rem;
+    transition: all 0.2s ease;
+
+    &.uset-button {
+      background: var(--uset-primary);
+      border-color: var(--uset-primary);
+      color: var(--uset-primary-contrast);
+
+      &:hover {
+        background: var(--uset-primary-hover);
+        border-color: var(--uset-primary-hover);
+        transform: translateY(-1px);
+      }
+
+      &:active {
+        background: var(--uset-primary-active);
+        border-color: var(--uset-primary-active);
+        transform: translateY(0);
+      }
+    }
+  }
+
+  &.uset-primary-button {
+    @apply bg-uset-primary border-uset-primary text-white rounded-full transition-all duration-200;
+
+    &:hover {
+      @apply bg-uset-primary-hover border-uset-primary-hover -translate-y-0.5;
+    }
+
+    &:active {
+      @apply bg-uset-primary-active border-uset-primary-active translate-y-0;
+    }
+  }
+}
+
+/* PrimeNG Button Override */
+.p-button.uset-primary-button {
+  background-color: var(--uset-primary) !important;
+  border-color: var(--uset-primary) !important;
+  color: white !important;
+
+  &:hover {
+    background-color: var(--uset-primary-hover) !important;
+    border-color: var(--uset-primary-hover) !important;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    background-color: var(--uset-primary-active) !important;
+    border-color: var(--uset-primary-active) !important;
+    transform: translateY(0);
+  }
+}
+
+body.dark-mode {
+  --primary-color: #60A5FA;
+  --primary-color-rgb: 96, 165, 250;
+  --primary-color-lighten: #93C5FD;
+  --surface-a: #1E293B;
+  --surface-a-rgb: 30, 41, 59;
+  --surface-b: #0F172A;
+  --surface-b-rgb: 15, 23, 42;
+  --surface-card: #1E293B;
+  --surface-border: #334155;
+  --text-color: #F8FAFC;
+  --text-color-secondary: #CBD5E1;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--surface-a);
+  color: var(--text-color);
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+.w-full {
+  width: 100%;
+}
+
+/* Custom Button Styles */
+.apple-button {
+  border-radius: 9999px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease-in-out !important;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* Text Gradient */
+.text-gradient {
+  background: linear-gradient(to right, var(--primary-color), var(--primary-color-lighten));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Add these utility classes for products component */
+/* Fix for FontAwesome icons */
+.fas, .far, .fab {
+  display: inline-block;
+  font-size: inherit;
+  line-height: inherit;
+  vertical-align: middle;
+}
+
+/* Stock status indicator colors */
+.bg-red-500 {
+  background-color: #ef4444;
+}
+
+.bg-amber-500 {
+  background-color: #f59e0b;
+}
+
+.bg-green-500 {
+  background-color: #22c55e;
+}
+
+/* Animation utilities for transitions */
+.transition-opacity {
+  transition: opacity 0.15s ease-in-out;
+}
+
+.transition-colors {
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.transition-shadow {
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+/* Text clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Gradient utilities */
+.bg-gradient-to-r {
+  background: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+.bg-gradient-to-br {
+  background: linear-gradient(to bottom right, var(--tw-gradient-stops));
+}
+
+.from-purple-600 {
+  --tw-gradient-from: #9333ea;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(147, 51, 234, 0));
+}
+
+.from-purple-700 {
+  --tw-gradient-from: #7e22ce;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(126, 34, 206, 0));
+}
+
+.to-indigo-600 {
+  --tw-gradient-to: #4f46e5;
+}
+
+.to-indigo-700 {
+  --tw-gradient-to: #4338ca;
+}
+
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.text-transparent {
+  color: transparent;
+}

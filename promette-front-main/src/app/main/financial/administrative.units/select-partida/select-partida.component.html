@@ -1,0 +1,91 @@
+<div class="w-100 px-4">
+  <h4 class="text-center text-secondary">
+    Unidad Administrativa: {{ this.dataRow?.id_financiero }} -
+    {{ this.dataRow?.nombre_area }}
+  </h4>
+  <br />
+  <div class="d-flex gap-3">
+    <div class="w-45">
+      <p>Seleccione la partida a asignar:</p>
+    </div>
+    <div class="w-100">
+      <p-dropdown
+        [options]="partidas"
+        optionValue="id_partida"
+        [(ngModel)]="id_partida_seleccionada"
+        optionLabel="id_partida"
+        placeholder="--Selecciona una partida--"
+        [emptyMessage]="'No hay partidas disponibles para el area'"
+        [filter]="true"
+        filterBy="clave_partida,nombre_partida"
+        [showClear]="false"
+        styleClass="w-100"
+        [panelStyle]="{
+          'max-width': '600px',
+          'white-space': 'normal',
+          'z-index': '1105'
+        }"
+      >
+        <ng-template let-partida pTemplate="item">
+          {{ partida.clave_partida }} -
+          {{ partida.nombre_partida }}
+        </ng-template>
+        <ng-template let-partida pTemplate="selectedItem">
+          {{ partida.clave_partida }} -
+          {{ partida.nombre_partida }}
+        </ng-template>
+      </p-dropdown>
+    </div>
+    <div class="w-20">
+      <button type="button" class="btn btn-primary" (click)="guardarPartida()">
+        Guardar
+      </button>
+    </div>
+  </div>
+  <br />
+  <h5>Partidas asignadas</h5>
+  <p-table
+    *ngIf="displayData && displayData.length > 0"
+    [value]="displayData"
+    [loading]="loading"
+    [paginator]="true"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10,25,50]"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} partidas"
+    [globalFilterFields]="['id_partida_ct_partida.clave_partida','id_partida_ct_partida.nombre_partida']"
+    styleClass="p-datatable-sm"
+    [scrollable]="true"
+    scrollHeight="300px"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Clave Partida</th>
+        <th>Nombre Partida</th>
+        <th>Fecha de Asignación</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-partida>
+      <tr>
+        <td>{{ partida.id_partida_ct_partida.clave_partida }}</td>
+        <td>{{ partida.id_partida_ct_partida.nombre_partida }}</td>
+        <td>{{ partida.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td>
+          <button pButton type="button" icon="pi pi-trash" class="p-button-danger p-button-sm" (click)="eliminarPartida(partida)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4" class="text-center">No hay partidas asignadas</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <br />
+  <div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-secondary" (click)="closeModal()">
+      Cancelar
+    </button>
+  </div>
+</div>

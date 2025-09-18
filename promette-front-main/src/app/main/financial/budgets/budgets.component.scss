@@ -1,0 +1,536 @@
+.grid-responsive {
+  min-width: 600px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .grid-responsive {
+    min-width: 2200px;
+  }
+}
+// Variables de color para mayor consistencia
+$color-purple: #a11a5c;
+$color-purple-dark: #a11a5c;
+$color-purple-darker: #a11a5c;
+$color-rose: #a11a5c;
+$header-color: #e9ddff; // Color de encabezado lila claro
+$color-text-header: #a11a5c; // Color para texto en encabezados
+
+// Header styling
+.header {
+  margin-bottom: 0.5rem !important;
+  h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    color: $color-rose;
+    margin-bottom: 1.5rem;
+  }
+
+  p {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+  }
+}
+
+// Card styling
+.card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .card-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem 0.5rem 0 0;
+    background-color: #9c27b0;
+    background-image: linear-gradient(to right, #572574, #9c27b0);
+    color: white;
+
+    // Force all text inside the purple header to be white
+    &,
+    * {
+      color: #fff !important;
+    }
+
+    .card-title {
+      margin-bottom: 0.5rem;
+      color: white;
+      font-weight: 600;
+    }
+
+    .card-description {
+      margin-bottom: 0;
+      color: white;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// Search container
+.search-container {
+  max-width: 450px;
+  width: 100%;
+  position: relative;
+  flex: 1;
+
+  .input-group {
+    border-radius: 6px;
+
+    .input-group-text {
+      background-color: white;
+      border-right: none;
+      color: #6b7280;
+    }
+
+    .form-control {
+      border-left: none;
+      box-shadow: none;
+
+      &:focus {
+        box-shadow: none;
+        border-color: #ced4da;
+      }
+    }
+  }
+}
+
+// Button styling
+.btn-purple {
+  background-color: #a11a5c;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background-color: darken(#422b7c, 10%);
+  }
+
+  &:active {
+    background-color: $color-purple-darker;
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+.btn-outline-secondary {
+  border-color: $color-rose;
+  color: $color-rose;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover:not(:disabled) {
+    background-color: #f9e6ee;
+    color: $color-rose;
+    border-color: $color-rose;
+  }
+
+  &:active:not(:disabled) {
+    background-color: #f4d4e2;
+    transform: translateY(1px);
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+// Estilos para tablas ag-Grid
+:host ::ng-deep {
+  .ag-theme-quartz {
+    --ag-header-background-color: #{$header-color} !important;
+    --ag-header-foreground-color: #{$color-text-header} !important;
+    --ag-background-color: #ffffff !important;
+    --ag-odd-row-background-color: #ffffff !important;
+    --ag-row-hover-color: #fdf7ff !important;
+
+    // Estilo para las filas y celdas
+    .ag-row {
+      background-color: #ffffff !important;
+      border-bottom: 1px solid #e5e7eb !important;
+
+      &:hover {
+        background-color: #fdf7ff !important;
+      }
+
+      .ag-cell {
+        background-color: inherit !important;
+        font-weight: normal !important; // Asegura que las celdas nunca estén en negrita
+      }
+    }
+
+    // Asegurar que la celda de acciones tenga el estilo correcto
+    .action-cell {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      overflow: visible !important;
+    }
+
+    &.techos-table {
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      height: calc(100vh - 250px);
+      min-height: 500px;
+
+      .ag-header-cell {
+        font-weight: 600 !important;
+      }
+
+      .ag-header-row {
+        height: 48px;
+      }
+
+      // Estilos para celdas de moneda
+      .text-end {
+        text-align: right !important;
+        font-weight: normal !important;
+      }
+
+      // Estilos específicos para la celda de monto total
+      .font-weight-bold {
+        font-weight: 600 !important;
+        color: #422b7c !important;
+      }
+
+      // Celdas de acciones
+      .action-cell {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        button {
+          padding: 0.25rem 0.5rem;
+          margin: 0 0.15rem;
+        }
+      }
+
+      // Filas al pasar el cursor
+      .ag-row:hover {
+        --ag-row-hover-color: #f8f0ff;
+      }
+
+      // Personalización de paginación
+      .ag-paging-panel {
+        height: 48px;
+        border-top: 1px solid #e5e7eb;
+        color: #4b5563;
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  .ag-header-cell-text {
+    font-weight: 600;
+    font-size: 0.9rem;
+    // Mejora la visibilidad de los encabezados
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: normal; // Permite múltiples líneas en encabezados
+    line-height: 1.2;
+  }
+
+  .ag-header-cell {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .ag-cell {
+    display: flex;
+    align-items: center;
+
+    &.text-end {
+      justify-content: flex-end;
+    }
+
+    &.text-center {
+      justify-content: center;
+    }
+  }
+
+  // Mejora el aspecto de las celdas con valores monetarios
+  .ag-cell.text-end {
+    font-variant-numeric: tabular-nums; // Mejor alineación de números
+  }
+
+  // Mejora el estilo de los botones en la tabla
+  .action-cell button {
+    padding: 0.25rem 0.5rem;
+  }
+
+  // Mejora el estilo de las filas pares/impares
+  .ag-row-even {
+    background-color: #f9f7fe; // Color más claro que combina con la paleta
+  }
+
+  // Mejora el estilo del hover en las filas
+  .ag-row:hover {
+    background-color: #f0e9ff !important;
+  }
+
+  // Ajusta el estilo del filtrado y el ordenamiento
+  .ag-header-cell-sorted-asc,
+  .ag-header-cell-sorted-desc {
+    background-color: #e3d7f9;
+  }
+}
+
+// Grid container
+.grid-container {
+  height: calc(100vh - 260px);
+  min-height: 400px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+// Loading spinner styling
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+
+  .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: $color-purple !important;
+  }
+
+  p {
+    color: #6b7280;
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+}
+
+// Custom spinner color
+.text-purple {
+  color: $color-purple !important;
+}
+
+// Utility class for max width
+.max-w-7xl {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+}
+
+// Mensaje de no datos
+.no-data {
+  font-weight: lighter;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+  color: #6c757d;
+}
+
+// Estilos para los tabs de Bootstrap - igual que administrative.units
+:host ::ng-deep .nav-tabs {
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  background-color: #f8f9fa;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+:host ::ng-deep .nav-link {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  margin-right: 0.25rem;
+  color: #495057;
+
+  &.active {
+    background-color: white;
+    color: #422b7c;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+
+  .search-container {
+    max-width: 100%;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .d-flex {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 576px) {
+  .nav-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+}
+
+:host {
+  width: 100%;
+}
+
+.badge-amount {
+  font-size: 90%;
+}
+
+.filter-container {
+  min-width: 200px;
+}
+
+// Estilos para la tabla de archivos para descargar
+.download-files-table {
+  .table {
+    margin-bottom: 0;
+
+    th {
+      background-color: #f8f9fa;
+      border-bottom: 2px solid #dee2e6;
+      font-weight: 600;
+      color: #495057;
+    }
+
+    td {
+      vertical-align: middle;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+
+      &:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+      }
+
+      &:disabled {
+        background-color: #6c757d;
+        border-color: #6c757d;
+      }
+    }
+  }
+
+  .card-header {
+    background: linear-gradient(135deg, #a11a5c 0%, #8e1a4f 100%);
+
+    h5 {
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+}
+
+// Animación para el botón de descarga
+.btn-success {
+  transition: all 0.2s ease-in-out;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}
+
+// Estilos para los badges de financiamiento
+.badge {
+  &.bg-primary {
+    background-color: #007bff !important;
+  }
+
+  &.bg-info {
+    background-color: #17a2b8 !important;
+  }
+
+  &.bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+  }
+}
+
+/* Estilos responsivos para AG Grid by Francisco */
+.grid-container {
+  height: 70vh;
+  min-height: 400px;
+  margin: 0 -15px;
+  padding-left: 0;
+  padding-right: 0;
+  border-radius: 0;
+}
+.grid-responsive {
+  min-width: 600px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+::ng-deep .ag-theme-quartz .ag-paging-panel {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  padding: 8px 0 !important;
+  background: #fff !important;
+  z-index: 1;
+  display: flex !important;
+  justify-content: center !important;
+  overflow-x: visible !important;
+  border-top: 1px solid #eee !important;
+  border-radius: 0 !important;
+  font-size: 12px !important;
+  position: static !important;
+  left: unset !important;
+  bottom: unset !important;
+  margin: 0 !important;
+}
+::ng-deep .ag-theme-quartz .ag-paging-panel > * {
+  flex-shrink: 0;
+}
+.ag-header-cell,
+.ag-cell {
+  white-space: nowrap !important;
+}
+
+/* Alinear botón con el agrid */
+.btn-align-with-grid {
+  margin-left: -15px;
+}
+
+.center-on-grid {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-left: 0;
+}
+
+.tabs-align-with-grid {
+  margin-left: -28px;
+}

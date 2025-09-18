@@ -1,0 +1,258 @@
+/* Estilos para el acordeón y el drawer */
+.accordion-button {
+  background-color: transparent !important;
+  padding: 10px 16px;
+  /* margin: 4px 8px; */
+  border-radius: 15px !important;
+  color: #374151;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.accordion-button:not(.collapsed) {
+  background: linear-gradient(45deg, rgba(156, 39, 176, 0.95), rgba(126, 87, 194, 0.95)) !important;
+  color: white !important;
+}
+
+.accordion-button:not(.collapsed) svg,
+.accordion-button:not(.collapsed) i {
+  color: white !important;
+}
+
+.accordion-button:hover {
+  background-color: rgba(156, 39, 176, 0.1) !important;
+  color: #6a1b9a;
+  /* transform: translateX(5px); */
+}
+
+.accordion-body {
+  padding: 0;
+}
+
+.wrap-text {
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+/*==============================================
+  Estilos base para el Drawer
+==============================================*/
+.drawer {
+  width: 270px;
+  height: 100vh;
+  transition: width 0.3s ease;
+  background-color: #fafafa;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el header del drawer */
+.drawer > div:first-child {
+  height: 70px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+}
+
+.drawer > div:first-child .container {
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+
+.drawer > div:first-child p {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.drawer > div:first-child p:first-child {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.drawer > div:first-child p:last-child {
+  font-size: 10px;
+  color: #6B7280;
+  line-height: 1.2;
+  margin-top: 1px;
+}
+
+/*----------------------------------------------
+  Estado "mini" del Drawer
+----------------------------------------------*/
+.mini-drawer {
+  width: 80px; /* Reducido para mejor compacidad */
+}
+
+/*==============================================
+  Estilos para los Enlaces (Nav Link)
+==============================================*/
+.nav-link {
+  margin: 4px 8px;
+  padding: 10px 16px;
+  color: #374151;
+  text-decoration: none;
+  border-radius: 15px;
+  transition: all 0.2s ease;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.nav-link span {
+  color: #374151;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Hover y estado activo para Nav Link */
+.nav-link:hover {
+  background-color: rgba(156, 39, 176, 0.1);
+  color: #6a1b9a;
+  transform: none;
+  box-shadow: none;
+}
+
+.nav-link.active, .active {
+  background: linear-gradient(45deg, rgba(156, 39, 176, 0.95), rgba(126, 87, 194, 0.95));
+  color: white !important;
+}
+
+.nav-link.active span,
+.active span {
+  color: white !important;
+}
+
+.nav-link.active svg,
+.active svg {
+  color: white !important;
+}
+
+/* También se utiliza .active para estilos globales */
+.active {
+  background-color: #6a1b9a;
+  font-weight: bold;
+  margin: 10px;
+  border-radius: 30px;
+  color: #ffffff;
+}
+
+/*==============================================
+  Ajustes para Submenús y Estructura Interna
+==============================================*/
+.fson {
+  padding-left: 20px;
+}
+
+.sson {
+  padding-left: 45px;
+}
+
+li i {
+  margin-right: 8px;
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover i {
+  transform: translateX(3px);
+}
+
+/* Iconos en enlaces y acordeón */
+.nav-link i,
+.accordion-button i {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+/*==============================================
+  Estilos para Modo Mini Drawer
+==============================================*/
+.mini-drawer .nav-link,
+.mini-drawer .accordion-button {
+  padding: 0.75rem;
+  justify-content: center;
+  margin: 8px 5px;
+}
+
+.mini-drawer .nav-link span,
+.mini-drawer .accordion-button span,
+.mini-drawer .accordion-body {
+  display: none;
+}
+
+.mini-drawer .nav-link i,
+.mini-drawer .accordion-button i {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.mini-drawer .accordion-button::after {
+  display: none;
+}
+
+/* Permitir que el contenido desplegable se muestre */
+.mini-drawer ngbAccordionItem {
+  overflow: visible;
+}
+
+/* Ajuste para submenús en modo mini */
+.mini-drawer .fson {
+  padding-left: 0;
+}
+.mini-drawer .fson .nav-link {
+  padding: 0.75rem;
+  justify-content: center;
+}
+
+/*==============================================
+  Ajustes para SVG Icons y Transiciones
+==============================================*/
+.nav-link svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+  color: #4B5563;
+}
+
+.nav-link.active svg {
+  color: white !important;
+}
+
+/*==============================================
+  Reset de estilos previos (opcional)
+==============================================*/
+.nav-link:hover {
+  box-shadow: none;
+  transform: none;
+}
+
+.nav-link.active {
+  background-color: #e6e6e8;
+  box-shadow: none;
+  color: #111827;
+}
+
+/* Ajustes modo mini */
+@media (min-width: 640px) {
+  .mini-drawer {
+    width: 75px;
+  }
+
+  .mini-drawer .nav-link {
+    padding: 10px;
+    justify-content: center;
+    margin: 4px 8px;
+  }
+}

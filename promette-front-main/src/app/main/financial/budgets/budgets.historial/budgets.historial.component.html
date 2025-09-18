@@ -1,0 +1,103 @@
+<!--Tutorial-->
+<app-tutorial [config]="tutorialConfig" buttonText="Ayuda" [showButton]="true">
+</app-tutorial>
+
+<header class="header text-center text-secondary mb-4">
+  <h1>Gestión de Financiamientos</h1>
+</header>
+
+<div class="max-w-7xl mx-auto">
+  <!-- Navegación de pestañas estilo administrative.units -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+    <!-- Navegación de pestañas -->
+    <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" id="nav-tabs">
+      <li [ngbNavItem]="'presupuesto'">
+        <a ngbNavLink [routerLink]="['/promette/budgets']" routerLinkActive="active">
+          <i class="bi bi-cash-coin me-2"></i>
+          Presupuestos
+        </a>
+      </li>
+      <li [ngbNavItem]="'historial'">
+        <a ngbNavLink [routerLink]="['/promette/budgets-historial']" routerLinkActive="active">
+          <i class="bi bi-clock-history me-2"></i>
+          Historial
+        </a>
+      </li>
+    </ul>
+
+    <!-- Botones de acción para el historial -->
+    <div class="d-flex align-items-center gap-2">
+      <button
+        class="btn btn-outline-secondary d-flex align-items-center p-2"
+        (click)="loadHistorialData()"
+        title="Refrescar datos"
+        [disabled]="isLoading"
+        id="refrescar">
+        <i class="bi bi-arrow-clockwise"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Espacio para el contenido del NavOutlet -->
+  <div [ngbNavOutlet]="nav" class="d-none"></div>
+
+  <!-- Indicador de carga -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner-border text-purple" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-3">Cargando historial...</p>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="loadingError" class="alert alert-danger" role="alert">
+    <div class="d-flex align-items-start">
+      <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+      <div>
+        <h5>Error al cargar datos</h5>
+        <p>{{ loadingError }}</p>
+        <button type="button" class="btn btn-sm btn-outline-danger" (click)="loadHistorialData()">
+          <i class="bi bi-arrow-clockwise me-1"></i> Reintentar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid p-0">
+    <!-- Tabla de AG Grid con los datos históricos -->
+    <div *ngIf="!isLoading && !loadingError" class="mt-2" id="tabla_historicos">
+      <div *ngIf="historialData && historialData.length > 0" class="grid-container">
+        <ag-grid-angular
+          class="ag-theme-quartz techos-table historial-table"
+          [rowData]="historialData"
+          [columnDefs]="columnDefs"
+          [defaultColDef]="gridOptions.defaultColDef"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          [paginationPageSizeSelector]="paginationPageSizeSelector"
+          [theme]="myTheme"
+          (gridReady)="onGridReady($event)"
+          [localeText]="gridOptions.localeText"
+          style="width: 100%; height: 100px;">
+        </ag-grid-angular>
+      </div>
+
+      <!-- Mensaje cuando no hay datos -->
+      <div *ngIf="!historialData || historialData.length === 0"
+           class="alert alert-info text-center my-4">
+        No se encontraron registros de proyectos anuales
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensaje cuando no hay datos -->
+  <div *ngIf="!isLoading && !loadingError && (!historialData || historialData.length === 0)"
+       class="text-center py-5 border-top border-bottom my-3">
+    <i class="bi bi-cash-coin fs-1 text-muted"></i>
+    <h4 class="text-muted fw-light mt-3 no-data">No se encontraron proyectos anuales</h4>
+    <p class="text-muted">Intente ajustar los filtros o realizar una nueva búsqueda.</p>
+    <button class="btn btn-purple mt-2" (click)="loadHistorialData()">
+      <i class="bi bi-arrow-clockwise me-1"></i> Actualizar proyectos
+    </button>
+  </div>
+<shared-custom-modal-component></shared-custom-modal-component>

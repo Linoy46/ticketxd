@@ -1,0 +1,91 @@
+<form [formGroup]="form">
+  <!-- Formulario para Capítulo -->
+  <ng-container *ngIf="type === 'chapter'">
+    <div class="form-group">
+      <label for="clave_capitulo">Clave Capítulo</label>
+      <p-inputNumber id="clave_capitulo"
+                    formControlName="clave_capitulo"
+                    [showButtons]="false"
+                    [useGrouping]="false"
+                    styleClass="w-full"
+                    inputStyleClass="w-full"
+                    [ngClass]="{'ng-invalid ng-dirty': form.get('clave_capitulo')?.invalid && form.get('clave_capitulo')?.touched}">
+      </p-inputNumber>
+      <small *ngIf="form.get('clave_capitulo')?.invalid && form.get('clave_capitulo')?.touched"
+            class="p-error">
+        La clave del capítulo es requerida
+      </small>
+    </div>
+    <div class="form-group">
+      <label for="nombre_capitulo">Nombre Capítulo</label>
+      <input pInputText id="nombre_capitulo"
+            formControlName="nombre_capitulo"
+            class="w-full"
+            [ngClass]="{'ng-invalid ng-dirty': form.get('nombre_capitulo')?.invalid && form.get('nombre_capitulo')?.touched}">
+      <small *ngIf="form.get('nombre_capitulo')?.invalid && form.get('nombre_capitulo')?.touched"
+            class="p-error">
+        El nombre del capítulo es requerido
+      </small>
+    </div>
+  </ng-container>
+
+  <!-- Formulario para Partida -->
+  <ng-container *ngIf="type === 'item'">
+    <div class="form-group">
+      <label for="ct_capitulo_id">Capítulo</label>
+      <p-dropdown id="ct_capitulo_id"
+                formControlName="ct_capitulo_id"
+                [options]="chapters"
+                optionLabel="nombre_capitulo"
+                optionValue="id"
+                placeholder="Seleccione un capítulo"
+                styleClass="w-full"
+                [ngClass]="{'ng-invalid ng-dirty': form.get('ct_capitulo_id')?.invalid && form.get('ct_capitulo_id')?.touched}">
+        <ng-template pTemplate="selectedItem">
+          <div *ngIf="selectedCapitulo">
+            {{selectedCapitulo.clave_capitulo}} - {{selectedCapitulo.nombre_capitulo}}
+          </div>
+        </ng-template>
+        <ng-template let-chapter pTemplate="item">
+          <div>
+            {{chapter.clave_capitulo}} - {{chapter.nombre_capitulo}}
+          </div>
+        </ng-template>
+      </p-dropdown>
+      <small *ngIf="form.get('ct_capitulo_id')?.invalid && form.get('ct_capitulo_id')?.touched"
+            class="p-error">
+        El capítulo es requerido
+      </small>
+    </div>
+    <div class="form-group">
+      <label for="clave_partida">Clave Partida</label>
+      <input pInputText id="clave_partida"
+            formControlName="clave_partida"
+            class="w-full"
+            [ngClass]="{'ng-invalid ng-dirty': form.get('clave_partida')?.invalid && form.get('clave_partida')?.touched}">
+      <small *ngIf="form.get('clave_partida')?.invalid && form.get('clave_partida')?.touched"
+            class="p-error">
+        La clave de la partida es requerida (máx. 10 caracteres)
+      </small>
+    </div>
+    <div class="form-group">
+      <label for="nombre_partida">Nombre Partida</label>
+      <input pInputText id="nombre_partida"
+            formControlName="nombre_partida"
+            class="w-full"
+            [ngClass]="{'ng-invalid ng-dirty': form.get('nombre_partida')?.invalid && form.get('nombre_partida')?.touched}">
+      <small *ngIf="form.get('nombre_partida')?.invalid && form.get('nombre_partida')?.touched"
+            class="p-error">
+        El nombre de la partida es requerido
+      </small>
+    </div>
+  </ng-container>
+
+  <!-- Botones de acción -->
+  <div class="action-buttons">
+    <button pButton pRipple type="button" label="Cancelar" icon="pi pi-times"
+            class="p-button-text" (click)="close()"></button>
+    <button pButton pRipple type="button" label="Guardar" icon="pi pi-check"
+            [disabled]="form.invalid" (click)="save()"></button>
+  </div>
+</form>

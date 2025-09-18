@@ -1,0 +1,74 @@
+form {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  gap: 1.25rem;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.75rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #333;
+      font-size: 0.9rem;
+    }
+
+    small.p-error {
+      color: #f44336;
+      margin-top: 0.25rem;
+      font-size: 0.75rem;
+    }
+
+    // Estilo específico para input y dropdown de PrimeNG
+    .p-inputtext, .p-dropdown {
+      width: 100%;
+    }
+
+    // Estilo para input inválido
+    .ng-invalid.ng-dirty {
+      border-color: #f44336;
+    }
+  }
+
+  // Estilos para los botones de acción
+  .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eeeeee;
+    gap: 0.5rem;
+
+    button {
+      min-width: 100px;
+
+      &.p-button-text {
+        color: #6c757d;
+      }
+    }
+  }
+}
+
+// Estilos específicos para móviles
+@media (max-width: 576px) {
+  form {
+    padding: 0.5rem 0;
+
+    .form-group {
+      margin-bottom: 0.5rem;
+    }
+
+    .action-buttons {
+      flex-direction: column-reverse;
+
+      button {
+        margin-bottom: 0.5rem;
+        width: 100%;
+      }
+    }
+  }
+}

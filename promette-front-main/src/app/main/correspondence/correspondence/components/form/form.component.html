@@ -1,0 +1,900 @@
+<form [formGroup]="form" class="p-4" (ngSubmit)="onSubmit()">
+  <ng-container *ngIf="data?.mode === 'status'; else fullForm">
+    <div
+      class="card p-3 mb-3"
+      style="
+        max-width: 500px;
+        margin: 0 auto;
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px #0001;
+      "
+    >
+      <div class="row g-2">
+        <div class="col-6">
+          <label class="form-label mb-0 fw-bold">Folio correspondencia:</label>
+          <div class="form-control-plaintext">
+            {{ data?.correspondencia?.folio_correspondencia }}
+          </div>
+        </div>
+        <div class="col-6">
+          <label class="form-label mb-0 fw-bold">Folio sistema:</label>
+          <div class="form-control-plaintext">
+            {{ data?.correspondencia?.folio_sistema }}
+          </div>
+        </div>
+        <div class="col-6">
+          <label class="form-label mb-0 fw-bold">Fecha:</label>
+          <div class="form-control-plaintext">
+            {{
+              data?.correspondencia?.fecha_correspondencia | date : "yyyy-MM-dd"
+            }}
+          </div>
+        </div>
+        <div class="col-6">
+          <label class="form-label mb-0 fw-bold">Prioridad:</label>
+          <div class="form-control-plaintext">
+            {{ data?.correspondencia?.nombre_prioridad }}
+          </div>
+        </div>
+        <div class="col-6">
+          <label class="form-label mb-0 fw-bold">Forma de entrega:</label>
+          <div class="form-control-plaintext">
+            {{ data?.correspondencia?.nombre_entrega }}
+          </div>
+        </div>
+        <div class="col-6">
+          <label class="form-label mb-0 fw-bold">Estado actual:</label>
+          <div class="form-control-plaintext fw-bold text-primary">
+            {{
+              data?.correspondencia?.rl_correspondencia_usuario_estados?.length
+                ? data.correspondencia.rl_correspondencia_usuario_estados[
+                    data.correspondencia.rl_correspondencia_usuario_estados
+                      .length - 1
+                  ]?.ct_correspondencia_estado_ct_correspondencia_estado
+                    ?.nombre_estado || "--"
+                : "--"
+            }}
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="form-label mb-0 fw-bold">Resumen:</label>
+          <div class="form-control-plaintext" style="white-space: pre-line">
+            {{ data?.correspondencia?.resumen_correspondencia }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="estado_correspondencia" class="form-label"
+        >Estado de la correspondencia:</label
+      >
+      <select
+        id="estado_correspondencia"
+        class="form-select w-100"
+        formControlName="ct_correspondencia_estado"
+      >
+        <option value="">Seleccione un estado</option>
+        <option
+          *ngFor="let estado of estadosCorrespondencia"
+          [value]="estado.id_correspondencia_estado"
+        >
+          {{ estado.nombre_estado }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="observacion" class="form-label">Observación:</label>
+      <textarea
+        id="observacion"
+        formControlName="observaciones"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.get('observaciones')?.hasError('maxlength') &&
+            (form.get('observaciones')?.touched ||
+              form.get('observaciones')?.dirty)
+        }"
+        rows="3"
+        placeholder="Ingrese una observación"
+        (input)="form.get('observaciones')?.markAsTouched()"
+      ></textarea>
+      <div
+        *ngIf="
+          form.get('observaciones')?.hasError('maxlength') &&
+          (form.get('observaciones')?.touched ||
+            form.get('observaciones')?.dirty)
+        "
+        class="text-danger"
+      >
+        La observación no puede exceder 300 caracteres.
+      </div>
+      <div
+        class="text-end"
+        [ngClass]="{
+          'text-danger': getObservacionesCharCount() > 300,
+          'text-muted': getObservacionesCharCount() <= 300
+        }"
+        style="font-size: 0.9em"
+      >
+        Caracteres: {{ getObservacionesCharCount() }} / 300
+      </div>
+    </div>
+    <!-- Campo para subir PDF solo si el estado es 3 (Respondida) en modal de cambio de estado -->
+    <div
+      class="mb-3"
+      *ngIf="
+        form.get('ct_correspondencia_estado')?.value == 3 &&
+        data?.mode === 'status'
+      "
+    >
+      <label for="pdf_respondida" class="form-label"
+        >Adjuntar PDF de respuesta (opcional):</label
+      >
+      <p-fileUpload
+        #fileUploadEdit
+        mode="basic"
+        [maxFileSize]="1000000"
+        accept="application/pdf"
+        chooseLabel="Subir PDF"
+        (onSelect)="onFileSelect($event)"
+        (onClear)="onFileClear()"
+        (onError)="onError($event)"
+        invalidFileSizeMessageSummary="El Archivo es demasiado grande,"
+        invalidFileSizeMessageDetail="el tamaño máximo es {0}"
+        invalidFileTypeMessageSummary="Archivo inválido,"
+        invalidFileTypeMessageDetail="solo se permiten archivos PDF"
+        class="w-100 custom-fileupload-es"
+        [customUpload]="true"
+      >
+        <ng-template pTemplate="content">
+          <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
+        </ng-template>
+      </p-fileUpload>
+      <style>
+        .custom-fileupload-es input[type="file"] {
+          opacity: 0 !important;
+          width: 0 !important;
+          height: 0 !important;
+          position: absolute !important;
+          left: -9999px !important;
+        }
+        .custom-fileupload-es .p-fileupload-filename {
+          display: none !important;
+        }
+      </style>
+      <small class="form-text text-muted">
+        Suba un archivo PDF (máx. 1MB)
+      </small>
+    </div>
+    <!-- Mostrar destinatario solo si el estado es 4 (en status modal) -->
+    <div
+      class="mb-3"
+      *ngIf="
+        form.get('ct_correspondencia_estado')?.value === 4 &&
+        data?.mode === 'status'
+      "
+    >
+      <label for="destinatario_1" class="form-label mb-2">Destinatario:</label>
+      <div></div>
+      <p-autoComplete
+        id="destinatario_1"
+        formControlName="destinatario_1"
+        [suggestions]="filteredDestinatarios"
+        (completeMethod)="filterPeople($event, 'destinatario')"
+        [forceSelection]="false"
+        [minLength]="1"
+        [delay]="0"
+        (input)="onRawInput($event, 'destinatario')"
+        (compositionstart)="onCompositionStart()"
+        (compositionend)="onCompositionEnd($event, 'destinatario')"
+        (onFocus)="onAutoFocus('destinatario')"
+        (onBlur)="onInputBlur('destinatario')"
+        inputClass="form-control mt-3"
+        [inputStyle]="{ width: '100%' }"
+        [style]="{ width: '100%' }"
+        class="w-100"
+        placeholder="Ingrese el destinatario"
+        optionLabel="nombreCompleto"
+      >
+        <ng-template let-item pTemplate="item">
+          <div
+            class="auto-opt"
+            (pointerdown)="onOptionPointerDown($event, item, 'destinatario')"
+            (touchstart)="onOptionPointerDown($event, item, 'destinatario')"
+            (mousedown)="onOptionPointerDown($event, item, 'destinatario')"
+          >
+            <span>{{ item.nombreCompleto }}</span>
+            <span
+              *ngIf="item.area || item.nombre_area"
+              class="text-muted"
+              style="font-size: 0.9em"
+            >
+              — {{ item.area || item.nombre_area }}
+            </span>
+          </div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+    <!-- Mostrar remitente solo si el estado es 4 (en status modal) -->
+    <div
+      class="mb-3"
+      *ngIf="
+        form.get('ct_correspondencia_estado')?.value === 4 &&
+        data?.mode === 'status'
+      "
+    >
+      <label for="remitente_1" class="form-label mb-2">Remitente:</label>
+      <div></div>
+      <p-autoComplete
+        id="remitente_1"
+        formControlName="remitente_1"
+        [suggestions]="filteredRemitentes"
+        (completeMethod)="filterPeople($event, 'remitente')"
+        [forceSelection]="true"
+        [minLength]="1"
+        [delay]="0"
+        (input)="onRawInput($event, 'remitente')"
+        (compositionstart)="onCompositionStart()"
+        (compositionend)="onCompositionEnd($event, 'remitente')"
+        (onFocus)="onAutoFocus('remitente')"
+        (onBlur)="onInputBlur('remitente')"
+        inputClass="form-control mt-3"
+        [inputStyle]="{ width: '100%' }"
+        [style]="{ width: '100%' }"
+        class="w-100"
+        placeholder="Ingrese el remitente"
+        optionLabel="nombreCompleto"
+      >
+        <ng-template let-item pTemplate="item">
+          <div
+            class="auto-opt"
+            (pointerdown)="onOptionPointerDown($event, item, 'remitente')"
+            (touchstart)="onOptionPointerDown($event, item, 'remitente')"
+            (mousedown)="onOptionPointerDown($event, item, 'remitente')"
+          >
+            <span>{{ item.nombreCompleto }}</span>
+            <span
+              *ngIf="item.area || item.nombre_area"
+              class="text-muted"
+              style="font-size: 0.9em"
+            >
+              — {{ item.area || item.nombre_area }}
+            </span>
+          </div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+    <!-- Mostrar solo en modo agregar, no en status modal -->
+    <div class="mb-3" *ngIf="data?.mode !== 'status'">
+      <label>Destinatario seleccionado:</label>
+      <span class="fw-bold text-primary">
+        {{ selectedDestinatario?.informacion?.nombre || "" }}
+        {{ selectedDestinatario?.informacion?.apellido_paterno || "" }}
+        {{ selectedDestinatario?.informacion?.apellido_materno || "" }}
+        <span *ngIf="selectedDestinatario?.puesto"
+          >- {{ selectedDestinatario?.puesto }}</span
+        >
+        <span
+          *ngIf="
+            selectedDestinatario?.area || selectedDestinatario?.nombre_area
+          "
+        >
+          -
+          {{ selectedDestinatario?.area || selectedDestinatario?.nombre_area }}
+        </span>
+      </span>
+    </div>
+    <div class="mb-3" *ngIf="data?.mode !== 'status'">
+      <label>Remitente seleccionado:</label>
+      <span class="fw-bold text-primary">
+        {{ selectedRemitente?.informacion?.nombre || "" }}
+        {{ selectedRemitente?.informacion?.apellido_paterno || "" }}
+        {{ selectedRemitente?.informacion?.apellido_materno || "" }}
+        <span *ngIf="selectedRemitente?.puesto"
+          >- {{ selectedRemitente?.puesto }}</span
+        >
+        <span *ngIf="selectedRemitente?.area || selectedRemitente?.nombre_area">
+          - {{ selectedRemitente?.area || selectedRemitente?.nombre_area }}
+        </span>
+      </span>
+    </div>
+    <div class="d-flex justify-content-end gap-2">
+      <button
+        pButton
+        type="button"
+        label="Cancelar"
+        class="p-button-secondary"
+        (click)="onCancel()"
+      ></button>
+      <button
+        type="submit"
+        class="animated-button"
+        [class.success]="isSuccess"
+        [disabled]="isSaving || !form.valid || isSuccess"
+        (mouseenter)="isHovered = true"
+        (mouseleave)="isHovered = false"
+      >
+        <div class="shine-effect" [class.animate]="!isSaving"></div>
+        <div class="button-content">
+          <div *ngIf="isSaving" class="button-state fade-in">
+            <div class="logo-container">
+              <img
+                src="https://dev.septlaxcala.gob.mx/promette/img/Logos/florColor2.png"
+                alt="Flor Tlaxcala"
+                class="logo spinning pulsing"
+              />
+            </div>
+            <span>Guardando...</span>
+          </div>
+          <div *ngIf="isSuccess && !isSaving" class="button-state fade-in">
+            <div class="check-icon scale-in">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="20,6 9,17 4,12"></polyline>
+              </svg>
+            </div>
+            <span>Guardado</span>
+          </div>
+          <div *ngIf="!isSaving && !isSuccess" class="button-state fade-in">
+            <div class="logo-container" [class.hover-animation]="isHovered">
+              <img
+                src="https://dev.septlaxcala.gob.mx/promette/img/Logos/florColor2.png"
+                alt="Flor Tlaxcala"
+                class="logo"
+                [class.wiggle]="isHovered"
+              />
+            </div>
+            <span>Guardar</span>
+          </div>
+        </div>
+        <div *ngIf="isSaving" class="particles">
+          <div
+            *ngFor="let particle of particles; let i = index"
+            class="particle"
+            [style.left.px]="particle.x"
+            [style.animation-delay.s]="i * 0.3"
+          ></div>
+        </div>
+      </button>
+    </div>
+  </ng-container>
+  <ng-template #fullForm>
+    <div class="mb-3">
+      <label for="destinatario_1" class="form-label mb-2">Destinatario:</label>
+      <div></div>
+      <p-autoComplete
+        id="destinatario_1"
+        formControlName="destinatario_1"
+        [suggestions]="filteredDestinatarios"
+        (completeMethod)="filterPeople($event, 'destinatario')"
+        [forceSelection]="true"
+        [minLength]="1"
+        [delay]="0"
+        (input)="onRawInput($event, 'destinatario')"
+        (compositionstart)="onCompositionStart()"
+        (compositionend)="onCompositionEnd($event, 'destinatario')"
+        (onFocus)="onAutoFocus('destinatario')"
+        (onBlur)="onInputBlur('destinatario')"
+        inputClass="form-control mt-3"
+        [inputStyle]="{ width: '100%' }"
+        [style]="{ width: '100%' }"
+        class="w-100"
+        placeholder="Ingrese el destinatario"
+        optionLabel="nombreCompleto"
+      >
+        <ng-template let-item pTemplate="item">
+          <div
+            class="auto-opt"
+            (pointerdown)="onOptionPointerDown($event, item, 'destinatario')"
+            (touchstart)="onOptionPointerDown($event, item, 'destinatario')"
+            (mousedown)="onOptionPointerDown($event, item, 'destinatario')"
+          >
+            <span>{{ item.nombreCompleto }}</span>
+            <span
+              *ngIf="item.area || item.nombre_area"
+              class="text-muted"
+              style="font-size: 0.9em"
+            >
+              — {{ item.area || item.nombre_area }}
+            </span>
+          </div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+    <div class="mb-3">
+      <label for="remitente_1" class="form-label mb-2">Remitente:</label>
+      <div></div>
+      <p-autoComplete
+        id="remitente_1"
+        formControlName="remitente_1"
+        [suggestions]="filteredRemitentes"
+        (completeMethod)="filterPeople($event, 'remitente')"
+        [forceSelection]="true"
+        [minLength]="1"
+        [delay]="0"
+        (input)="onRawInput($event, 'remitente')"
+        (compositionstart)="onCompositionStart()"
+        (compositionend)="onCompositionEnd($event, 'remitente')"
+        (onFocus)="onAutoFocus('remitente')"
+        (onBlur)="onInputBlur('remitente')"
+        inputClass="form-control mt-3"
+        [inputStyle]="{ width: '100%' }"
+        [style]="{ width: '100%' }"
+        class="w-100"
+        placeholder="Ingrese el remitente"
+        optionLabel="nombreCompleto"
+      >
+        <ng-template let-item pTemplate="item">
+          <div
+            class="auto-opt"
+            (pointerdown)="onOptionPointerDown($event, item, 'remitente')"
+            (touchstart)="onOptionPointerDown($event, item, 'remitente')"
+            (mousedown)="onOptionPointerDown($event, item, 'remitente')"
+          >
+            <span>{{ item.nombreCompleto }}</span>
+            <span
+              *ngIf="item.area || item.nombre_area"
+              class="text-muted"
+              style="font-size: 0.9em"
+            >
+              — {{ item.area || item.nombre_area }}
+            </span>
+          </div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+    <div class="mb-3">
+      <label for="ct_clasificacion_prioridad_id" class="form-label"
+        >Prioridad de la correspondencia:</label
+      >
+      <select
+        id="ct_clasificacion_prioridad_id"
+        class="form-select w-100"
+        formControlName="ct_clasificacion_prioridad_id"
+      >
+        <option value="">Seleccione una prioridad</option>
+        <option
+          *ngFor="let prioridad of prioridades"
+          [value]="prioridad.id_prioridad"
+        >
+          {{ prioridad.nombre_prioridad }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="forma_entrega" class="form-label">Forma de entrega:</label>
+      <select
+        id="forma_entrega"
+        class="form-select w-100"
+        formControlName="ct_forma_entrega_id"
+      >
+        <option value="">Seleccione una forma de entrega</option>
+        <option
+          *ngFor="let forma of formasEntrega"
+          [value]="forma.id_forma_entrega"
+        >
+          {{ forma.nombre_entrega }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="folio_correspondencia" class="form-label"
+        >Folio de correspondencia:</label
+      >
+      <input
+        pInputText
+        id="folio_correspondencia"
+        formControlName="folio_correspondencia"
+        class="form-control"
+        placeholder="Ingrese el folio de correspondencia"
+      />
+      <div
+        *ngIf="
+          form.get('folio_correspondencia')?.hasError('maxlength') &&
+          (form.get('folio_correspondencia')?.touched ||
+            form.get('folio_correspondencia')?.dirty)
+        "
+        class="text-danger"
+      >
+        El folio no puede exceder 50 caracteres.
+      </div>
+      <div
+        class="text-end"
+        [ngClass]="{
+          'text-danger': getFolioCharCount() > 50,
+          'text-muted': getFolioCharCount() <= 50
+        }"
+        style="font-size: 0.9em"
+      >
+        Caracteres: {{ getFolioCharCount() }} / 50
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="fecha_correspondencia" class="form-label">Fechas:</label>
+
+      <input
+        type="date"
+        pInputText
+        id="fecha_correspondencia"
+        formControlName="fecha_correspondencia"
+        class="form-control"
+        [max]="today"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="resumen" class="form-label">Resumen:</label>
+      <textarea
+        id="resumen"
+        formControlName="resumen"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.get('resumen')?.hasError('maxlength') &&
+            (form.get('resumen')?.touched || form.get('resumen')?.dirty)
+        }"
+        rows="3"
+        placeholder="Ingrese un resumen"
+        (input)="form.get('resumen')?.markAsTouched()"
+      ></textarea>
+      <div
+        *ngIf="
+          form.get('resumen')?.hasError('maxlength') &&
+          (form.get('resumen')?.touched || form.get('resumen')?.dirty)
+        "
+        class="text-danger"
+      >
+        El resumen no puede exceder 300 caracteres.
+      </div>
+      <div
+        class="text-end"
+        [ngClass]="{
+          'text-danger': getResumenCharCount() > 300,
+          'text-muted': getResumenCharCount() <= 300
+        }"
+        style="font-size: 0.9em"
+      >
+        Caracteres: {{ getResumenCharCount() }} / 300
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="ruta_correspondencia" class="form-label"
+        >Documento de correspondencia:</label
+      >
+      <p-fileUpload
+        #fileUpload
+        mode="basic"
+        [maxFileSize]="1000000"
+        accept="application/pdf"
+        chooseLabel="Subir PDF"
+        (onSelect)="onFileSelect($event)"
+        (onClear)="onFileClear()"
+        (onError)="onError($event)"
+        invalidFileSizeMessageSummary="El Archivo es demasiado grande,"
+        invalidFileSizeMessageDetail="el tamaño máximo es {0}"
+        invalidFileTypeMessageSummary="Archivo inválido,"
+        invalidFileTypeMessageDetail="solo se permiten archivos PDF"
+        class="w-100 custom-fileupload-es"
+        [customUpload]="true"
+      >
+        <ng-template pTemplate="content">
+          <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
+        </ng-template>
+      </p-fileUpload>
+      <style>
+        .custom-fileupload-es input[type="file"] {
+          opacity: 0 !important;
+          width: 0 !important;
+          height: 0 !important;
+          position: absolute !important;
+          left: -9999px !important;
+        }
+        /*Se deberia ocultar el mensaje no file chosen en el modal de agregar correspondencia*/
+        .custom-fileupload-es .p-fileupload-filename {
+          display: none !important;
+        }
+      </style>
+      <small class="form-text text-muted">
+        Suba un archivo PDF (máx. 1MB)
+      </small>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2">
+      <button
+        pButton
+        type="button"
+        label="Cancelar"
+        class="p-button-secondary"
+        (click)="onCancel()"
+      ></button>
+      <button
+        type="submit"
+        class="animated-button"
+        [class.success]="isSuccess"
+        [disabled]="isSaving || !form.valid || isSuccess"
+        (mouseenter)="isHovered = true"
+        (mouseleave)="isHovered = false"
+      >
+        <div class="shine-effect" [class.animate]="!isSaving"></div>
+        <div class="button-content">
+          <div *ngIf="isSaving" class="button-state fade-in">
+            <div class="logo-container">
+              <img
+                src="https://dev.septlaxcala.gob.mx/promette/img/Logos/florColor2.png"
+                alt="Flor Tlaxcala"
+                class="logo spinning pulsing"
+              />
+            </div>
+            <span>Guardando...</span>
+          </div>
+          <div *ngIf="isSuccess && !isSaving" class="button-state fade-in">
+            <div class="check-icon scale-in">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="20,6 9,17 4,12"></polyline>
+              </svg>
+            </div>
+            <span>Guardado</span>
+          </div>
+          <div *ngIf="!isSaving && !isSuccess" class="button-state fade-in">
+            <div class="logo-container" [class.hover-animation]="isHovered">
+              <img
+                src="https://dev.septlaxcala.gob.mx/promette/img/Logos/florColor2.png"
+                alt="Flor Tlaxcala"
+                class="logo"
+                [class.wiggle]="isHovered"
+              />
+            </div>
+            <span>Guardar</span>
+          </div>
+        </div>
+        <div *ngIf="isSaving" class="particles">
+          <div
+            *ngFor="let particle of particles; let i = index"
+            class="particle"
+            [style.left.px]="particle.x"
+            [style.animation-delay.s]="i * 0.3"
+          ></div>
+        </div>
+      </button>
+    </div>
+  </ng-template>
+</form>
+<style>
+  .animated-button {
+    position: relative;
+    padding: 16px 32px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: white;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: none;
+    cursor: pointer;
+    min-width: 220px;
+    height: 60px;
+    background: linear-gradient(to right, #475569, #1e293b);
+  }
+
+  .animated-button:hover:not(:disabled) {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(to right, #1e293b, #0f172a);
+    transform: scale(1.02);
+  }
+
+  .animated-button:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  .animated-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .animated-button.success {
+    background: linear-gradient(to right, #16a34a, #15803d);
+  }
+
+  .animated-button.success:hover {
+    background: linear-gradient(to right, #15803d, #166534);
+  }
+
+  .shine-effect {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 2s ease-in-out;
+  }
+
+  .shine-effect.animate {
+    animation: shine 5s infinite;
+  }
+
+  @keyframes shine {
+    0% {
+      left: -100%;
+    }
+    50% {
+      left: 100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+
+  .button-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .button-state {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+
+  .logo {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+
+  .spinning {
+    animation: spin 2s linear infinite, pulse 1s ease-in-out infinite;
+  }
+
+  .pulsing {
+    animation: pulse 1s ease-in-out infinite;
+  }
+
+  .wiggle {
+    animation: wiggle 0.6s ease-in-out;
+  }
+
+  .scale-in {
+    animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(0deg) scale(1);
+    }
+    25% {
+      transform: rotate(15deg) scale(1.1);
+    }
+    75% {
+      transform: rotate(-15deg) scale(1.1);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  .check-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: float 2s ease-out infinite;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(60px);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+  }
+</style>
+<style>
+  /* este estilo es para la interacción de opciones en iOS/touch */
+  .auto-opt {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .auto-opt:active {
+    background: #eef2ff;
+  }
+  /* asegura que el desplazamiento dentro del panel se mantenga suave en iOS */
+  .p-autocomplete-panel {
+    -webkit-overflow-scrolling: touch;
+  }
+</style>

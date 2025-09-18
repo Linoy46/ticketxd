@@ -1,0 +1,68 @@
+<form class="container w-100" (ngSubmit)="buscar()">
+  <div class="d-flex w-100 justify-content-center gap-3 py-3">
+    <!-- Select para Medio (Forma de Entrega según la base de datos) -->
+    <div class="col-md-3 mb-3">
+      <label class="form-label fw-bold" for="filtro-medio">Medio</label>
+      <select
+        id="filtro-medio"
+        class="form-select w-100"
+        [(ngModel)]="selectedFormaEntrega"
+        name="formaEntrega"
+      >
+        <option value="">Todos</option>
+        <option
+          *ngFor="let forma of formasEntrega"
+          [value]="forma.id_forma_entrega"
+        >
+          {{ forma.nombre_entrega }}
+        </option>
+      </select>
+    </div>
+    <!-- Select para Estado en la página principal de correspondencia para buscar -->
+    <div class="col-md-3 mb-3">
+      <label class="form-label fw-bold" for="filtro-estado">Estado</label>
+      <select
+        id="filtro-estado"
+        class="form-select w-100"
+        [(ngModel)]="selectedEstado"
+        name="estado"
+      >
+        <option value="">Selecciona un estado</option>
+        <option
+          *ngFor="let estado of estadosCorrespondencia"
+          [value]="estado.id_correspondencia_estado"
+        >
+          {{ estado.nombre_estado }}
+        </option>
+      </select>
+    </div>
+    <!-- Input para Fecha de Recepción -->
+    <div class="col-md-3 mb-3">
+      <label class="form-label fw-bold" for="filtro-fecha"
+        >Fecha de Recepción de:</label
+      >
+      <input
+        type="date"
+        id="filtro-fecha"
+        class="form-control"
+        [(ngModel)]="fechaRecepcion"
+        name="fechaRecepcion"
+        [max]="today"
+      />
+    </div>
+  </div>
+  <div class="text-center mt-3">
+    <button
+      pButton
+      type="submit"
+      label="Buscar"
+      class="p-button-secondary"
+    ></button>
+  </div>
+</form>
+<!--
+  - Medio: select que carga formasEntrega desde la base de datos
+  - Estado: select que carga estadosCorrespondencia desde la base de datos
+  - Fecha: solo permite fechas hasta hoy
+  - Botón Buscar ejecuta el método buscar()
+-->

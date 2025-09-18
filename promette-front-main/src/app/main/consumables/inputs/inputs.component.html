@@ -1,0 +1,341 @@
+<!--Tutorial-->
+<app-tutorial [config]="tutorialConfig" buttonText="Ayuda" [showButton]="true">
+</app-tutorial>
+
+<header class="header text-center text-secondary mb-4">
+  <h1>Entradas de Inventario</h1>
+</header>
+
+<div class="max-w-7xl mx-auto">
+  <form [formGroup]="entryForm" *ngIf="!loading" id="formulario">
+    <!-- Primera fila: Cantidad -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="form-group">
+          <label for="cantidad" class="form-label">Cantidad</label>
+          <p-inputNumber
+            id="cantidad"
+            formControlName="cantidad"
+            [showButtons]="true"
+            [min]="1"
+            styleClass="w-100"
+            inputStyleClass="w-100"
+            placeholder="Ej. 10"
+          >
+          </p-inputNumber>
+          <small
+            class="text-danger"
+            *ngIf="
+              entryForm.get('cantidad')?.invalid &&
+              entryForm.get('cantidad')?.touched
+            "
+          >
+            La cantidad es requerida y debe ser mayor a 0
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Segunda fila: Descripción y Observaciones -->
+    <div class="row mb-4">
+      <div class="col-md-6 mb-3 mb-md-0">
+        <div class="form-group">
+          <label for="descripcion" class="form-label">Descripción</label>
+          <textarea
+            pInputTextarea
+            id="descripcion"
+            formControlName="descripcion"
+            [rows]="3"
+            class="w-100"
+            placeholder="Descripción detallada del artículo"
+          ></textarea>
+          <small
+            class="text-danger"
+            *ngIf="
+              entryForm.get('descripcion')?.invalid &&
+              entryForm.get('descripcion')?.touched
+            "
+          >
+            Descripción es requerida
+          </small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="observaciones" class="form-label">Observaciones</label>
+          <textarea
+            pInputTextarea
+            id="observaciones"
+            formControlName="observaciones"
+            [rows]="3"
+            class="w-100"
+            placeholder="Observaciones adicionales (opcional)"
+            maxlength="255"
+          ></textarea>
+          <small class="text-muted"> Máximo 255 caracteres </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tercera fila: Partida, Unidad de Medida -->
+    <div class="row mb-4">
+      <div class="col-md-6 mb-3 mb-md-0">
+        <div class="form-group">
+          <label for="ct_partida_id" class="form-label">Partida</label>
+          <p-dropdown
+            [options]="partidas"
+            formControlName="ct_partida_id"
+            optionLabel="name"
+            optionValue="id"
+            [filter]="true"
+            filterBy="name,code"
+            [showClear]="true"
+            placeholder="Seleccionar partida"
+            styleClass="w-100"
+            emptyFilterMessage="No se encontraron partidas"
+            emptyMessage="No hay partidas disponibles"
+          >
+            <ng-template let-partida pTemplate="item">
+              <div class="partida-item">
+                <div class="fw-medium">{{ partida.name }}</div>
+                <div class="text-muted small">
+                  {{ partida.code || "Sin código" }}
+                </div>
+              </div>
+            </ng-template>
+            <ng-template let-selectedPartida pTemplate="selectedItem">
+              <div class="partida-item" *ngIf="selectedPartida">
+                <span class="fw-medium">{{ selectedPartida.code }}</span> -
+                {{ selectedPartida.name }}
+              </div>
+            </ng-template>
+          </p-dropdown>
+          <small
+            class="text-danger"
+            *ngIf="
+              entryForm.get('ct_partida_id')?.invalid &&
+              entryForm.get('ct_partida_id')?.touched
+            "
+          >
+            Partida es requerida
+          </small>
+          <div
+            *ngIf="entryForm.get('ct_partida_id')?.value"
+            class="mt-1 text-info small"
+          >
+            Partida seleccionada:
+            {{ getPartidaInfo(entryForm.get("ct_partida_id")?.value) }}
+          </div>
+          <small class="text-info" *ngIf="partidas.length === 0">
+            No hay partidas disponibles para mostrar
+          </small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="ct_unidad_id" class="form-label">Unidad de Medida</label>
+          <p-dropdown
+            [options]="units"
+            formControlName="ct_unidad_id"
+            optionLabel="name"
+            optionValue="id"
+            [filter]="true"
+            filterBy="name,code"
+            [showClear]="true"
+            placeholder="Seleccionar unidad"
+            styleClass="w-100"
+          >
+            <ng-template let-unit pTemplate="item">
+              <div class="unit-item">
+                <div class="fw-medium">{{ unit.name }}</div>
+                <div class="text-muted small">
+                  {{ unit.code || "Sin código" }}
+                </div>
+              </div>
+            </ng-template>
+            <ng-template let-selectedUnit pTemplate="selectedItem">
+              <div class="unit-item" *ngIf="selectedUnit">
+                <span class="fw-medium">{{ selectedUnit.code }}</span
+                >{{
+                  selectedUnit.name !== selectedUnit.code
+                    ? " - " + selectedUnit.name
+                    : ""
+                }}
+              </div>
+            </ng-template>
+          </p-dropdown>
+          <small
+            class="text-danger"
+            *ngIf="
+              entryForm.get('ct_unidad_id')?.invalid &&
+              entryForm.get('ct_unidad_id')?.touched
+            "
+          >
+            Unidad de medida es requerida
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cuarta fila: Factura y Razón Social -->
+    <div class="row mb-4">
+      <div class="col-md-6 mb-3 mb-md-0">
+        <div class="form-group">
+          <label for="factura" class="form-label">Número de Factura</label>
+          <input
+            type="text"
+            pInputText
+            id="factura"
+            formControlName="factura"
+            class="w-100"
+            placeholder="Ingrese el número de factura"
+          />
+          <small
+            class="text-danger"
+            *ngIf="
+              entryForm.get('factura')?.invalid &&
+              entryForm.get('factura')?.touched
+            "
+          >
+            Número de factura es requerido
+          </small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="razon_social" class="form-label"
+            >Razón Social del Proveedor</label
+          >
+          <input
+            type="text"
+            pInputText
+            id="razon_social"
+            formControlName="razon_social"
+            class="w-100"
+            placeholder="Ingrese la razón social del proveedor"
+          />
+          <small
+            class="text-danger"
+            *ngIf="
+              entryForm.get('razon_social')?.invalid &&
+              entryForm.get('razon_social')?.touched
+            "
+          >
+            Razón social del proveedor es requerida
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón Agregar -->
+    <div class="text-end mb-4">
+      <button
+        type="button"
+        class="btn btn-primary btn-add-responsive"
+        id="agregar"
+        (click)="addToQueue()"
+      >
+        <i class="bi bi-plus"></i> Agregar
+      </button>
+    </div>
+  </form>
+
+  <!-- Tabla de productos en cola -->
+  <div class="mb-4 border rounded" *ngIf="productQueue.length > 0">
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th style="width: 20%">Descripción</th>
+            <th style="width: 15%">Observaciones</th>
+            <th style="width: 10%">Cantidad</th>
+            <th style="width: 15%">Partida</th>
+            <th style="width: 10%">Unidad</th>
+            <th style="width: 20%">Factura/Proveedor</th>
+            <th style="width: 10%" class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="productQueue.length === 0">
+            <td colspan="7" class="text-center py-4 text-muted">
+              No hay productos seleccionados
+            </td>
+          </tr>
+          <tr *ngFor="let item of productQueue; let i = index">
+            <td>{{ item.descripcion }}</td>
+            <td>
+              <span
+                class="text-muted fst-italic"
+                [title]="item.observaciones || 'Sin observaciones'"
+                style="
+                  max-width: 150px;
+                  display: inline-block;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                "
+              >
+                {{ item.observaciones || "Sin observaciones" }}
+              </span>
+            </td>
+            <td>{{ item.cantidad }}</td>
+            <td>{{ item.displayData.partidaName }}</td>
+            <td>{{ item.displayData.unitName }}</td>
+            <td>{{ item.factura }} / {{ item.razon_social }}</td>
+            <td class="text-center">
+              <button
+                type="button"
+                class="btn btn-outline-danger btn-sm"
+                (click)="removeFromQueue(i)"
+                title="Eliminar producto"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer con botones -->
+  <div class="d-flex justify-content-between border-top pt-4 mt-4">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="handleCancel()"
+      id="cancelar"
+    >
+      <i class="bi bi-x-circle me-1"></i>
+      Cancelar
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="onSubmit()"
+      [disabled]="
+        (productQueue.length === 0 && entryForm.invalid) || submitting
+      "
+      id="agregar"
+    >
+      <span
+        *ngIf="submitting"
+        class="spinner-border spinner-border-sm me-1"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      <i *ngIf="!submitting" class="bi bi-check-circle me-1"></i>
+      {{
+        submitting
+          ? "Procesando..."
+          : productQueue.length > 0
+          ? "Registrar Entradas"
+          : "Registrar Entrada"
+      }}
+    </button>
+  </div>
+</div>
+
+<!-- Modal Component -->
+<shared-custom-modal-component></shared-custom-modal-component>

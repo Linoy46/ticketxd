@@ -1,0 +1,71 @@
+<header class="header text-center text-secondary py-4">
+  <h3>Puestos asignados</h3>
+</header>
+
+<!-- Add button -->
+<div class="m-3">
+  <button (click)="add()" class="btn btn-secondary">
+    <i class="bi bi-plus-circle"></i> Asignar puesto
+  </button>
+</div>
+
+<div *ngIf="rowData.length > 0" class="px-3">
+  <div class="card text-bg-light mb-3" *ngFor="let position of rowData; index as i">
+    <div class="card-body container">
+      <div class="row align-items-center">
+        <div class="col-lg-10">
+          <h5 class="card-title text-secondary">
+            ({{ position.ct_puesto_id }}) {{ position.ct_puesto?.nombre_puesto || 'Sin nombre' }}
+          </h5>
+
+          <p class="card-text">
+            <span class="fw-bold">Área:</span> {{ position.nombre_area }} <br>
+            <!-- <span class="fw-bold">Departamento:</span> {{ position.nombre_departamento }} <br>
+            <span class="fw-bold">Dirección:</span> {{ position.nombre_direccion }} -->
+          </p>
+
+          <p class="fw-light card-text">
+            Sindicato: {{ position.ct_sindicato?.nombre_sindicato || 'Sin sindicato' }} <br>
+            Plaza: {{ position.plaza || 'No especificada' }} <br>
+            <small class="text-muted">
+              Periodo: {{ position.periodo_inicio | date:'dd/MMMM/yyyy' }} -
+              {{ position.periodo_final ? (position.periodo_final | date:'dd/MMMM/yyyy') : 'Actualidad' }}
+            </small>
+          </p>
+        </div>
+
+        <div class="col-lg-2">
+          <button title="Editar"
+                  (click)="edit(position.id_usuario_puesto)"
+                  class="btn btn-primary me-2">
+            <i class="bi bi-pencil-fill"></i>
+          </button>
+
+          <button title="Eliminar"
+                  (click)="delete(position)"
+                  class="btn btn-danger">
+            <i class="bi bi-trash-fill"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="rowData.length === 0">
+  <h3 class="text-center fw-lighter mb-4">Sin puesto(s) asignados</h3>
+</div>
+
+
+<!--  Display Form Data for Debugging
+<div class="mt-4">
+  <pre>{{ data | json }}
+  </pre>
+</div>
+
+<div class="mt-4">
+  <pre>{{ rowData | json }}
+  </pre>
+</div>
+
+-->

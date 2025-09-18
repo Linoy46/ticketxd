@@ -1,0 +1,366 @@
+// Dispositivos móviles: se ajusta el botón de filtrado que esta como la clase llamada bi-sort-up y bi-sort-down para que sea responsivo
+@media (max-width: 768px) {
+  .row.mb-3 {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.5rem;
+  }
+  .input-group,
+  .btn-group,
+  .d-flex {
+    width: 100% !important;
+    margin-bottom: 0.5rem !important;
+    justify-content: stretch !important;
+  }
+  .btn-group {
+    margin-top: 0.5rem !important;
+  }
+  .btn-outline-secondary {
+    padding-top: 0.6rem !important;
+    padding-bottom: 0.6rem !important;
+    min-height: 48px !important;
+    height: 48px !important;
+    font-size: 1.1rem !important;
+  }
+  .bi-sort-up,
+  .bi-sort-down {
+    font-size: 1.2rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-top: 0.1rem !important;
+    display: inline-block;
+  }
+}
+// Ajustes responsivos para ngx-datatable en móviles
+@media (max-width: 768px) {
+  .card {
+    overflow-x: auto;
+  }
+  :host ::ng-deep .ngx-datatable.material {
+    min-width: 900px;
+  }
+  :host ::ng-deep .ngx-datatable.material .datatable-header-cell,
+  :host ::ng-deep .ngx-datatable.material .datatable-body-cell {
+    min-width: 110px !important;
+    max-width: 170px !important;
+    font-size: 0.85rem !important;
+    padding: 0.4rem 0.2rem !important;
+  }
+}
+// Forzar celdas de la columna departamento a una sola línea con ellipsis en ngx-datatable
+::ng-deep .ngx-datatable.material .datatable-body-cell.departamento-col {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  min-width: 120px !important;
+  max-width: 200px !important;
+}
+// Variables de color principales
+$color-rose: #a11a5c;
+$color-purple: #a11a5c;
+$color-purple-dark: #a11a5c;
+$color-purple-darker: #6a1b9a;
+$color-purple-light: #ce93d8;
+$color-border: #dee2e6;
+$border-radius: 6px;
+$header-color: #e9ddff;
+$color-text-header: #422b7c;
+
+// Estilos para la tabla de historial
+.ngx-datatable.material {
+  box-shadow: none;
+  border-radius: 0.5rem;
+
+  &.expandable {
+    .datatable-header {
+      font-weight: 600;
+      background-color: #f8f9fa;
+
+      .datatable-header-cell {
+        padding: 0.75rem;
+      }
+    }
+
+    .datatable-body {
+      .datatable-body-row {
+        border-bottom: 1px solid #f0f0f0;
+
+        .datatable-body-cell {
+          padding: 0.75rem;
+          font-size: 0.9rem;
+
+          .texto-truncado {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 100%;
+          }
+        }
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.02);
+        }
+      }
+    }
+  }
+}
+
+// Estilo para la tarjeta contenedora
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(255, 255, 255, 0.075);
+  border: none;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+// Estilos para badges y etiquetas
+.badge {
+  font-weight: 500;
+  padding: 0.35em 0.65em;
+  font-size: 0.8em;
+
+  &.bg-secondary {
+    background-color: #6c757d !important;
+  }
+
+  &.bg-info {
+    background-color: #0ea5e9 !important;
+    font-weight: 500;
+  }
+}
+
+// Estilos para la barra de herramientas
+.page-title-wrapper {
+  .page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0;
+    color: $color-rose;
+  }
+}
+
+// Clases de utilidad para colores
+.text-rose {
+  color: $color-rose !important;
+}
+
+// Estilos para la modal del PDF
+.pdf-container {
+  background-color: #f0f0f0;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+// Mejora de estilos para botones
+.btn-outline-info,
+.btn-outline-secondary {
+  &:hover {
+    color: #fff;
+  }
+}
+
+// Botones con iconos
+.btn {
+  i {
+    margin-right: 0.25rem;
+  }
+}
+
+// Estilos para los botones de documentos
+.btn {
+  margin: 0.1rem;
+
+  &.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+
+    &:hover {
+      background-color: #218838;
+      border-color: #1e7e34;
+    }
+  }
+
+  &.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+
+    &:hover {
+      background-color: #138496;
+      border-color: #117a8b;
+    }
+  }
+
+  &.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+
+    &:hover {
+      background-color: #0069d9;
+      border-color: #0062cc;
+    }
+  }
+}
+
+// Tooltip custom para textos truncados
+[data-tooltip] {
+  position: relative;
+  cursor: pointer;
+
+  &:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    z-index: 1000;
+  }
+}
+
+// Estilos para ngx-datatable
+:host ::ng-deep {
+  .ngx-datatable.material {
+    background-color: white;
+
+    .datatable-header {
+      background-color: $header-color;
+
+      .datatable-header-cell {
+        color: $color-text-header;
+        font-weight: 600;
+        padding: 0.75rem 1rem;
+
+        &.sortable {
+          .datatable-header-cell-wrapper {
+            position: relative;
+
+            &:after {
+              position: absolute;
+              right: 4px;
+              top: 50%;
+              transform: translateY(-50%);
+              font-family: "Bootstrap Icons";
+              font-size: 0.8rem;
+              color: $color-purple;
+            }
+          }
+
+          &.sort-active {
+            &.sort-asc .datatable-header-cell-wrapper:after {
+              content: "\F272"; // Bootstrap icon for sort-up
+            }
+
+            &.sort-desc .datatable-header-cell-wrapper:after {
+              content: "\F286"; // Bootstrap icon for sort-down
+            }
+          }
+        }
+      }
+    }
+
+    .datatable-body {
+      .datatable-body-row {
+        &:hover {
+          background-color: #fdf7ff;
+        }
+
+        &.active {
+          background-color: #f8f0ff;
+        }
+      }
+    }
+
+    .datatable-footer {
+      background-color: white;
+      border-top: 1px solid $color-border;
+      padding: 0.5rem 1rem;
+    }
+  }
+
+  // Fix para el tamaño del selector de página
+  .page-size-select {
+    width: auto !important;
+    min-width: 70px !important;
+  }
+
+  // Clase de utilidad para anchos personalizados
+  .custom-width-auto {
+    width: auto !important;
+    min-width: 70px;
+  }
+
+  // Estilos para la columna de observaciones
+  .observaciones-cell {
+    max-width: 200px;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+
+    .text-muted {
+      font-size: 0.875rem;
+      line-height: 1.4;
+    }
+
+    span[title] {
+      border-bottom: 1px dotted #6c757d;
+    }
+  }
+
+  // Ajustes para la tabla
+  .ngx-datatable
+    .datatable-body
+    .datatable-body-row
+    .datatable-row-wrapper
+    .datatable-body-cell {
+    vertical-align: top;
+    padding: 8px 6px;
+  }
+
+  .observaciones-cell {
+    padding: 4px 0;
+  }
+}
+
+// Header styling
+.header {
+  margin-bottom: 1.5rem;
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: $color-rose;
+    margin-bottom: 1rem;
+  }
+}
+
+// Ajustes para dispositivos móviles
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  :host ::ng-deep {
+    .ngx-datatable.material {
+      .datatable-header-cell,
+      .datatable-body-cell {
+        padding: 0.5rem !important;
+        font-size: 0.85rem !important;
+      }
+
+      .badge {
+        font-size: 0.75rem !important;
+        padding: 0.2em 0.5em !important;
+      }
+    }
+
+    .d-flex {
+      flex-wrap: wrap;
+    }
+  }
+}

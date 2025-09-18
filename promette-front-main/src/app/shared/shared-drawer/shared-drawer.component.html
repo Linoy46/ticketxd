@@ -1,0 +1,536 @@
+<div
+  class="drawer bg-[#fafafa] border-end overflow-auto"
+  [ngClass]="{ 'mini-drawer': isMini }"
+>
+  <!-- Logo -->
+  <div
+    routerLink="home"
+    style="cursor: pointer; height: 70px"
+    class="flex items-center"
+  >
+    <img
+      src="images/florColor2.png"
+      alt="Logo"
+      style="width: 30px; height: 30px"
+    />
+    <div class="container" *ngIf="!isMini">
+      <p>PROMETTE</p>
+      <p>Programa para la Mejora y Transformación Tecnológica Educativa.</p>
+    </div>
+  </div>
+
+  <!-- Menú principal -->
+  <ul class="nav flex-column">
+    <!-- Opción 1: Inicio -->
+    <li class="nav-item">
+      <a
+        class="nav-link flex items-center gap-2"
+        routerLink="home"
+        routerLinkActive="active"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          width="24px"
+          viewBox="0 -960 960 960"
+          fill="currentColor"
+        >
+          <path
+            d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"
+          />
+        </svg>
+        <span *ngIf="!isMini">Inicio</span>
+        <!-- <span *ngIf="hasPermission('Admon. de Sistema:view_admon')">hackeo</span> -->
+      </a>
+    </li>
+
+    <!-- Opción 2: Submenú con ngbAccordion (Admon. de Sistema) -->
+    <li class="nav-item" *ngIf="hasPermission('Admon. de Sistema:view_admon')">
+      <div ngbAccordion>
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader>
+            <button
+              ngbAccordionButton
+              [title]="isMini ? 'Administración del Sistema' : ''"
+            >
+              <i class="bi bi-gear"></i>
+              <span *ngIf="!isMini">Admon. de Sistema</span>
+            </button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <ul class="nav flex-column">
+              <!-- Submenú: Usuarios -->
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Admon. de Sistema:view_users')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="users"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-people"></i>
+                  <span *ngIf="!isMini">Usuarios</span>
+                </a>
+              </li>
+              <!-- Submenú: Módulos -->
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Admon. de Sistema:view_modules')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="modules"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-menu-button-wide"></i>
+                  <span *ngIf="!isMini">Módulos</span>
+                </a>
+              </li>
+              <!-- Submenú: Puestos -->
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Admon. de Sistema:view_positions')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="ctpositions"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-briefcase"></i>
+                  <span *ngIf="!isMini">Puestos</span>
+                </a>
+              </li>
+              <!-- Submenú: Áreas -->
+              <!-- <li class="nav-item" *ngIf="hasPermission('Admon. de Sistema:view_areas')" [ngClass]="{ fson: !isMini }">
+                <a class="nav-link" routerLink="ctareas" routerLinkActive="active">
+                  <i class="bi bi-pin-map"></i>
+                  <span *ngIf="!isMini">Áreas</span>
+                </a>
+              </li> -->
+              <!-- Submenú: Departamentos -->
+              <!-- <li class="nav-item" *ngIf="hasPermission('Admon. de Sistema:view_departments')"
+                [ngClass]="{ fson: !isMini }">
+                <a class="nav-link" routerLink="departments" routerLinkActive="active">
+                  <i class="bi bi-building"></i>
+                  <span *ngIf="!isMini">Departamentos</span>
+                </a>
+              </li> -->
+              <!-- Submenú: Direcciones -->
+              <!-- <li class="nav-item" *ngIf="hasPermission('Admon. de Sistema:view_directions')"
+                [ngClass]="{ fson: !isMini }">
+                <a class="nav-link" routerLink="directions" routerLinkActive="active">
+                  <i class="bi bi-buildings"></i>
+                  <span *ngIf="!isMini">Direcciones</span>
+                </a>
+              </li> -->
+              <!-- Submenú: Direcciones -->
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Admon. de Sistema:view_history')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="history"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-clock"></i>
+                  <span *ngIf="!isMini">Bitácora</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+    <!--
+               Submenú: Usuarios
+              <li class="nav-item" [ngClass]="{ fson: !isMini }">
+                <a
+                  class="nav-link"
+                  routerLink="folios"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-file-earmark-binary"></i>
+                  <span *ngIf="!isMini">Folios</span>
+                </a>
+              </li>
+              Submenú: Áreas
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Admon. de Sistema:view_areas')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="assistants"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-person-workspace"></i>
+                  <span *ngIf="!isMini">Asistentes</span>
+                </a>
+              </li>
+               Submenú: Puestos
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Admon. de Sistema:view_positions')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="dependencies"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-buildings"></i>
+                  <span *ngIf="!isMini">Dependencias</span>
+                </a>
+              </li>
+              -->
+    <!-- Submenú: Módulos -->
+
+    <!-- Submenú: Módulos -->
+    <!--<li
+                class="nav-item"
+                *ngIf="hasPermission('Admon. de Sistema:view_modules')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="agreements"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-file-earmark-check"></i>
+                  <span *ngIf="!isMini">Acuerdos</span>
+                </a>
+              </li>
+               Submenú: Módulos
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Admon. de Sistema:view_modules')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="reports"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-files"></i>
+                  <span *ngIf="!isMini">Reportes</span>
+                </a>
+              </li>-->
+
+    <!-- Opción 4: Altas y Bajas (Inventario) - Removed permission restriction -->
+    <li class="nav-item" *ngIf="hasPermission('Consumibles:view_consumibles')">
+      <div ngbAccordion>
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader>
+            <button ngbAccordionButton [title]="isMini ? 'Altas y Bajas' : ''">
+              <i class="bi bi-box-seam"></i>
+              <span *ngIf="!isMini">Consumibles</span>
+            </button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <ul class="nav flex-column">
+              <!-- Submenú: Entradas - Fixed routerLink -->
+              <li class="nav-item" [ngClass]="{ fson: !isMini }">
+                <a
+                  class="nav-link"
+                  routerLink="inventory-entries"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-box-arrow-in-down"></i>
+                  <span *ngIf="!isMini">Entradas</span>
+                </a>
+              </li>
+              <!-- Submenú: Inventarios -->
+              <li class="nav-item" [ngClass]="{ fson: !isMini }">
+                <a
+                  class="nav-link"
+                  routerLink="inventories"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-file-earmark-bar-graph"></i>
+                  <span *ngIf="!isMini">Inventarios</span>
+                </a>
+              </li>
+              <!-- Submenú: Salidas -->
+              <li class="nav-item" [ngClass]="{ fson: !isMini }">
+                <a class="nav-link" routerLink="outs" routerLinkActive="active">
+                  <i class="bi bi-clipboard-check"></i>
+                  <span *ngIf="!isMini">Salidas</span>
+                </a>
+              </li>
+              <!-- Submenú: Historial-->
+              <li class="nav-item" [ngClass]="{ fson: !isMini }">
+                <a
+                  class="nav-link"
+                  routerLink="outs-history"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-clock-history"></i>
+                  <span *ngIf="!isMini">Historial de salidas</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <!-- Opción 5: Financieros -->
+    <li class="nav-item" *ngIf="hasPermission('Financieros:view_financial')">
+      <div ngbAccordion>
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader>
+            <button ngbAccordionButton [title]="isMini ? 'Financieros' : ''">
+              <i class="bi bi-cash-coin"></i>
+              <span *ngIf="!isMini">Financieros</span>
+            </button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <ul class="nav flex-column">
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Financieros:view_units')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="administrative-units"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-building-gear"></i>
+                  <span *ngIf="!isMini">Unidades administrativas</span>
+                </a>
+              </li>
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Financieros:view_financing')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="financing"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-bank"></i>
+                  <span *ngIf="!isMini">Financiamientos</span>
+                </a>
+              </li>
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Financieros:view_products')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="products"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-cart"></i>
+                  <span *ngIf="!isMini">Productos</span>
+                </a>
+              </li>
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Financieros:generar_reportes')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="financial-reports"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-graph-up-arrow"></i>
+                  <span *ngIf="!isMini">Reportes</span>
+                </a>
+              </li>
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Financieros:view_spending')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="spending-objects"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-box2"></i>
+                  <span *ngIf="!isMini">Objetos de Gasto</span>
+                </a>
+              </li>
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Financieros:view_ceiling')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="budget-ceiling"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-wallet2"></i>
+                  <span *ngIf="!isMini">Techo presupuestal</span>
+                </a>
+              </li>
+              <li
+                class="nav-item"
+                *ngIf="hasPermission('Financieros:view_budgets')"
+                [ngClass]="{ fson: !isMini }"
+              >
+                <a
+                  class="nav-link"
+                  routerLink="budgets"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-calculator"></i>
+                  <span *ngIf="!isMini">Presupuestos</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <!-- Opción 6: ANEEC -->
+    <li class="nav-item" *ngIf="hasPermission('ANEEC:view_aneec')">
+      <div ngbAccordion>
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader>
+            <button ngbAccordionButton [title]="isMini ? 'ANEEC' : ''">
+              <i class="bi bi-clipboard-heart"></i>
+              <span *ngIf="!isMini">ANEEC</span>
+            </button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <ul class="nav flex-column">
+              <li class="nav-item" [ngClass]="{ fson: !isMini }">
+                <a
+                  class="nav-link"
+                  routerLink="administration-general"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-heart-pulse"></i>
+                  <span *ngIf="!isMini">Administración de usuarios</span>
+                </a>
+              </li>
+
+              <li class="nav-item" [ngClass]="{ fson: !isMini }">
+                <a
+                  class="nav-link"
+                  routerLink="evaluator-administration"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-inboxes"></i>
+                  <span *ngIf="!isMini">Administración de facilitadores</span>
+                </a>
+              </li>
+
+              <li class="nav-item" [ngClass]="{ fson: !isMini }">
+                <a
+                  class="nav-link"
+                  routerLink="evaluator-add-reports"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-archive"></i>
+                  <span *ngIf="!isMini">Informes</span>
+                </a>
+              </li>
+
+              <li class="nav-item" [ngClass]="{ fson: !isMini }">
+                <a
+                  class="nav-link"
+                  routerLink="plans"
+                  routerLinkActive="active"
+                >
+                  <i class="bi bi-card-list"></i>
+                  <span *ngIf="!isMini">Planeaciones</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <!-- Opción : Escalafón -->
+    <li class="nav-item" *ngIf="hasPermission('Escalafón:ver_escalafón')">
+      <a class="nav-link" routerLink="escalafon" routerLinkActive="active">
+        <i class="bi bi-bar-chart"></i>
+        <span *ngIf="!isMini">Escalafón</span>
+      </a>
+    </li>
+
+    <!-- Opción 3: Correspondencia -->
+    <li
+      class="nav-item"
+      *ngIf="hasPermission('Correspondencia:view_correspondence')"
+    >
+      <a class="nav-link" routerLink="correspondence" routerLinkActive="active">
+        <i class="bi bi-envelope-paper"></i>
+        <span *ngIf="!isMini">Correspondencia</span>
+      </a>
+    </li>
+
+    <!-- Opción 4: tickets -->
+    <li
+      class="nav-item"
+      *ngIf="hasPermission('Correspondencia:view_correspondence')"
+    >
+      <a class="nav-link" routerLink="tickets" routerLinkActive="active">
+        <i class="bi bi-envelope-paper"></i>
+        <span *ngIf="!isMini">tickets</span>
+      </a>
+    </li>
+
+
+    <li
+      *ngIf="hasPermission('Admon. de Sistema:views_ct_documentos')"
+      class="nav-item"
+    >
+      <a class="nav-link" routerLink="curses" routerLinkActive="active">
+        <i class="bi bi-journals"></i>
+        <!-- Icono de casa relleno -->
+        <span *ngIf="!isMini">Cursos</span>
+      </a>
+    </li>
+
+    <li
+      *ngIf="hasPermission('Admon. de Sistema:views_ct_documentos')"
+      class="nav-item"
+    >
+      <a class="nav-link" routerLink="my-curses" routerLinkActive="active">
+        <i class="bi bi-journals"></i>
+        <!-- Icono de casa relleno -->
+        <span *ngIf="!isMini">Mis cursos</span>
+      </a>
+    </li>
+
+    <li
+      *ngIf="hasPermission('Cursos FUNHI:view_funhi_courses')"
+      class="nav-item"
+    >
+      <a class="nav-link" href="#">
+        <i class="bi bi-book"></i>
+        <!-- Icono de casa relleno -->
+        <span *ngIf="!isMini">Cursos FUNHI</span>
+      </a>
+    </li>
+
+    <li
+      *ngIf="hasPermission('Cursos PRODEP:view_prodep_courses')"
+      class="nav-item"
+    >
+      <a class="nav-link" href="#">
+        <i class="bi bi-book"></i>
+        <!-- Icono de casa relleno -->
+        <span *ngIf="!isMini">Cursos PRODEP</span>
+      </a>
+    </li>
+  </ul>
+</div>

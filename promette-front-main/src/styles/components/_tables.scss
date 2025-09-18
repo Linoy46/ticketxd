@@ -1,0 +1,129 @@
+// Añadir este nuevo archivo de estilos para estandarizar las tablas
+
+// Variables
+$table-header-bg: #f8f9fa;
+$table-hover-bg: rgba(0, 0, 0, 0.02);
+$table-active-row-bg: #f8f0ff;
+$table-border-color: #dee2e6;
+$table-pagination-btn-active: #a11a5c;
+
+// Estilos para ngx-datatable
+.ngx-datatable.material {
+  box-shadow: none;
+  border-radius: 0.5rem;
+  overflow: hidden;
+
+  .datatable-header {
+    background-color: $table-header-bg;
+
+    .datatable-header-cell {
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+
+      &.sortable {
+        &:hover {
+          background-color: darken($table-header-bg, 3%);
+        }
+
+        &.sort-active {
+          color: $table-pagination-btn-active;
+        }
+      }
+    }
+  }
+
+  .datatable-body {
+    .datatable-body-row {
+      border-bottom: 1px solid $table-border-color;
+
+      .datatable-body-cell {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      &:hover {
+        background-color: $table-hover-bg;
+      }
+
+      &.active {
+        background-color: $table-active-row-bg;
+      }
+    }
+  }
+
+  .datatable-footer {
+    background-color: #ffffff;
+    border-top: 1px solid $table-border-color;
+    padding: 0.5rem 1rem;
+  }
+}
+
+// Estilos para la paginación personalizada
+.pagination-container {
+  padding: 0.75rem;
+  background-color: #fff;
+
+  .pagination-pages {
+    display: flex;
+
+    .btn {
+      min-width: 36px;
+      padding: 0.25rem 0.5rem;
+
+      &.btn-primary {
+        background-color: $table-pagination-btn-active;
+        border-color: $table-pagination-btn-active;
+
+        &:hover {
+          background-color: darken($table-pagination-btn-active, 10%);
+          border-color: darken($table-pagination-btn-active, 10%);
+        }
+      }
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+
+  .pagination-info {
+    color: #6c757d;
+  }
+}
+
+// Utilidades para manejo de textos en tablas
+.texto-truncado {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+
+  &.tiene-tooltip:hover {
+    cursor: pointer;
+  }
+}
+
+// Ajustes para dispositivos pequeños
+@media (max-width: 768px) {
+  .ngx-datatable.material {
+    .datatable-header-cell,
+    .datatable-body-cell {
+      padding: 0.5rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .pagination-pages {
+      .btn {
+        min-width: 30px;
+        padding: 0.2rem 0.4rem;
+        font-size: 0.8rem;
+      }
+    }
+  }
+}

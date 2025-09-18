@@ -1,0 +1,197 @@
+<div class="container-fluid p-4">
+  <div class="row">
+    <!-- Opciones en el lateral izquierdo -->
+    <div class="col-md-3">
+      <div class="controls p-4 bg-light border-bottom shadow-sm">
+        <h3 class="text-center mb-4 text-primary fw-bold">Editor de Texto</h3>
+        <div class="row g-3">
+          <!-- Selector de imagen de fondo -->
+          <div class="col-12">
+            <label
+              for="backgroundImage"
+              class="form-label text-secondary fw-medium"
+              >Imagen de fondo:</label
+            >
+            <input
+              type="file"
+              id="backgroundImage"
+              class="form-control"
+              (change)="onFileSelected($event)"
+              accept="image/*"
+            />
+          </div>
+
+          <!-- Selector de tamaño de fuente -->
+          <div class="col-12">
+            <label
+              for="fontSizeSelect"
+              class="form-label text-secondary fw-medium"
+              >Tamaño de letra:</label
+            >
+            <select
+              id="fontSizeSelect"
+              class="form-select"
+              [(ngModel)]="selectedFontSize"
+            >
+              <option *ngFor="let size of fontSizes" [value]="size.value">
+                {{ size.label }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Selector de color de texto -->
+          <div class="col-12">
+            <label
+              for="fontColorSelect"
+              class="form-label text-secondary fw-medium"
+              >Color de letra:</label
+            >
+            <input
+              type="color"
+              id="fontColorSelect"
+              class="form-control form-control-color"
+              [(ngModel)]="selectedColor"
+            />
+          </div>
+
+          <!-- Selector de familia de fuente -->
+          <div class="col-12">
+            <label
+              for="fontFamilySelect"
+              class="form-label text-secondary fw-medium"
+              >Familia de fuente:</label
+            >
+            <select
+              id="fontFamilySelect"
+              class="form-select"
+              [(ngModel)]="selectedFontFamily"
+            >
+              <option *ngFor="let font of fontFamilies" [value]="font.value">
+                {{ font.label }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Selector de efecto de texto -->
+          <div class="col-12">
+            <label for="textEffect" class="form-label text-secondary fw-medium"
+              >Efecto de texto:</label
+            >
+            <select
+              id="textEffect"
+              class="form-select"
+              [(ngModel)]="selectedEffect"
+            >
+              <option *ngFor="let effect of textEffects" [value]="effect.value">
+                {{ effect.label }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Botón para cambiar orientación -->
+          <div class="col-12">
+            <button
+              class="btn btn-outline-primary w-100 fw-medium"
+              (click)="toggleOrientation()"
+            >
+              Cambiar Orientación
+            </button>
+          </div>
+
+          <!-- Área de entrada de texto -->
+          <div class="col-12">
+            <textarea
+              type="text"
+              class="form-control mt-3"
+              [(ngModel)]="textContent"
+              appMayusculas
+              placeholder="Escribe tu texto aquí"
+            ></textarea>
+          </div>
+
+          <!-- Botón para añadir texto -->
+          <div class="col-12">
+            <button
+              class="btn btn-primary w-100 fw-medium mt-3"
+              (click)="createItem()"
+            >
+              Añadir Texto
+            </button>
+          </div>
+
+          <!-- Botones para guardar y cargar plantilla -->
+          <div class="col-12">
+            <button
+              class="btn btn-success w-100 fw-medium mt-3"
+              (click)="saveCanvasState()"
+            >
+              Guardar Plantilla
+            </button>
+          </div>
+          <div class="col-12">
+            <button
+              class="btn btn-warning w-100 fw-medium mt-3"
+              (click)="loadCanvasState()"
+            >
+              Cargar Plantilla
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lienzo y PDF en el lado derecho -->
+    <div class="col-md-9">
+      <div class="row g-4">
+        <!-- Lienzo -->
+        <div class="col-12">
+          <div
+            class="canvas-container border p-3 bg-white shadow-sm position-relative"
+            [ngClass]="{
+              portrait: pageOrientation === 'portrait',
+              landscape: pageOrientation === 'landscape'
+            }"
+            [ngStyle]="{
+              'background-image': 'url(' + backgroundImage + ')',
+              width: canvasWidth + 'px',
+              height: canvasHeight + 'px'
+            }"
+            (mousemove)="onMouseMove($event)"
+            (mouseup)="onMouseUp()"
+          >
+            <div
+              *ngFor="let item of items; let i = index"
+              class="draggable-item position-absolute"
+              [ngStyle]="{
+                left: item.x + 'px',
+                top: item.y + 'px',
+                'font-size': item.fontSize + 'px',
+                'font-family': item.fontFamily,
+                color: item.color
+              }"
+              (mousedown)="onMouseDown($event, item)"
+            >
+              <div [innerHTML]="item.text"></div>
+              <button
+                class="btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle"
+                (click)="deleteItem(i)"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vista previa del PDF -->
+        <div class="col-12">
+          <iframe
+            [src]="pdfUrl | safeUrl"
+            width="100%"
+            height="500px"
+            class="border shadow-sm"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

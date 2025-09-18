@@ -1,0 +1,124 @@
+/**
+ * Estilos para el formulario de productos
+ * Proporciona estilos consistentes con el tema principal
+ */
+
+/* Variables del tema (reflejan las del componente principal) */
+$primary-color: #572574;
+$primary-light: #9c27b0;
+$primary-dark: #4a1e63;
+$accent-color: #a11a5c;
+
+/* Estilos base del componente */
+:host {
+  display: block;
+}
+
+/* Estilos para campos requeridos */
+.required:after {
+  content: " *";
+  color: #dc3545;
+}
+
+/* Estilizar inputs con estado de validación */
+.form-control,
+.form-select {
+  &.ng-invalid.ng-touched {
+    border-color: $accent-color;
+  }
+
+  &.ng-valid.ng-touched {
+    border-color: #76bc21;
+  }
+}
+
+/* Estilo para el botón principal */
+.btn-primary {
+  background-color: $primary-color;
+  border-color: $primary-dark;
+
+  &:hover {
+    background-color: $primary-dark;
+  }
+
+  &:disabled {
+    background-color: lighten($primary-color, 20%);
+    border-color: lighten($primary-dark, 20%);
+  }
+}
+
+/* Mensajes de error en validación */
+.text-danger {
+  color: $accent-color !important;
+  font-size: 0.75rem;
+}
+
+// Make sure dropdown takes full width
+:host ::ng-deep .p-dropdown {
+  width: 100%;
+}
+
+// Estilos para el formulario
+.product-form {
+  padding: 1rem;
+}
+
+// Estilos para el indicador de carga
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+// Estilos para los errores de validación
+.invalid-feedback,
+.text-danger {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #dc3545;
+}
+
+// Estilos para inputs
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  appearance: none;
+  border-radius: 0.375rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}

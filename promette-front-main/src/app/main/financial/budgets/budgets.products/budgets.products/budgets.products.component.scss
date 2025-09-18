@@ -1,0 +1,379 @@
+// Estilos generales
+:host {
+  display: block;
+}
+
+// Estilos para la lista de productos
+.product-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 5px;
+
+  .list-group-item {
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+  }
+}
+
+// Estilos para el contenedor de la matriz de meses
+.monthly-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  padding: 10px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.monthly-input {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+
+  .month-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+    padding: 2px 5px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    width: 100%;
+    text-align: center;
+  }
+
+  // Estilos específicos para el componente p-inputNumber de PrimeNG
+  ::ng-deep .p-inputnumber {
+    width: 100%;
+
+    .p-inputnumber-input {
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      padding: 0.25rem 0.5rem;
+    }
+
+    .p-inputnumber-button {
+      width: 1.5rem;
+      height: 1.5rem;
+
+      .p-button-icon {
+        font-size: 0.75rem;
+      }
+    }
+  }
+}
+
+// Ajuste general para p-dropdown
+::ng-deep .p-dropdown {
+  width: 100%;
+
+  .p-dropdown-label {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+// Ajustes para botones
+::ng-deep .p-button {
+  .p-button-icon {
+    font-size: 0.85rem;
+  }
+}
+
+// Estilo para el botón de eliminar producto más pequeño
+::ng-deep .p-button-sm {
+  width: 2rem;
+  height: 2rem;
+
+  .p-button-icon {
+    font-size: 0.75rem;
+  }
+}
+
+// Estilos para animaciones y efectos
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Override para arreglar la alineación de los meses
+::ng-deep .p-inputnumber.month-input {
+  .p-inputnumber-buttons-stacked .p-button.p-inputnumber-button-up {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 0;
+  }
+
+  .p-inputnumber-buttons-stacked .p-button.p-inputnumber-button-down {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 0;
+  }
+}
+
+// Estilo para botones de acción
+.btn-action {
+  min-width: 40px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Estilos para tarjetas de meses (mejorados)
+.month-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #a98eda;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  .month-name {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    text-align: center;
+    padding: 8px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .month-input-container {
+    padding: 10px;
+    flex: 1;
+
+    // Importante: Asegurar que p-inputNumber sea realmente accesible
+    ::ng-deep .p-inputnumber {
+      width: 100%;
+
+      .p-inputtext {
+        width: 100%;
+        text-align: center;
+      }
+
+      .p-inputnumber-button {
+        background-color: #f0f0f0;
+        border: 1px solid #ced4da;
+        color: #495057;
+
+        &:hover {
+          background-color: #e0e0e0;
+        }
+
+        &:focus {
+          box-shadow: 0 0 0 0.2rem rgba(106, 90, 205, 0.25);
+        }
+      }
+    }
+
+    ::ng-deep .p-inputnumber-buttons-stacked .p-button.p-inputnumber-button-up {
+      border-top-right-radius: 4px;
+      border-top-left-radius: 4px;
+    }
+
+    ::ng-deep .p-inputnumber-buttons-stacked .p-button.p-inputnumber-button-down {
+      border-bottom-right-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+  }
+}
+
+// Mejoras en los estilos de las tarjetas de mes
+.month-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #a98eda;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  .month-name {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    text-align: center;
+    padding: 8px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .month-input-container {
+    padding: 10px;
+    flex: 1;
+
+    ::ng-deep .p-inputnumber {
+      width: 100%;
+
+      // Arreglo para el input
+      .p-inputtext {
+        width: 100%;
+        text-align: center;
+      }
+
+      // Arreglos para los botones
+      .p-inputnumber-button {
+        background-color: #f0f0f0;
+        border: 1px solid #ced4da;
+        color: #495057;
+        width: auto;
+        height: auto;
+
+        &:hover {
+          background-color: #e0e0e0;
+        }
+
+        &:focus {
+          box-shadow: 0 0 0 0.2rem rgba(106, 90, 205, 0.25);
+        }
+      }
+
+      // Arreglos específicos para la disposición horizontal
+      &.p-inputnumber-buttons-horizontal .p-button.p-inputnumber-button {
+        &-up {
+          order: 3;
+          border-top-right-radius: 3px;
+          border-bottom-right-radius: 3px;
+        }
+        &-down {
+          order: 1;
+          border-top-left-radius: 3px;
+          border-bottom-left-radius: 3px;
+        }
+
+        .p-inputnumber-button-icon {
+          font-size: 0.875rem;
+        }
+      }
+
+      input.p-inputnumber-input {
+        order: 2;
+        text-align: center;
+        border-radius: 0;
+      }
+    }
+  }
+}
+
+// Estilos para tarjeta de producto
+.product-card {
+  border-left: 4px solid #6366F1;
+  background-color: #f8f9fa;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+// Estilos para contenedor de total
+.total-container {
+  background-color: #f0f9ff;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #0ea5e9;
+}
+
+// Animación para transición entre pasos
+.card {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Budget progress bar styles
+.budget-progress {
+  height: 8px;
+}
+
+.budget-info-text {
+  font-size: 0.875rem;
+
+  .bi {
+    font-size: 0.75rem;
+  }
+}
+
+// Estilos para el sistema de renderizado dual
+.dual-rendering-badge {
+  font-size: 0.65rem;
+}
+
+.real-time-indicator {
+  font-size: 0.65rem !important;
+}
+
+// Indicadores de modo reactivo
+.reactive-mode-indicator {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+// Estados del presupuesto con colores mejorados
+.text-success {
+  color: #28a745 !important;
+}
+
+.text-warning {
+  color: #ffc107 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.text-info {
+  color: #17a2b8 !important;
+}

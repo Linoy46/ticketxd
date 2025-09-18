@@ -1,0 +1,45 @@
+<header class="header text-center text-secondary mb-1">
+  <h1>Administración de usuarios diagnósticos</h1>
+</header>
+
+<div class="container-fluid">
+  <!-- @todo Para integración backend: Agregar alerta para errores de carga -->
+  <!-- Barra de control y navegación -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center">
+    <!-- Navegación de pestañas -->
+    <ul
+      ngbNav
+      #nav="ngbNav"
+      [(activeId)]="activeTab"
+      si
+      (activeIdChange)="setActiveTab($event)"
+      class="nav-tabs"
+    ></ul>
+
+    <!-- @todo Para integración backend: Verificar permisos antes de mostrar botón -->
+  </div>
+
+  <!-- AG Grid - Tabla de datos -->
+  <div class="grid-container patient-admin-grid">
+    <ag-grid-angular
+      [ngStyle]="{ display: filteredActiveTab.length > 0 ? 'block' : 'none' }"
+      class="ag-theme-quartz grid-responsive"
+      [rowData]="rowData"
+      [columnDefs]="columnDefs"
+      [gridOptions]="gridOptions"
+      [pagination]="true"
+      [paginationPageSize]="paginationPageSize"
+      [paginationPageSizeSelector]="paginationPageSizeSelector"
+      [theme]="myTheme"
+    ></ag-grid-angular>
+  </div>
+
+  <!-- Mensaje cuando no hay datos -->
+  <h4
+    *ngIf="filteredActiveTab.length === 0"
+    class="text-center text-muted fw-lighter my-5"
+  >
+    No se encontraron datos de pacientes
+  </h4>
+</div>
+<shared-custom-modal-component></shared-custom-modal-component>

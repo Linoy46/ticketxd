@@ -1,0 +1,152 @@
+<div class="action-icons d-flex justify-content-center">
+  <!-- Debug info - remove after debugging -->
+  <span style="display: none">{{ params?.data?.id }}</span>
+
+  <!--Correspondencia: Botón para editar rápido (check) SOLO si params?.onEdit y NO onEditFull -->
+  <button
+    title="Editar"
+    id="editar"
+    *ngIf="params?.onEdit && !params?.onEditFull"
+    (click)="onEditClick()"
+    type="button"
+    class="btn btn-sm btn-outline-primary mx-1"
+  >
+    <i class="bi bi-pencil-fill"></i>
+  </button>
+
+  <!--Correspondencia: Botón para editar completo (lápiz) SOLO si params?.onEditFull-->
+  <button
+    title="Editar correspondencia"
+    id="editar-full"
+    *ngIf="params?.onEditFull"
+    (click)="onEditFullClick()"
+    type="button"
+    class="btn btn-sm btn-outline-primary mx-1"
+  >
+    <i class="bi bi-pencil-fill"></i>
+  </button>
+
+  <!-- Other buttons are conditionally shown only if their callbacks exist -->
+  <!-- Botón para eliminar -->
+  <button
+    title="Eliminar"
+    id="eliminar"
+    *ngIf="params?.onDelete"
+    (click)="onDeleteClick()"
+    type="button"
+    class="btn btn-sm btn-outline-danger mx-1"
+  >
+    <i class="bi bi-trash-fill"></i>
+  </button>
+
+  <!-- Botón para ver -->
+  <button
+    title="Ver"
+    id="ver"
+    *ngIf="params?.onView"
+    (click)="onViewClick()"
+    type="button"
+    class="btn btn-sm btn-outline-info mx-1"
+  >
+    <i class="bi bi-eye-fill"></i>
+  </button>
+
+  <!-- Icono de documento no disponible -->
+  <span
+    title="Documento no disponible"
+    *ngIf="params?.showUnavailableIcon"
+    class="btn btn-sm btn-outline-secondary mx-1 disabled"
+    style="cursor: not-allowed"
+  >
+    <i class="bi bi-file-earmark-x text-muted"></i>
+  </span>
+
+  <!-- Botón para agregar -->
+  <button
+    title="Agregar"
+    id="agregar"
+    *ngIf="params?.onAdd"
+    (click)="onAddClick()"
+    type="button"
+    class="btn btn-sm btn-outline-success mx-1"
+  >
+    <i class="bi bi-plus-circle-fill"></i>
+  </button>
+
+  <!-- Botón para Excel-->
+  <button
+    title="Descargar Acuse"
+    id="excel"
+    *ngIf="params?.onExcel"
+    (click)="onExcel(); $event.stopPropagation()"
+    type="button"
+    class="btn btn-outline-success btn-sm mx-1"
+  >
+    <i class="bi bi-file-earmark-excel"></i>
+  </button>
+
+  <!-- Botón para PDF-->
+  <button
+    title="Descargar PDF"
+    id="pdf"
+    *ngIf="params?.onPDF"
+    (click)="onPDF(); $event.stopPropagation()"
+    type="button"
+    class="btn btn-outline-danger btn-sm mx-1"
+  >
+    <i class="bi bi-file-earmark-pdf"></i>
+  </button>
+
+  <!--
+  $event.stopPropagation()
+  Para detener los otros modales que se abren con onRowClicked
+  -->
+
+  <!-- Botón para Partida -->
+  <button
+    title="Asignar Partida"
+    id="partida"
+    *ngIf="params?.onPartida"
+    (click)="onPartida(); $event.stopPropagation()"
+    type="button"
+    class="btn btn-outline-dark btn-sm mx-1"
+  >
+    <i class="bi bi-files"></i>
+  </button>
+
+  <!-- Botón para Producto -->
+  <button
+    title="Descartar Productos"
+    id="producto"
+    *ngIf="params?.onProducto"
+    (click)="onProducto(); $event.stopPropagation()"
+    type="button"
+    class="btn btn-outline-info btn-sm mx-1"
+  >
+    <i class="bi bi-cart"></i>
+  </button>
+
+  <!-- Botón para reporte  excel(xlsx) -->
+  <button
+    title="Descargar Reporte (xlsx)"
+    id="reporte"
+    *ngIf="params?.onReporte"
+    (click)="onReport(); $event.stopPropagation()"
+    type="button"
+    class="btn btn-outline-danger btn-sm mx-1"
+  >
+    <i class="bi bi-file-earmark-arrow-down-fill"></i>
+  </button>
+
+  <!-- Botón para habilitar registro -->
+  <button
+    title="habilitar registro"
+    id="habilitar"
+    *ngIf="params?.onHabilitar"
+    (click)="onHabilitar()"
+    type="button"
+    class="btn btn-outline-success btn-sm mx-1"
+  >
+    <i class="bi bi-check-square"></i>
+  </button>
+</div>

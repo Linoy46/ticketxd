@@ -1,0 +1,403 @@
+<!--Tutorial-->
+<app-tutorial [config]="tutorialConfig" buttonText="Ayuda" [showButton]="true">
+</app-tutorial>
+
+<!--
+  @file budgets.component.html
+  @description Plantilla principal para la gestión de presupuestos
+-->
+<header class="header text-center text-secondary mb-4">
+  <h1>Gestión de Financiamientos</h1>
+</header>
+
+<div class="max-w-7xl mx-auto">
+  <!-- Navegación de pestañas estilo administrative.units -->
+  <div
+    class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2"
+  >
+    <!-- Navegación de pestañas -->
+    <ul
+      ngbNav
+      #nav="ngbNav"
+      [(activeId)]="activeTab"
+      id="nav-tabs"
+      class="tabs-align-with-grid"
+    >
+      <li [ngbNavItem]="'presupuesto'">
+        <a
+          ngbNavLink
+          [routerLink]="['/promette/budgets']"
+          routerLinkActive="active"
+        >
+          <i class="bi bi-cash-coin me-2"></i>
+          Presupuestos
+        </a>
+      </li>
+      <li [ngbNavItem]="'historial'">
+        <a
+          ngbNavLink
+          [routerLink]="['/promette/budgets-historial']"
+          routerLinkActive="active"
+        >
+          <i class="bi bi-clock-history me-2"></i>
+          Historial
+        </a>
+      </li>
+      <!-- <li [ngbNavItem]="'archivos'">
+        <a ngbNavLink>
+          <i class="bi bi-folder me-2"></i>
+          Archivos
+        </a>
+      </li> -->
+    </ul>
+    <!-- Botones de acción -->
+    <div
+      class="d-flex align-items-center gap-2 btn-align-with-grid"
+      *ngIf="
+        hasPermission('Financieros:view_add_button') &&
+        activeTab === 'presupuesto'
+      "
+    >
+      <button
+        class="btn btn-purple d-flex align-items-center gap-2"
+        (click)="navigateToBudgetCeiling()"
+        [disabled]="isLoading"
+        id="nuevo_techo"
+      >
+        <i class="bi bi-plus-lg"></i>
+        <span>Nuevo Techo Presupuestal</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenido de las pestañas -->
+  <div [ngbNavOutlet]="nav"></div>
+
+  <!-- Contenido de la pestaña Presupuestos -->
+  <div *ngIf="activeTab === 'presupuesto'">
+    <!-- Indicador de carga -->
+    <div *ngIf="isLoading" class="loading-container">
+      <div class="spinner-border text-purple" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-3">Cargando datos...</p>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="loadingError" class="alert alert-danger" role="alert">
+      <div class="d-flex align-items-start">
+        <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+        <div>
+          <h5>Error al cargar datos</h5>
+          <p>{{ loadingError }}</p>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-danger"
+            (click)="loadBudgetCeilings()"
+          >
+            <i class="bi bi-arrow-clockwise me-1"></i> Reintentar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla -->
+    <div *ngIf="!isLoading && !loadingError" class="mt-2" id="tabla_techos">
+      <div
+        *ngIf="filteredBudgets && filteredBudgets.length > 0"
+        class="grid-container"
+      >
+        <ag-grid-angular
+          class="ag-theme-quartz grid-responsive"
+          [rowData]="filteredBudgets"
+          [columnDefs]="columnDefs"
+          [defaultColDef]="gridOptions.defaultColDef"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          [paginationPageSizeSelector]="paginationPageSizeSelector"
+          [theme]="myTheme"
+          (gridReady)="onGridReady($event)"
+          [localeText]="gridOptions.localeText"
+          style="width: 100%; height: 100%"
+        ></ag-grid-angular>
+      </div>
+    </div>
+
+    <!-- Mensaje cuando no hay datos -->
+    <div
+      *ngIf="
+        !isLoading &&
+        !loadingError &&
+        (!filteredBudgets || filteredBudgets.length === 0)
+      "
+      class="text-center py-5 border-top border-bottom my-3"
+    >
+      <i class="bi bi-inbox fs-1 text-muted"></i>
+      <h4 class="text-muted fw-light mt-3 no-data">
+        No se encontraron registros de presupuesto
+      </h4>
+      <p class="text-muted">
+        Para crear un nuevo techo presupuestal, haga clic en el botón a
+        continuación.
+      </p>
+      <button class="btn btn-purple mt-2" (click)="navigateToBudgetCeiling()">
+        <i class="bi bi-plus-lg me-1"></i> Crear nuevo techo presupuestal
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenido de la pestaña Historial -->
+  <div *ngIf="activeTab === 'historial'">
+    <div class="text-center py-5">
+      <i class="bi bi-clock-history fs-1 text-muted"></i>
+      <h4 class="text-muted fw-light mt-3">Historial de Presupuestos</h4>
+      <p class="text-muted">
+        Esta funcionalidad estará disponible próximamente.
+      </p>
+    </div>
+  </div>
+
+  <!-- Contenido de la pestaña Archivos -->
+  <div *ngIf="activeTab === 'archivos'">
+    <!-- Información del tipo de usuario -->
+    <div class="card mb-4">
+      <div class="card-header bg-info text-white">
+        <h5 class="mb-0">
+          <i class="bi bi-person-badge me-2"></i>
+          Información de Usuario
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <strong>Tipo de Usuario:</strong>
+            <span class="badge bg-primary ms-2">{{ userType }}</span>
+          </div>
+          <div class="col-md-6">
+            <strong>Permisos:</strong>
+            <small class="text-muted d-block mt-1">{{ userInfo }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Select de Unidades Administrativas con Autocompletado -->
+    <div *ngIf="mostrarSelectArea" class="card mb-4">
+      <div class="card-header bg-purple text-white">
+        <h5 class="mb-0">
+          <i class="bi bi-building me-2"></i>
+          Seleccionar Unidad Administrativa
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-8">
+            <label for="unidadSelect" class="form-label"
+              >Unidad Administrativa:</label
+            >
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Buscar unidad administrativa..."
+                [(ngModel)]="searchUnidad"
+                (input)="filterUnidades()"
+                (focus)="showDropdown = true"
+                (blur)="onBlur()"
+              />
+              <button
+                class="btn btn-outline-secondary dropdown-toggle"
+                type="button"
+                (click)="toggleDropdown()"
+              >
+                <i class="bi bi-chevron-down"></i>
+              </button>
+            </div>
+
+            <!-- Dropdown de resultados -->
+            <div
+              class="dropdown-menu w-100"
+              [class.show]="showDropdown && filteredUnidades.length > 0"
+            >
+              <div
+                *ngFor="let unidad of filteredUnidades"
+                class="dropdown-item"
+                (click)="selectUnidad(unidad)"
+                style="cursor: pointer"
+              >
+                <strong>{{ unidad.id_financiero }}</strong> -
+                {{ unidad.nombre }}
+              </div>
+              <div
+                *ngIf="filteredUnidades.length === 0 && searchUnidad"
+                class="dropdown-item text-muted"
+              >
+                No se encontraron resultados
+              </div>
+            </div>
+
+            <!-- Mensaje cuando no hay unidades disponibles -->
+            <div *ngIf="unidadesAdministrativas.length === 0" class="mt-2">
+              <div class="alert alert-warning" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                <strong>No hay unidades administrativas disponibles</strong>
+                <br />
+                <small
+                  >Es posible que no tengas permisos para ver unidades
+                  administrativas o que no haya unidades configuradas para tu
+                  tipo de usuario.</small
+                >
+              </div>
+            </div>
+
+            <!-- Unidad seleccionada -->
+            <div *ngIf="selectedUnidadAdministrativa" class="mt-2">
+              <span class="badge bg-success">
+                <i class="bi bi-check-circle me-1"></i>
+                Seleccionada: {{ getSelectedUnidadName() }}
+              </span>
+            </div>
+          </div>
+          <div class="col-md-4 d-flex align-items-end">
+            <button
+              class="btn btn-primary me-2"
+              (click)="seleccionarArea()"
+              [disabled]="!selectedUnidadAdministrativa"
+            >
+              <i class="bi bi-check-lg me-1"></i>
+              Seleccionar Área
+            </button>
+            <button
+              class="btn btn-outline-secondary"
+              (click)="limpiarSeleccion()"
+              [disabled]="!selectedUnidadAdministrativa"
+            >
+              <i class="bi bi-x-lg me-1"></i>
+              Limpiar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de archivos para descargar -->
+    <div class="card mb-4 download-files-table">
+      <div class="card-header bg-purple text-white">
+        <h5 class="mb-0">
+          <i class="bi bi-download me-2"></i>
+          Archivos para Descargar
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>Documento</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <i class="bi bi-file-earmark-excel text-success me-2"></i>
+                  <strong>Costeo por Artículo</strong>
+                </td>
+                <td>
+                  <div class="d-flex flex-column">
+                    <span class="badge bg-primary me-1 mb-1">FONE</span>
+                    <span class="badge bg-info me-1 mb-1">MAC</span>
+                    <span class="badge bg-warning">Recurso Estatal</span>
+                  </div>
+                </td>
+                <td>
+                  <button
+                    class="btn btn-success btn-sm"
+                    (click)="exportCosteoArticulo()"
+                    [disabled]="!areaSeleccionada || isLoading"
+                  >
+                    <i class="bi bi-download me-1"></i>
+                    Descargar Excel
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <i class="bi bi-file-earmark-excel text-success me-2"></i>
+                  <strong>Costeo por Partida</strong>
+                </td>
+                <td>
+                  <div class="d-flex flex-column">
+                    <span class="badge bg-primary me-1 mb-1">FONE</span>
+                    <span class="badge bg-info me-1 mb-1">MAC</span>
+                    <span class="badge bg-warning">Recurso Estatal</span>
+                  </div>
+                </td>
+                <td>
+                  <button
+                    class="btn btn-success btn-sm"
+                    (click)="exportCosteoPartida()"
+                    [disabled]="!areaSeleccionada || isLoading"
+                  >
+                    <i class="bi bi-download me-1"></i>
+                    Descargar Excel
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <i class="bi bi-file-earmark-excel text-success me-2"></i>
+                  <strong>Desglose de Concepto por Partida</strong>
+                </td>
+                <td>
+                  <div class="d-flex flex-column">
+                    <span class="badge bg-primary me-1 mb-1">FONE</span>
+                    <span class="badge bg-info me-1 mb-1">MAC</span>
+                    <span class="badge bg-warning">Recurso Estatal</span>
+                  </div>
+                </td>
+                <td>
+                  <button
+                    class="btn btn-success btn-sm"
+                    (click)="exportDesglosePartida()"
+                    [disabled]="!areaSeleccionada || isLoading"
+                  >
+                    <i class="bi bi-download me-1"></i>
+                    Descargar Excel
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <i class="bi bi-file-earmark-excel text-success me-2"></i>
+                  <strong>Requisición Mensual</strong>
+                </td>
+                <td>
+                  <div class="d-flex flex-column">
+                    <span class="badge bg-primary me-1 mb-1">FONE</span>
+                    <span class="badge bg-info me-1 mb-1">MAC</span>
+                    <span class="badge bg-warning">Recurso Estatal</span>
+                  </div>
+                </td>
+                <td>
+                  <button
+                    class="btn btn-success btn-sm"
+                    (click)="exportRequisicionMensual()"
+                    [disabled]="!areaSeleccionada || isLoading"
+                  >
+                    <i class="bi bi-download me-1"></i>
+                    Descargar Excel
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal compartido -->
+<shared-custom-modal-component></shared-custom-modal-component>

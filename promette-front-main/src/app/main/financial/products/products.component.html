@@ -1,0 +1,53 @@
+<!--Tutorial-->
+<app-tutorial [config]="tutorialConfig" buttonText="Ayuda" [showButton]="true">
+</app-tutorial>
+
+<div class="ag-wrapper">
+  <header class="header text-center text-secondary mb-4">
+    <h1>Gestión de Productos</h1>
+  </header>
+
+  <div class="container-fluid">
+    <div
+      class="mb-3 btn-align-mobile-wrapper"
+      *ngIf="hasPermission('Financieros:view_add_button')"
+    >
+      <button
+        class="btn btn-sm btn-custom-action"
+        (click)="openAddDialog()"
+        id="nuevo_producto"
+      >
+        <i class="bi bi-plus-circle me-1"></i> Nuevo Producto
+      </button>
+    </div>
+
+    <div class="grid-container" *ngIf="displayData && displayData.length > 0">
+      <ag-grid-angular
+        class="ag-theme-quartz grid-responsive"
+        style="
+          width: 100%;
+          height: 100%;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        "
+        [rowData]="displayData"
+        [columnDefs]="columnDefs"
+        [gridOptions]="gridOptions"
+        [pagination]="true"
+        [theme]="myTheme"
+      ></ag-grid-angular>
+    </div>
+
+    <h4
+      *ngIf="!displayData || displayData.length === 0"
+      class="text-center text-muted fw-lighter"
+    >
+      No se encontraron productos que coincidan con los filtros
+    </h4>
+  </div>
+
+  <shared-custom-modal-component></shared-custom-modal-component>
+</div>
+
+<!-- Componente para modales -->
+<shared-custom-modal-component></shared-custom-modal-component>

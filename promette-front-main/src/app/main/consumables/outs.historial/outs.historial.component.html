@@ -1,0 +1,295 @@
+<!--Tutorial-->
+<app-tutorial [config]="tutorialConfig" buttonText="Ayuda" [showButton]="true">
+</app-tutorial>
+
+<div class="row mb-4">
+  <div class="col-12">
+    <h1 class="my-4 text-center inventory-title" style="color: #a11a5c">
+      Historial de salidas
+    </h1>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <!-- Barra de herramientas y filtros -->
+  <div class="row mb-3">
+    <div class="col-12 col-md-6" id="buscador">
+      <div class="input-group">
+        <span class="input-group-text">
+          <i class="bi bi-search"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar formatos..."
+          [(ngModel)]="searchText"
+          (input)="onFilterTextBoxChanged()"
+        />
+      </div>
+    </div>
+    <div class="col-12 col-md-6 d-flex justify-content-end align-items-center">
+      <!-- Ordenamiento -->
+      <div class="btn-group me-2" id="orden">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="toggleSortDirection()"
+          title="Cambiar dirección de ordenamiento"
+        >
+          <i
+            class="bi"
+            [ngClass]="isAscending ? 'bi-sort-up' : 'bi-sort-down'"
+          ></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de historial con estilo similar a inventories -->
+  <div class="card" id="taba-folios">
+    <div class="card-body p-0">
+      <!-- Tabla con ngx-datatable -->
+      <ngx-datatable
+        #historialTable
+        class="material expandable"
+        [columnMode]="ColumnMode.force"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        [rowHeight]="'auto'"
+        [externalPaging]="false"
+        [limit]="limit"
+        [count]="filteredFormatos.length"
+        [offset]="offset"
+        [rows]="filteredFormatos"
+        [sorts]="currentSorts"
+        (page)="setPage($event)"
+        (sort)="onTableSort($event)"
+      >
+        <!-- Columna de Folio -->
+        <ngx-datatable-column
+          name="Folio"
+          prop="folio_formato"
+          [sortable]="true"
+          [width]="140"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <span class="badge bg-secondary">{{ row.folio_formato }}</span>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Columna de Fecha -->
+        <ngx-datatable-column
+          name="Fecha"
+          prop="createdAt"
+          [sortable]="true"
+          [width]="120"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ formatDate(row.createdAt) }}
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Columna de Departamento -->
+        <ngx-datatable-column
+          name="Departamento"
+          prop="departamento_nombre"
+          [sortable]="true"
+          [width]="240"
+          cellClass="departamento-col"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div class="text-truncate" [title]="row.departamento_nombre">
+              {{ row.departamento_nombre || "No especificado" }}
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Columna de Usuario -->
+        <ngx-datatable-column
+          name="Usuario"
+          prop="usuario_nombre"
+          [sortable]="true"
+          [width]="160"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.usuario_nombre || "No especificado" }}
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Columna de Persona que recibe -->
+        <ngx-datatable-column
+          name="Persona que recibe"
+          prop="persona_recibe"
+          [sortable]="true"
+          [width]="180"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.persona_recibe || "No especificado" }}
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Columna de Observaciones -->
+        <ngx-datatable-column
+          name="Observaciones"
+          prop="observaciones_summary"
+          [sortable]="false"
+          [width]="200"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div class="observaciones-cell">
+              <ng-container
+                *ngIf="getObservacionesSummary(row) as observaciones"
+              >
+                <span
+                  *ngIf="observaciones.length <= 50; else truncated"
+                  class="text-muted"
+                >
+                  {{ observaciones || "Sin observaciones" }}
+                </span>
+                <ng-template #truncated>
+                  <span
+                    class="text-muted"
+                    [title]="observaciones"
+                    style="cursor: help"
+                  >
+                    {{ observaciones.substring(0, 47) }}...
+                  </span>
+                </ng-template>
+              </ng-container>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Columna de Acciones -->
+        <ngx-datatable-column name="Acciones" [sortable]="false" [width]="180">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div class="d-flex flex-wrap gap-1 justify-content-center">
+              <!-- Botón para ver detalles (siempre visible) - CAMBIAR ICONO A PDF -->
+              <button
+                class="btn btn-sm btn-outline-secondary"
+                title="Ver formato PDF"
+                (click)="viewDetails(row)"
+                id="pdf"
+              >
+                <i class="bi bi-file-earmark-pdf"></i>
+              </button>
+
+              <!-- Botón para subir documento (visible solo si no hay documento) -->
+              <button
+                *ngIf="!hasDocument(row.folio_formato)"
+                class="btn btn-sm btn-success"
+                title="Subir documento"
+                (click)="handleUploadDocument(row, $event)"
+                id="subir"
+              >
+                <i class="bi bi-cloud-upload"></i>
+              </button>
+
+              <!-- Botones para ver y actualizar documento (visibles solo si hay documento) -->
+              <ng-container *ngIf="hasDocument(row.folio_formato)">
+                <!-- Botón para ver documento -->
+                <button
+                  class="btn btn-sm btn-info"
+                  title="Ver documento adjunto"
+                  (click)="handleViewDocument(row, $event)"
+                  id="ver"
+                >
+                  <i class="bi bi-eye"></i>
+                </button>
+
+                <button
+                  class="btn btn-sm btn-primary"
+                  title="Actualizar documento"
+                  (click)="handleUpdateDocument(row, $event)"
+                  id="actualizar"
+                >
+                  <i class="bi bi-arrow-clockwise"></i>
+                </button>
+              </ng-container>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+
+      <!-- Footer con paginación -->
+      <div
+        class="d-flex justify-content-between align-items-center p-3 border-top"
+      >
+        <div id="por-pagina">
+          <select
+            class="form-select form-select-sm"
+            [(ngModel)]="limit"
+            (ngModelChange)="onLimitChange()"
+            aria-label="Registros por página"
+          >
+            <option *ngFor="let l of limits" [value]="l">
+              {{ l }} por página
+            </option>
+          </select>
+        </div>
+        <div>
+          <span>
+            Mostrando
+            {{ Math.min(offset * limit + 1, filteredFormatos.length) }}
+            a
+            {{ Math.min((offset + 1) * limit, filteredFormatos.length) }}
+            de
+            {{ filteredFormatos.length }} registros
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Template para el modal de PDF -->
+<ng-template #pdfModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ pdfTitle }}</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss(); onModalClose()"
+    ></button>
+  </div>
+  <div class="modal-body p-0" style="height: 70vh">
+    <div class="pdf-container" style="width: 100%; height: 100%">
+      <div
+        *ngIf="!pdfSrc"
+        class="d-flex justify-content-center align-items-center h-100"
+      >
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+      <iframe
+        *ngIf="pdfSrc"
+        [src]="pdfSrc"
+        width="100%"
+        height="100%"
+        frameborder="0"
+        allowtransparency
+        style="background-color: white"
+      ></iframe>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modal.dismiss(); onModalClose()"
+    >
+      Cerrar
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="!pdfSrc"
+      (click)="downloadCurrentPdf()"
+    >
+      <i class="bi bi-download me-1"></i>
+      Descargar
+    </button>
+  </div>
+</ng-template>

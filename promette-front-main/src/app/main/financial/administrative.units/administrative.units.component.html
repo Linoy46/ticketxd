@@ -1,0 +1,42 @@
+<!--Tutorial-->
+<app-tutorial [config]="tutorialConfig" buttonText="Ayuda" [showButton]="true">
+</app-tutorial>
+
+  <header class="header text-center text-secondary mb-4">
+    <h1>Unidades Administrativas</h1>
+  </header>
+
+    <!-- Botones de acción -->
+    <div class="mb-3" *ngIf="hasPermission('Financieros:view_add_button')">
+      <button (click)="addAnalyst()" class="btn btn-secondary" id="nuevo_analista">
+        <i class="bi bi-plus-circle"></i> Asignar Analista
+      </button>
+    </div>
+
+    <!-- AG-Grid con altura fija en píxeles en vez de porcentaje -->
+    <ag-grid-angular
+      *ngIf="displayData && displayData.length > 0"
+      style="
+        width: 100%;
+        height: 500px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      "
+      [rowData]="displayData"
+      [columnDefs]="columnDefs"
+      [gridOptions]="gridOptions"
+      [pagination]="true"
+      [theme]="myTheme"
+    >
+    </ag-grid-angular>
+
+    <!-- Mensaje cuando no hay registros -->
+    <h4
+      *ngIf="displayData.length == 0"
+      class="text-center text-muted fw-lighter"
+    >
+      Sin registros
+    </h4>
+
+  <!-- Componente de modal -->
+  <shared-custom-modal-component></shared-custom-modal-component>

@@ -1,0 +1,678 @@
+/* Estilos responsivos para AG Grid por Francisco */
+.grid-container {
+  height: 70vh;
+  min-height: 400px;
+  margin: 0 -15px;
+  padding-left: 0;
+  padding-right: 0;
+  border-radius: 0;
+}
+.grid-responsive {
+  min-width: 600px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+::ng-deep .ag-theme-quartz .ag-paging-panel {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  padding: 8px 0 !important;
+  background: #fff !important;
+  z-index: 1;
+  display: flex !important;
+  justify-content: center !important;
+  overflow-x: visible !important;
+  border-top: 1px solid #eee !important;
+  border-radius: 0 !important;
+  font-size: 12px !important;
+  position: static !important;
+  left: unset !important;
+  bottom: unset !important;
+  margin: 0 !important;
+}
+::ng-deep .ag-theme-quartz .ag-paging-panel > * {
+  flex-shrink: 0;
+}
+.ag-header-cell,
+.ag-cell {
+  white-space: nowrap !important;
+}
+/* Import Tailwind directives - but we'll rely more on Bootstrap classes now */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+// Variables de color para mayor consistencia
+$color-purple: #9c27b0;
+$color-purple-dark: #7b1fa2;
+$color-purple-darker: #6a1b9a;
+$color-rose: #a11a5c;
+$header-color: #e9ddff; // Color de encabezado lila claro
+$color-text-header: #422b7c; // Color para texto en encabezados
+
+// Variables para colores principales
+$primary-color: #422b7c;
+$accent-color: #a11a5c; // Color para el botón de agregar
+
+/* Estilos específicos del componente */
+:host {
+  display: block;
+  width: 100%;
+  height: 100%; // Aseguramos que el componente tome la altura completa
+}
+
+.ag-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Simple Purple Button Styling - Matches products component */
+.btn-purple {
+  background-color: #422b7c;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background-color: darken(#422b7c, 10%);
+  }
+
+  &:active {
+    background-color: $color-purple-darker;
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+/* Compact button style - Matches products component */
+.compact-btn {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  height: 38px;
+  /* Match height of input controls */
+  margin-top: 0.5rem;
+  /* Align with the dropdowns */
+  transition: all 0.3s ease;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background-color: #6c757d !important;
+
+    &:hover {
+      background-color: #6c757d !important;
+    }
+  }
+
+  .spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.125em;
+  }
+
+  .d-flex {
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Utility class to hide labels visually but keep them for screen readers */
+.visibility-hidden {
+  visibility: hidden;
+  height: 24px;
+  display: block;
+}
+
+/* Overlay de carga que bloquea toda la pantalla */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.3s ease-in-out;
+  pointer-events: auto;
+  user-select: none;
+
+  .loading-content {
+    background-color: rgba(66, 43, 124, 0.95);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 400px;
+    width: 90%;
+    animation: slideIn 0.3s ease-out;
+
+    .spinner-border {
+      border-width: 0.25em;
+      animation: spin 1s linear infinite;
+    }
+
+    strong {
+      font-size: 1.1rem;
+      color: white;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+  }
+}
+
+/* Animaciones para el overlay */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Card styles */
+.card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin-bottom: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  .card-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem 0.5rem 0 0;
+    background-color: #9c27b0;
+    background-image: linear-gradient(to right, #572574, #9c27b0);
+    color: white;
+
+    &,
+    * {
+      color: #fff;
+    }
+
+    .card-title {
+      margin-bottom: 0.5rem;
+      color: white;
+      font-weight: 600;
+    }
+
+    .card-description {
+      margin-bottom: 0;
+      color: white;
+      font-size: 0.9rem;
+    }
+  }
+
+  .card-content,
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+// Header styles
+.header {
+  margin-bottom: 0.5rem !important;
+
+  h1 {
+    font-size: 2rem;
+    color: $color-rose;
+    margin-bottom: 1.5rem;
+  }
+
+  p {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+  }
+}
+
+// Utility class for max width
+.max-w-7xl {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+}
+
+// Estilos para los tabs de Bootstrap (si se usan)
+:host ::ng-deep .nav-tabs {
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  background-color: #f8f9fa;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+:host ::ng-deep .nav-link {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  margin-right: 0.25rem;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &.active {
+    background-color: white;
+    color: #422b7c;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+}
+
+// Estilos específicos para ag-Grid
+:host ::ng-deep {
+  .ag-theme-quartz {
+    --ag-foreground-color: #422b7c;
+    --ag-header-foreground-color: #422b7c;
+    --ag-header-background-color: #e9ddff;
+    --ag-odd-row-background-color: #fff;
+    --ag-row-hover-color: #fdf7ff;
+    --ag-selected-row-background-color: rgba(156, 39, 176, 0.1);
+    --ag-font-size: 14px;
+    --ag-font-family: inherit;
+    border-radius: 8px;
+
+    .ag-header-cell {
+      font-weight: 600;
+    }
+
+    .ag-row:hover {
+      background-color: var(--ag-row-hover-color);
+    }
+
+    .btn-action {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      background-color: transparent;
+      border: none;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      i {
+        font-size: 16px;
+      }
+    }
+
+    .text-primary {
+      color: #572574;
+    }
+
+    .text-info {
+      color: #0dcaf0;
+    }
+
+    .text-success {
+      color: #76bc21;
+    }
+
+    .text-danger {
+      color: #a11a5c;
+    }
+
+    .ag-cell-value {
+      width: 100%;
+
+      .btn-sm {
+        padding: 0.15rem 0.4rem;
+        font-size: 0.75rem;
+      }
+
+      .btn-outline-primary,
+      .btn-outline-info,
+      .btn-outline-danger {
+        transition: all 0.2s;
+        opacity: 0.7;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+
+    .ag-row {
+      .btn-sm {
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      &:hover .btn-sm {
+        opacity: 1;
+      }
+
+      background-color: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+
+      &:hover {
+        background-color: #fdf7ff;
+      }
+
+      .ag-cell {
+        background-color: inherit;
+        font-weight: normal; // Asegura que las celdas nunca estén en negrita
+      }
+    }
+
+    .ag-cell {
+      transition: none;
+      transform: translate3d(0, 0, 0);
+      will-change: transform;
+    }
+
+    .action-cell {
+      user-select: none;
+      -webkit-user-select: none;
+      outline: none;
+      border: none;
+      contain: strict;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+    }
+
+    button {
+      user-select: none;
+      -webkit-user-select: none;
+      contain: layout style;
+      transform: translate3d(0, 0, 0);
+    }
+
+    min-height: 400px; // Altura mínima para el grid
+    --ag-foreground-color: #333;
+    --ag-header-foreground-color: $primary-color;
+    --ag-header-background-color: $header-color;
+    --ag-odd-row-background-color: #f9f9f9;
+
+    .ag-header-cell {
+      font-weight: 600;
+    }
+
+    .ag-row-hover {
+      background-color: rgba($primary-color, 0.05);
+    }
+
+    .ag-cell {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .ag-row:hover {
+      background-color: var(--ag-row-hover-color);
+    }
+
+    // Estilos para los botones de acción
+    .btn-action {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      background-color: transparent;
+      border: none;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      i {
+        font-size: 16px;
+      }
+    }
+
+    // Colores personalizados para iconos
+    .text-primary {
+      color: #572574;
+    }
+
+    .text-info {
+      color: #0dcaf0;
+    }
+
+    .text-success {
+      color: #76bc21;
+    }
+
+    .text-danger {
+      color: #a11a5c;
+    }
+
+    // Estilos para las celdas
+    .ag-cell-wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    // Estilo para el badge de estado
+    .badge {
+      padding: 0.35em 0.65em;
+      font-size: 0.75em;
+      font-weight: 700;
+      border-radius: 0.25rem;
+
+      &.bg-success {
+        background-color: #198754;
+      }
+
+      &.bg-danger {
+        background-color: #dc3545;
+      }
+    }
+  }
+
+  .badge.bg-success {
+    background-color: #76bc21;
+  }
+
+  .badge.bg-danger {
+    background-color: #dc3545;
+  }
+}
+
+// Estilos para el mensaje "Sin registros"
+.text-center.text-muted.fw-lighter {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  opacity: 0.7;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .card-content,
+  .card-body {
+    padding: 1rem;
+  }
+
+  .search-container {
+    max-width: 100%;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .d-flex {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .form-group {
+    width: 100%;
+    max-width: none;
+    margin-right: 0;
+  }
+
+  .btn-secondary {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .ag-grid-angular {
+    height: 400px; // Forzar altura en dispositivos más pequeños
+  }
+}
+
+@media (max-width: 576px) {
+  :host ::ng-deep .nav-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+
+  .header h1 {
+    font-size: 1.75rem;
+  }
+}
+
+// Estilos específicos para financing.component
+.form-label.visibility-hidden {
+  // Ocultar label pero mantener espacio
+  visibility: hidden;
+}
+
+.grid-container {
+  // Contenedor de la grid
+  height: calc(100vh - 250px);
+  min-height: 500px;
+  width: 100%;
+}
+
+.techos-table {
+  height: calc(100vh - 250px);
+  min-height: 500px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+// Estilo para botones
+.btn-secondary {
+  background-color: $accent-color; // Color rosa específico
+  border-color: $accent-color;
+  color: white;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: darken($accent-color, 10%);
+    border-color: darken($accent-color, 10%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .bi {
+    margin-right: 0.25rem;
+  }
+
+  i {
+    margin-right: 0.5rem;
+  }
+}
+
+// Loading overlay
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+
+  .spinner-border {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #6c2eb7 !important; /* Fondo morado */
+}
+
+::ng-deep .mat-select-value {
+  color: #fff !important; /* Texto blanco */
+  font-weight: bold;
+}
+
+::ng-deep .mat-select-panel {
+  background: #6c2eb7 !important; /* Fondo del panel morado */
+  color: #fff !important;
+}
+
+::ng-deep .mat-option {
+  color: #fff !important;
+}
+
+::ng-deep .mat-mdc-form-field-focus-overlay {
+  background-color: #572772 !important;
+}
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: #572772 !important;
+}
+
+::ng-deep div.mat-mdc-select-panel {
+  background-color: #ffffff !important;
+  color: #fff !important;
+}
+
+::ng-deep .mat-mdc-option .mdc-list-item__primary-text {
+  color: #a11a5c !important;
+}

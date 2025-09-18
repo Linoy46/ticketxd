@@ -1,0 +1,15 @@
+.carousel-item img {
+	height: 250px;
+	object-fit: cover;
+}
+
+.carousel-caption {
+	color: #673265;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	padding-top: 100px;
+	font-weight: bold;
+}

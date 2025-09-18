@@ -1,0 +1,268 @@
+<header class="header text-center text-secondary mb-4">
+  <h1>Diagnóstico</h1>
+</header>
+
+<div class="w-100 mx-auto">
+  <div class="card bg-white">
+    <div class="card-body pt-6">
+      <div class="container-fluid">
+        <div class="row">
+          <h5 class="text-secondary mb-4">Datos del estudiante/usuario</h5>
+          <div class="col-md-4 mb-3 mb-md-0">
+            <label for="CURP" class="form-label">CURP</label>
+            <div class="input-group mb-1">
+              <span class="input-group-text" id="basic-addon1"
+                ><i class="bi bi-person-badge"></i
+              ></span>
+              <input
+                type="text"
+                #curpInput="ngModel"
+                name="curpInput"
+                appMayusculas
+                required
+                pattern="^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$"
+                class="form-control"
+                name="curpInput"
+                [(ngModel)]="formData.curp"
+                [disabled]="isCURPDisabled"
+              />
+            </div>
+            <small *ngIf="curpInput.hasError('required')" class="text-danger"
+              ><i class="bi bi-info-circle"></i> La CURP es requerida.</small
+            >
+            <small *ngIf="curpInput.hasError('pattern')" class="text-danger"
+              ><i class="bi bi-info-circle"></i> La CURP no tiene un formato
+              válido.</small
+            >
+          </div>
+          <div class="col-md-4 mb-3 mb-md-0">
+            <label for="nombres" class="form-label"
+              >Nombre completo del estudiante/usuario</label
+            >
+            <div class="input-group mb-1">
+              <span class="input-group-text" id="basic-addon1"
+                ><i class="bi bi-person"></i
+              ></span>
+              <input
+                type="text"
+                #nombreCompletoInput="ngModel"
+                name="nombreCompletoInput"
+                appMayusculas
+                required
+                pattern="^[A-Za-zNñ \.]*$"
+                class="form-control"
+                name="nombre"
+                [(ngModel)]="formData.nombreCompleto"
+              />
+            </div>
+            <small
+              *ngIf="nombreCompletoInput.hasError('required')"
+              class="text-danger"
+              ><i class="bi bi-info-circle"></i> El nombre es requerido.</small
+            >
+            <small
+              *ngIf="nombreCompletoInput.hasError('pattern')"
+              class="text-danger"
+              ><i class="bi bi-info-circle"></i> No se permiten acentos o
+              caracteres especiales.</small
+            >
+          </div>
+          <div class="col-md-4 mb-3 mb-md-0">
+            <label for="municipio" class="form-label"
+              >Municipio del estudiante/usuario</label
+            >
+            <div class="input-group mb-1">
+              <span class="input-group-text" id="basic-addon1"
+                ><i class="bi bi-pin-map"></i
+              ></span>
+              <select
+                class="form-select"
+                #municipioInput="ngModel"
+                name="municipioInput"
+                required
+                aria-label="Default select example"
+                [(ngModel)]="formData.municipio"
+              >
+                <option value="">Seleccione un municipio</option>
+                <option
+                  *ngFor="let municipio of municipios"
+                  [value]="municipio.id_municipio"
+                >
+                  {{ municipio.municipio }}
+                </option>
+              </select>
+            </div>
+            <small
+              *ngIf="municipioInput.hasError('required')"
+              class="text-danger"
+              ><i class="bi bi-info-circle"></i> El municipio de residencia es
+              requerido.</small
+            >
+          </div>
+
+          <h5 class="text-secondary mb-4 mt-4">Necesidades a atender</h5>
+          <hr />
+
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="form-check mb-2">
+              <!--   <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="necesidad1"
+                  name="tipo_necesidad"
+                  value="Pedagógica"
+                  [checked]="formData.tipo_necesidad === 'Pedagógica'"
+                 (change)="onNecesidadChange($event)"
+                />-->
+                <label class="form-check-label" for="necesidad1">
+                  <i class="bi bi-book me-2"></i> Pedagógica
+                </label>
+              </div>
+
+              <div class="form-check mb-2">
+                <!--<input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="necesidad2"
+                  name="tipo_necesidad"
+                  value="Visual"
+                  [checked]="formData.tipo_necesidad === 'Visual'"
+                  (change)="onNecesidadChange($event)"
+                />-->
+                <label class="form-check-label" for="necesidad2">
+                  <i class="bi bi-eye me-2"></i> Visual
+                </label>
+              </div>
+
+              <div class="form-check mb-2">
+                <!-- <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="necesidad3"
+                  name="tipo_necesidad"
+                  value="Motriz"
+                  [checked]="formData.tipo_necesidad === 'Motriz'"
+                  (change)="onNecesidadChange($event)"
+                />-->
+                <label class="form-check-label" for="necesidad3">
+                  <i class="bi bi-universal-access me-2"></i> Motriz
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <div class="form-check mb-2">
+                <!-- <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="necesidad4"
+                  name="tipo_necesidad"
+                  value="Trastorno del lenguaje"
+                  [checked]="
+                    formData.tipo_necesidad === 'Trastorno del lenguaje'
+                  "
+                  (change)="onNecesidadChange($event)"
+                />-->
+                <label class="form-check-label" for="necesidad4">
+                  <i class="bi bi-chat-dots me-2"></i> Trastorno del lenguaje
+                </label>
+              </div>
+
+              <div class="form-check mb-2">
+              <!--  <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="necesidad5"
+                  name="tipo_necesidad"
+                  value="Trastorno de autismo"
+                  [checked]="formData.tipo_necesidad === 'Trastorno de autismo'"
+                  (change)="onNecesidadChange($event)"
+                />-->
+                <label class="form-check-label" for="necesidad5">
+                  <i class="bi bi-puzzle me-2"></i> Trastorno de autismo
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <div class="form-check mb-2">
+              <!--  <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="necesidad6"
+                  name="tipo_necesidad"
+                  value="Intelectual"
+                  [checked]="formData.tipo_necesidad === 'Intelectual'"
+                  (change)="onNecesidadChange($event)"
+                />-->
+                <label class="form-check-label" for="necesidad6">
+                  <i class="bi bi-lightbulb me-2"></i> Intelectual
+                </label>
+              </div>
+
+              <div class="form-check mb-2">
+                <!-- <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="necesidad7"
+                  name="tipo_necesidad"
+                  value="Multiple"
+                  [checked]="formData.tipo_necesidad === 'Multiple'"
+                  (change)="onNecesidadChange($event)"
+                />-->
+                <label class="form-check-label" for="necesidad7">
+                  <i class="bi bi-list-check me-2"></i> Multiple
+                </label>
+              </div>
+            </div>
+            <div class="col-md-8 mb-3" *ngIf="isMultiple">
+              <label for="especificar" class="form-label"
+                >Especificar necesidad</label
+              >
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">
+                  <i class="bi bi-pencil"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="especificar"
+                  id="especificar"
+                  [(ngModel)]="formData.tipo_necesidad"
+                  placeholder="Especifique la necesidad"
+                />
+              </div>
+              <p class="text-danger block">Escriba la necesidad, por favor</p>
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <label for="rehabilitacion" class="form-label"
+                >¿Requiere rehabilitación física?</label
+              >
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">
+                  <i class="bi bi-activity"></i>
+                </span>
+                <select
+                  class="form-control"
+                  name="rehabilitacion"
+                  id="rehabilitacion"
+                  [(ngModel)]="formData.rehabilitacion_fisica"
+                >
+                  <option value="">Seleccione una opción</option>
+                  <option value="S">Sí</option>
+                  <option value="N">No</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <!-- <button class="btn btn-secondary" (click)="onSubmit()">
+            <i class="bi bi-save me-2"></i> Guardar
+          </button>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

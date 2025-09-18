@@ -1,0 +1,40 @@
+<header class="header text-center text-secondary mb-4">
+  <h1>Acuerdos / Instrucciones</h1>
+</header>
+<div class="mb-3 border rounded">
+  <forms-select-acu-int-component></forms-select-acu-int-component>
+</div>
+
+<div class="">
+  <div class="d-flex gap-2">
+    <button (click)="add()" class="btn btn-secondary mb-3">
+      <i class="bi bi-plus-circle"></i> Agregar acuerdo
+    </button>
+
+    <button (click)="add()" class="btn btn-info text-light mb-3">
+      <i class="bi bi-file-earmark"></i> Reportes
+    </button>
+  </div>
+</div>
+
+  <ag-grid-angular
+    style="
+      width: 100%;
+      height: 60%;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    "
+    [rowData]="rowData"
+    [theme]="myTheme"
+    [gridOptions]="gridOptions"
+    [pagination]="true"
+    [columnDefs]="columnDefs"
+  />
+
+<h4
+*ngIf="rowData.length == 0"
+class="text-center text-muted fw-lighter">
+Sin registros
+</h4>
+
+<shared-custom-modal-component></shared-custom-modal-component>

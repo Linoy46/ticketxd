@@ -1,0 +1,58 @@
+// Estilos para el componente de inputs
+.header {
+  h1 {
+    color: #a11a5c;
+    font-weight: 500;
+  }
+}
+
+// Estilos para la tabla de productos en cola
+.table {
+  .observaciones-cell {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-style: italic;
+    color: #6b7280;
+  }
+}
+
+// Estilos para formularios
+.form-group {
+  label {
+    font-weight: 500;
+    color: #374151;
+  }
+
+  small.text-muted {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+}
+
+// Estilos responsivos
+@media (max-width: 768px) {
+  .table {
+    font-size: 0.875rem;
+
+    .observaciones-cell {
+      max-width: 100px;
+    }
+  }
+
+  .btn-add-responsive {
+    width: 100%;
+    min-width: unset;
+    font-size: 1.2rem;
+    padding: 2px 10;
+    border-radius: 8px;
+    margin-top: 8px;
+  }
+}
+
+.btn-add-responsive {
+  min-width: 180px;
+  font-size: 1.1rem;
+  padding: 5px 0;
+}

@@ -1,0 +1,670 @@
+/* You can add global styles to this file, and also import other style files */
+/* Fonts */
+
+/* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
+:root {
+  --background-color: #ffffff; /* Background color for the entire website, including individual sections */
+  --default-color: #212529; /* Default color used for the majority of the text content across the entire website */
+  --heading-color: #434175; /* Color for headings, subheadings and title throughout the website */
+  --accent-color: #5a2a82; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
+  --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
+}
+
+/* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
+:root {
+  --nav-color: #212529; /* The default color of the main navmenu links */
+  --nav-hover-color: #5a2a82; /* Applied to main navmenu links when they are hovered over or active */
+  --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
+  --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
+  --nav-dropdown-color: #212529; /* Used for navigation links of the dropdown items in the navigation menu. */
+  --nav-dropdown-hover-color: #5a2a82; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+}
+
+/* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
+.light-background {
+  --background-color: #edeef5;
+  --surface-color: #ffffff;
+}
+
+.dark-background {
+  --background-color: #060606;
+  --default-color: #ffffff;
+  --heading-color: #ffffff;
+  --surface-color: #252525;
+  --contrast-color: #ffffff;
+}
+
+/* Smooth scroll */
+:root {
+  scroll-behavior: smooth;
+}
+
+/*--------------------------------------------------------------
+# General Styling & Shared Classes
+--------------------------------------------------------------*/
+body {
+  color: var(--default-color);
+  background-color: var(--background-color);
+  font-family: var(--default-font);
+}
+
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: color-mix(in srgb, var(--accent-color), transparent 25%);
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--heading-color);
+  font-family: var(--heading-font);
+}
+
+/*--------------------------------------------------------------
+# Global Page Titles & Breadcrumbs
+--------------------------------------------------------------*/
+.page-title {
+  color: var(--default-color);
+  background-color: var(--background-color);
+  padding: 25px 0;
+  position: relative;
+}
+
+.page-title h1 {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.page-title .breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.page-title .breadcrumbs ol li + li {
+  padding-left: 10px;
+}
+
+.page-title .breadcrumbs ol li + li::before {
+  content: "/";
+  display: inline-block;
+  padding-right: 10px;
+  color: color-mix(in srgb, var(--default-color), transparent 70%);
+}
+
+/*--------------------------------------------------------------
+# Global Header
+--------------------------------------------------------------*/
+.header {
+  padding: 15px 0;
+  transition: all 0.5s;
+  z-index: 997;
+}
+
+.header-scrolled {
+  background: rgba(228, 228, 228, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 15px 0;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.header .logo {
+  line-height: 1;
+}
+
+.header .logo img {
+  max-height: 36px;
+  margin-right: 8px;
+}
+
+.header .logo h1 {
+  font-size: 30px;
+  margin: 0;
+  font-weight: 700;
+  color: var(--heading-color);
+}
+
+.header .btn-getstarted,
+.header .btn-getstarted:focus {
+  color: var(--accent-color);
+  font-size: 14px;
+  padding: 8px 25px;
+  margin: 0 0 0 30px;
+  border-radius: 50px;
+  transition: 0.3s;
+  border: 2px solid var(--accent-color);
+}
+
+.header .btn-getstarted:hover,
+.header .btn-getstarted:focus:hover {
+  color: var(--contrast-color);
+  background: color-mix(in srgb, var(--accent-color), transparent 15%);
+}
+
+@media (max-width: 1200px) {
+  .header .logo {
+    order: 1;
+  }
+
+  .header .btn-getstarted {
+    order: 2;
+    margin: 0 15px 0 0;
+    padding: 6px 15px;
+  }
+
+  .header .navmenu {
+    order: 3;
+  }
+}
+
+.scrolled .header {
+  box-shadow: 0px 0 18px rgba(0, 0, 0, 0.1);
+}
+
+/*--------------------------------------------------------------
+# Global Sections
+--------------------------------------------------------------*/
+section,
+.section {
+  color: var(--default-color);
+  background-color: var(--background-color);
+  padding: 60px 0;
+  scroll-margin-top: 90px;
+  overflow: clip;
+}
+
+@media (max-width: 1199px) {
+  section,
+  .section {
+    scroll-margin-top: 66px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Global Section Titles
+--------------------------------------------------------------*/
+.section-title {
+  text-align: center;
+  padding-bottom: 60px;
+  position: relative;
+}
+
+.section-title h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.section-title h2:after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: var(--accent-color);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.section-title p {
+  margin-bottom: 0;
+}
+
+/*--------------------------------------------------------------
+# Hero Section
+--------------------------------------------------------------*/
+.hero {
+  width: 100%;
+  min-height: 70vh;
+  position: relative;
+  padding: 120px 0 60px 0;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  /* background-image: url(""); */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: 50vh;
+    padding: 80px 20px 40px 20px;
+    background-color: white;
+    background-image: none; /* Elimina la imagen de fondo */
+    background-attachment: scroll;
+  }
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+}
+
+.hero p {
+  color: color-mix(in srgb, var(--default-color), transparent 30%);
+  margin: 10px 0;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.hero ul {
+  list-style: none;
+  padding: 0;
+}
+
+.hero ul li {
+  display: flex;
+  align-items: center;
+  padding-bottom: 6px;
+}
+
+.hero ul i {
+  color: var(--accent-color);
+  font-size: 18px;
+  margin-right: 6px;
+}
+
+.hero .btn-get-started {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  font-family: var(--heading-font);
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 10px 28px 12px 28px;
+  border-radius: 50px;
+  transition: 0.5s;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+}
+
+.hero .btn-get-started:hover {
+  color: var(--contrast-color);
+  background: color-mix(in srgb, var(--accent-color), transparent 15%);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 640px) {
+  .hero h1 {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .hero p {
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 30px;
+  }
+
+  .hero .btn-get-started,
+  .hero .btn-watch-video {
+    font-size: 13px;
+  }
+}
+
+/* You can add global styles to this file, and also import other style files */
+
+/*--------------------------------------------------------------
+                          PANEL STYLES
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+# Main
+--------------------------------------------------------------*/
+#main {
+  margin-top: 60px;
+  padding: 20px 30px;
+  transition: all 0.3s;
+  background-color: rgb(243, 244, 246);
+}
+
+@media (max-width: 1199px) {
+  #main {
+    padding: 20px;
+  }
+}
+
+/*--------------------------------------------------------------
+  # Sidebar
+  --------------------------------------------------------------*/
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  z-index: 996;
+  transition: all 0.3s;
+  padding: 20px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #aab7cf transparent;
+  box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
+  background-color: #fff;
+}
+
+a {
+  color: #572772;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #001aff;
+  text-decoration: none;
+}
+
+@media (max-width: 1199px) {
+  .sidebar {
+    left: -300px;
+  }
+}
+
+@media (min-width: 1200px) {
+  #main,
+  #footerAdmin {
+    margin-left: 300px;
+    transition: margin-left 0.3s ease-in-out;
+  }
+}
+
+@media (max-width: 1199px) {
+  .toggle-sidebar .sidebar {
+    left: 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  .toggle-sidebar #main,
+  .toggle-sidebar #footerAdmin {
+    margin-left: 0;
+    transition: margin-left 0.3s ease-in-out;
+  }
+
+  .toggle-sidebar .sidebar {
+    left: -300px;
+  }
+}
+
+/* esstilos no pertenecientes de panel */
+
+/* Botones */
+.sign-in_btn {
+  min-width: 300px; /* Tamaño mínimo del botón */
+  max-width: fit-content; /* Se adapta al contenido */
+  height: 40px; /* Mantiene la altura definida */
+  padding: 0 20px; /* Ajusta el relleno sin agrandar el botón */
+  border: none;
+  background: #572772;
+  border-radius: 7px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.sign-in_ggl,
+.sign-in_apl {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 7px;
+  border: 1px solid #e5e5e5;
+  cursor: pointer;
+}
+
+.sign-in_ggl {
+  background: #ffffff;
+  color: #242424;
+}
+
+.sign-in_apl {
+  background: #212121;
+  color: #ffffff;
+}
+
+.rounded-container {
+  border-radius: 15px; /* Ajusta el valor para más o menos redondeo */
+  padding: 20px; /* Espaciado interno opcional */
+  background-color: #ffffff; /* Fondo opcional */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/*--------------------------------------------------------------
+# Hero Section
+--------------------------------------------------------------*/
+.hero {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(-45deg, #e9ecef, #d6dceb, #e9ecef);
+  background-size: 400% 400%; /* Añadido para permitir la animación */
+  animation: gradientBG 10s ease infinite;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+  z-index: 1;
+  margin-top: -90px;
+}
+
+/* Animación del fondo más visible */
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../public/img/Patterns/pattern_sm-7-semi.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  opacity: 0.5;
+}
+
+.hero .carousel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  position: relative;
+  min-height: 75vh;
+  padding-top: 100px;
+}
+
+.hero h2 {
+  margin-bottom: 30px;
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.hero h2 span {
+  text-decoration: underline;
+}
+
+.hero p {
+  max-width: 80%;
+  animation-delay: 0.4s;
+  margin: 0 auto 30px auto;
+}
+
+.hero .carousel-control-prev,
+.hero .carousel-control-next {
+  width: 10%;
+}
+
+.hero .carousel-control-next-icon,
+.hero .carousel-control-prev-icon {
+  background: none;
+  font-size: 48px;
+  line-height: 1;
+  width: auto;
+  height: auto;
+}
+
+.hero .btn-get-started {
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 12px 32px;
+  border-radius: 50px;
+  transition: 0.5s;
+  line-height: 1;
+  margin: 10px;
+  animation-delay: 0.8s;
+  color: var(--default-color);
+  border: 2px solid var(--accent-color);
+}
+
+.hero .btn-get-started:hover {
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  text-decoration: none;
+}
+
+@media (min-width: 1024px) {
+  .hero p {
+    max-width: 60%;
+  }
+
+  .hero .carousel-control-prev,
+  .hero .carousel-control-next {
+    width: 5%;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero .carousel-container {
+    min-height: 90vh;
+  }
+
+  .hero h2 {
+    font-size: 28px;
+  }
+}
+
+.hero .hero-waves {
+  display: block;
+  width: 100%;
+  height: 60px;
+  position: relative;
+}
+
+.hero .wave1 use {
+  animation: move-forever1 10s linear infinite;
+  animation-delay: -2s;
+  fill: #5a2a82;
+  opacity: 0.6;
+}
+
+.hero .wave2 use {
+  animation: move-forever2 8s linear infinite;
+  animation-delay: -2s;
+  fill: #7031a4;
+  opacity: 0.4;
+}
+
+.hero .wave3 use {
+  animation: move-forever3 6s linear infinite;
+  animation-delay: -2s;
+  fill: #edeef5;
+}
+
+@keyframes move-forever1 {
+  0% {
+    transform: translate(85px, 0%);
+  }
+
+  100% {
+    transform: translate(-90px, 0%);
+  }
+}
+
+@keyframes move-forever2 {
+  0% {
+    transform: translate(-90px, 0%);
+  }
+
+  100% {
+    transform: translate(85px, 0%);
+  }
+}
+
+@keyframes move-forever3 {
+  0% {
+    transform: translate(-90px, 0%);
+  }
+
+  100% {
+    transform: translate(85px, 0%);
+  }
+}
+
+/* Estilos del logo */
+.hero .carousel-container img {
+  margin-top: 40px;
+  max-width: 600px;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .hero .carousel-container img {
+    padding: 1.5rem;
+  }
+
+  .img {
+    max-width: 250px;
+  }
+}
+
+.scroll-flower {
+  display: block;
+  position: fixed;
+  top: 37%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 1.2s ease-out, opacity 0.8s ease-out;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  z-index: 1000;
+  opacity: 1;
+}

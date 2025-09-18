@@ -1,0 +1,57 @@
+<header class="header text-center text-secondary mb-4">
+  <h1>Escalafón</h1>
+</header>
+
+<!-- Barra de busqueda -->
+<div class="d-flex justify-content-between mb-4 input-group">
+  <input
+    type="text"
+    id="filter-text-box"
+    placeholder="Buscar..."
+    (input)="setQuickFilter($any($event.target).value)"
+    class="form-control w-50"
+  />
+  <span class="input-group-text">
+    <i class="bi bi-search"></i>
+  </span>
+</div>
+
+<!-- Botón para agregar registro con estilo mejorado -->
+<!-- (click)="add()"  -->
+<div class="mb-3">
+  <button class="btn btn-success text-white me-2" (click)="reporte()">
+    <i class="bi bi-file-earmark-excel"></i> Reporte
+  </button>
+
+  <button class="btn btn-success text-white me-2" (click)="claveFuncion()">
+    <i class="bi bi-file-earmark-excel"></i> Reporte Clave Función
+  </button>
+
+  <button class="btn btn-secondary" (click)="agregar()">
+    <i class="bi bi-plus-circle"></i> Agregar
+  </button>
+</div>
+
+<!-- Container responsivo para el AG Grid porque en los móviles no se ve bien -->
+<div class="grid-container" *ngIf="rowData.length > 0">
+  <ag-grid-angular
+    class="ag-theme-quartz grid-responsive"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [gridOptions]="gridOptions"
+    [pagination]="true"
+    [theme]="myTheme"
+    [defaultColDef]="defaultColDef"
+    [paginationPageSize]="paginationPageSize"
+    [quickFilterText]="quickFilterText"
+    rowModelType="clientSide"
+    (gridReady)="onGridReady($event)"
+  >
+  </ag-grid-angular>
+</div>
+
+<h4 *ngIf="rowData.length == 0" class="text-center text-muted fw-lighter">
+  Sin registros
+</h4>
+
+<shared-custom-modal-component></shared-custom-modal-component>

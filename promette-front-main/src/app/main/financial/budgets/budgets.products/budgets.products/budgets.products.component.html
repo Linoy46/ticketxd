@@ -1,0 +1,488 @@
+<div class="container-fluid p-0">
+  <!-- Mensajes de error y éxito -->
+  <div *ngIf="error" class="alert alert-danger mb-3">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+  </div>
+  <div *ngIf="success" class="alert alert-success mb-3">
+    <i class="bi bi-check-circle-fill me-2"></i> {{ success }}
+  </div>
+
+  <!-- Información del presupuesto -->
+  <div
+    *ngIf="budgetItem"
+    class="alert"
+    [ngClass]="{
+      'alert-info': !showBudgetWarning,
+      'alert-warning': showBudgetWarning
+    }"
+  >
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h5 class="m-0">Información de Presupuesto</h5>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <p class="mb-1">
+          <strong>Área:</strong>
+          {{ budgetItem.idFinanciero }} {{ budgetItem.unidad }}
+        </p>
+        <p class="mb-1">
+          <strong>Fuente:</strong>
+          {{ budgetItem.fuente }}
+        </p>
+        <p class="mb-1">
+          <strong>Capítulo:</strong>
+          <ng-container
+            *ngIf="getCapituloClave() as clave; else noClaveTemplate"
+          >
+            {{ clave }} - {{ budgetItem.capitulo }}
+          </ng-container>
+          <ng-template #noClaveTemplate>
+            {{ budgetItem.capitulo }}
+          </ng-template>
+          <!-- ✅ MOSTRAR INFORMACIÓN DEL FILTRO DESDE EL SERVICIO -->
+          <small class="text-muted ms-2" *ngIf="hasActiveFilter()">
+            ({{ getFiltroInfo() }})
+          </small>
+        </p>
+      </div>
+      <div class="col-md-6 text-end">
+        <p
+          class="mb-1"
+          *ngIf="currentRequisitionTotal > 0"
+          [ngClass]="{ 'text-danger': exceedsAvailableBudget }"
+        >
+          <strong>Total requisición:</strong>
+          {{ formatCurrency(currentRequisitionTotal) }}
+          <span *ngIf="exceedsAvailableBudget" class="badge bg-danger ms-2"
+            >Excede presupuesto</span
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- Presupuesto del proyecto anual con sistema de renderizado dual -->
+  <div class="alert" [ngClass]="proyectoAnual ? 'alert-info' : 'alert-warning'">
+    <!-- Indicador de modo de renderizado -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h6 class="mb-0">Estado del Presupuesto</h6>
+      <span
+        class="badge"
+        [ngClass]="isReactiveMode ? 'bg-warning text-dark' : 'bg-secondary'"
+      >
+        <i
+          [ngClass]="
+            isReactiveMode ? 'bi bi-lightning-charge' : 'bi bi-database'
+          "
+        ></i>
+        {{ isReactiveMode ? "Reactivo" : "Estático" }}
+      </span>
+    </div>
+    <!-- Información del presupuesto -->
+    <div class="row">
+      <div class="col-md-6">
+        <p class="mb-1">
+          <strong>Presupuesto asignado:</strong>
+          {{ formatCurrency(originalMontoAsignado) }}
+        </p>
+        <p class="mb-1">
+          <strong>Presupuesto utilizado:</strong>
+          {{ formatCurrency(originalMontoUtilizado) }}
+        </p>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1">
+          <strong>Presupuesto disponible:</strong>
+          {{ formatCurrency(montoDisponibleDisplay) }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulario para la requisición -->
+  <form [formGroup]="requisitionForm" (ngSubmit)="submitRequisition()">
+    <!-- iNFO DEL PROYECTO -->
+    <div class="mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Información del Proyecto</h5>
+
+          <!-- Campo para la descripción del proyecto -->
+          <div class="mb-3">
+            <label for="descripcionProyecto" class="form-label"
+              >Descripción del Proyecto</label
+            >
+            <div class="input-group">
+              <textarea
+                id="descripcionProyecto"
+                formControlName="descripcionProyecto"
+                class="form-control"
+                placeholder="Ingrese una descripción para este proyecto anual"
+                rows="2"
+              ></textarea>
+            </div>
+            <small class="form-text text-muted">
+              Esta descripción se guardará en el proyecto anual del área
+              seleccionada.
+            </small>
+          </div>
+
+          <!-- Selección de partida y producto  -->
+          <div class="card mb-4">
+            <div class="card-header bg-light">
+              <h5 class="mb-0">Selección de productos</h5>
+            </div>
+            <div class="card-body">
+              <div class="row mb-3">
+                <div class="col-md-12 mb-3">
+                  <label for="itemSelect" class="form-label">Partida</label>
+                  <p-dropdown
+                    id="itemSelect"
+                    formControlName="item"
+                    [options]="items"
+                    placeholder="Seleccione una partida"
+                    [disabled]="!isPartidaEnabled()"
+                    optionLabel="label"
+                    optionValue="value"
+                    [filter]="true"
+                    filterBy="label"
+                    [showClear]="true"
+                    styleClass="w-100"
+                    [loading]="loading"
+                    [required]="true"
+                    (onChange)="loadProductsByItem($event.value)"
+                    [panelStyle]="{
+                    'max-width': '600px',
+                    'white-space': 'normal',
+                    'z-index': '1105'
+                  }"
+                  >
+                    <ng-template pTemplate="selectedItem" let-item>
+                      <div *ngIf="item">{{ item.label }}</div>
+                    </ng-template>
+                    <ng-template pTemplate="item" let-item>
+                      <div>{{ item.label }}</div>
+                    </ng-template>
+                  </p-dropdown>
+                  <small
+                    *ngIf="
+                      requisitionForm.get('item')?.invalid &&
+                      requisitionForm.get('item')?.touched
+                    "
+                    class="text-danger"
+                    >Por favor seleccione una partida</small
+                  >
+                  <div
+                    *ngIf="items.length === 0 && !loading"
+                    class="text-info small mt-1"
+                  >
+                    <i class="bi bi-info-circle"></i> No hay partidas
+                    disponibles
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-12 mb-3">
+                  <label for="productSelect" class="form-label">Producto</label>
+                  <p-dropdown
+                    id="productSelect"
+                    formControlName="product"
+                    [options]="products"
+                    placeholder="Seleccione un producto"
+                    [disabled]="!isProductoEnabled()"
+                    optionLabel="label"
+                    optionValue="value"
+                    [filter]="true"
+                    filterBy="label"
+                    [showClear]="true"
+                    styleClass="w-100"
+                    [loading]="loading"
+                    [disabled]="
+                      !selectedItemId || products.length === 0 || loading
+                    "
+                    (onChange)="updateProductSelection($event)"
+                    [panelStyle]="{
+                    'max-width': '600px',
+                    'white-space': 'normal',
+                    'z-index': '1105'
+                  }"
+                  >
+                  </p-dropdown>
+
+                  <!-- Loading spinner -->
+                  <div *ngIf="loading" class="mt-2 d-flex align-items-center">
+                    <div
+                      class="spinner-border spinner-border-sm text-primary me-2"
+                      role="status"
+                    >
+                      <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <span class="text-primary small"
+                      >Cargando productos...</span
+                    >
+                  </div>
+                  <!-- Product count cuando hay productos -->
+                  <div
+                    *ngIf="!loading && products.length > 0"
+                    class="mt-2 text-success small"
+                  >
+                    <i class="bi bi-check-circle me-1"></i>
+                    {{ products.length }} productos disponibles para esta
+                    partida
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mueve aquí el input de justificación -->
+              <div class="mb-3">
+                <label for="justificacion" class="form-label"
+                  >Justificación</label
+                >
+                <input
+                  type="text"
+                  id="justificacion"
+                  formControlName="justificacion"
+                  class="form-control"
+                  [disabled]="!isJustificacionEnabled()"
+                  [ngClass]="{
+                    'is-invalid':
+                      requisitionForm.get('justificacion')?.invalid &&
+                      (requisitionForm.get('justificacion')?.touched ||
+                        requisitionForm.get('justificacion')?.dirty)
+                  }"
+                  autocomplete="off"
+                  placeholder="Justificación de la requisición"
+                />
+                <div
+                  *ngIf="
+                    requisitionForm.get('justificacion')?.invalid &&
+                    (requisitionForm.get('justificacion')?.touched ||
+                      requisitionForm.get('justificacion')?.dirty)
+                  "
+                  class="invalid-feedback"
+                >
+                  Debe escribir una justificación antes de seleccionar la
+                  partida y el producto.
+                </div>
+              </div>
+
+              <!-- Sección de cantidades mensuales -->
+              <div class="mt-4 border rounded p-3">
+                <div class="product-details mb-4">
+                  <h6>Cantidades por mes:</h6>
+                  <div class="product-card" *ngIf="selectedProduct">
+                    <div class="fw-bold">
+                      {{ selectedProduct.nombre_producto }}
+                    </div>
+                    <div class="text-muted">
+                      Precio unitario:
+                      {{ getProductFormattedPrice(selectedProduct) }}
+                    </div>
+                    <div class="text-muted">
+                      Partida: {{ selectedProduct.clave_partida || "N/A" }} -
+                      {{
+                        selectedProduct.nombre_partida ||
+                          getSelectedPartidaName()
+                      }}
+                    </div>
+
+                    <!-- Información adicional del producto -->
+                    <div class="text-muted small">
+                      ID Producto: {{ selectedProduct.id_producto }}
+                    </div>
+                  </div>
+                  <div *ngIf="!selectedProduct" class="alert alert-info">
+                    Seleccione un producto para asignarle cantidades mensuales
+                  </div>
+                </div>
+
+                <div
+                  class="monthly-quantities"
+                  [class.disabled]="!isCantidadMensualEnabled()"
+                >
+                  <h6>Especifique las cantidades para cada mes:</h6>
+
+                  <div class="row">
+                    <div
+                      class="col-md-3 col-sm-6 mb-3"
+                      *ngFor="let month of monthlyQuantities; let i = index"
+                    >
+                      <div class="month-card">
+                        <div class="month-name">{{ month.nombre }}</div>
+                        <div class="month-input-container">
+                          <input
+                            type="number"
+                            class="form-control"
+                            [(ngModel)]="month.cantidad"
+                            [ngModelOptions]="{standalone: true}"
+                            (ngModelChange)="updateTotal()"
+                            min="0"
+                            step="1"
+                            [disabled]="!isCantidadMensualEnabled()"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="total-container mt-4 d-flex justify-content-between align-items-center"
+                  >
+                    <h5>Cantidad total:</h5>
+                    <h5 class="fw-bold text-primary">
+                      {{ totalQuantity }} unidades
+                    </h5>
+                  </div>
+
+                  <!-- Mostrar costo estimado del producto actual -->
+                  <div
+                    *ngIf="selectedProduct && totalQuantity > 0"
+                    class="alert alert-info mt-3"
+                  >
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <span>Costo estimado para este producto:</span>
+                      <span class="fw-bold">
+                        {{
+                          (selectedProduct.precio ||
+                            selectedProduct.precio ||
+                            0) * totalQuantity | currency : "MXN"
+                        }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="btn-container mt-4 text-end">
+                    <button
+                      pButton
+                      type="button"
+                      label="Cancelar selección"
+                      class="p-button-outlined p-button-secondary me-2"
+                      [disabled]="!selectedProduct"
+                      (click)="cancelProductSelection()"
+                    ></button>
+                    <button
+                      pButton
+                      type="button"
+                      label="Agregar a la requisición"
+                      icon="pi pi-plus"
+                      [disabled]="totalQuantity === 0 || !selectedProduct"
+                      class="p-button-success"
+                      (click)="addToList()"
+                    ></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de productos ya agregados con sus cantidades -->
+
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <p-table
+          [value]="selectedProducts"
+          [paginator]="selectedProducts.length > 5"
+          [rows]="5"
+          #productTable
+          [tableStyle]="{ 'min-width': '50rem' }"
+          styleClass="p-datatable-sm"
+        >
+          <ng-template pTemplate="caption">
+            <div class="table-header">
+              <h5>Productos seleccionados</h5>
+              <div *ngIf="exceedsAvailableBudget" class="budget-warning">
+                <i class="pi pi-exclamation-triangle"></i>
+                <span
+                  >El presupuesto disponible (${{
+                    formatCurrency(
+                      simulatedMontoDisponible + currentRequisitionTotal
+                    )
+                  }}) será sobrepasado por ${{
+                    formatCurrency(
+                      currentRequisitionTotal - simulatedMontoDisponible
+                    )
+                  }}</span
+                >
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th style="width: 8rem">Cantidad</th>
+              <th style="width: 8rem">Subtotal</th>
+              <th style="width: 8rem">Acciones</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-product>
+            <tr
+              [ngClass]="{ 'editing-row': editingProductId === product.tempId }"
+            >
+              <td>
+                <div class="product-name">
+                  {{ product.product.nombre_producto }}
+                </div>
+              </td>
+              <td>{{ getProductFormattedPrice(product.product) }}</td>
+              <td>{{ product.totalQuantity }}</td>
+              <td>
+                {{
+                  formatCurrency(product.product.precio * product.totalQuantity)
+                }}
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-trash"
+                    class="p-button-rounded p-button-danger p-button-sm"
+                    (click)="removeProduct(product.tempId)"
+                  ></button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+            <div *ngIf="selectedProducts.length === 0" class="text-center p-3">
+              No hay productos seleccionados
+            </div>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between mt-4 align-items-center">
+      <div *ngIf="exceedsAvailableBudget" class="text-danger">
+        <i class="bi bi-exclamation-triangle-fill me-1"></i>
+        La requisición excede el presupuesto disponible
+      </div>
+
+      <div class="ms-auto d-flex">
+        <button
+          pButton
+          type="button"
+          label="Cancelar"
+          class="p-button-secondary me-2"
+          [disabled]="submitting"
+          (click)="close && close()"
+        ></button>
+        <!-- Cambiado de "submit" a "button" para evitar comportamiento de formulario -->
+        <button
+          pButton
+          type="button"
+          label="Generar requisición"
+          icon="pi pi-save"
+          class="p-button-success"
+          [loading]="submitting"
+          [disabled]="submitting || selectedProducts.length === 0"
+          (click)="submitRequisition()"
+        ></button>
+      </div>
+    </div>
+  </form>
+</div>

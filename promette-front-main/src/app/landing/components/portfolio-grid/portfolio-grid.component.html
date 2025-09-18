@@ -1,0 +1,46 @@
+<section class="portfolio-section">
+  <div class="portfolio-container">
+    <div class="section-header">
+      <h2 class="section-title">PROMETTE</h2>
+      <p class="section-subtitle">
+        Accede a nuestras soluciones administrativas y herramientas de gestión profesional.
+      </p>
+    </div>
+
+    <div class="category-filters">
+      <a *ngFor="let category of categories"
+         (click)="filterProjects(category)"
+         class="learn-more-link"
+         [class.primary]="selectedCategory === category">
+        {{ category }}
+      </a>
+    </div>
+
+    <div class="portfolio-grid" @staggerFade>
+      <div *ngFor="let project of filteredProjects" class="project-card-container">
+        <p-card styleClass="project-card">
+          <ng-template pTemplate="header">
+            <div class="project-image-container">
+              <img [src]="project.imageUrl" alt="{{project.title}}" [title]="project.title" class="project-image">
+              <div class="project-overlay">
+                <p class="project-description">{{ project.description }}</p>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="content">
+            <div class="project-category">{{ project.category }}</div>
+            <h3 class="project-title">{{ project.title }}</h3>
+          </ng-template>
+          <ng-template pTemplate="footer">
+            <a (click)="navigateToProject(project.externalUrl)"
+               class="view-project-link"
+               [style.cursor]="'pointer'">
+              Acceder al Proyecto
+              <i class="pi pi-arrow-right"></i>
+            </a>
+          </ng-template>
+        </p-card>
+      </div>
+    </div>
+  </div>
+</section>

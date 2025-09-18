@@ -1,0 +1,53 @@
+$theme-colors: (
+  "primary": #572574,
+  "secondary": #a11a5c,
+  "success": #76bc21,
+  "info": #6facc6,
+  "warning": #d1b786,
+  "danger": #aa182c,
+  "light": #f8f9fa,
+  "dark": #422b7c,
+);
+
+// Sobrescribe las variables de Bootstrap con tus colores personalizados
+$primary: #422b7c;
+$secondary: #981861;
+$success: #80b13e;
+$info: #6facc6;
+$warning: #c5ba9f;
+$danger: #921f26;
+$light: #f8f9fa;
+$dark: #422b7c;
+
+// Importa el resto de Bootstrap
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+@font-face {
+  font-family: "IntroRegular";
+  src: url("../../public/fonts/IntroRegular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Sofia Pro Regular";
+  src: url("../../public/fonts/sofia-pro-regular.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+body h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "IntroRegular", sans-serif;
+}
+body span,
+i,
+a,
+p,
+li,
+button,
+div {
+  font-family: "Sofia Pro Regular";
+}

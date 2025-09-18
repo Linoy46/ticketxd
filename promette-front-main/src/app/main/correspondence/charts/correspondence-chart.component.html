@@ -1,0 +1,166 @@
+<header class="header text-center text-secondary mb-4">
+  <h1>Gráfico</h1>
+</header>
+<!-- Buscador o filtrador por fecha para la gráfica y para la tabla -->
+<div class="row mb-4">
+  <div class="col-md-6">
+    <label class="form-label" for="fecha-unica">Buscar por fecha:</label>
+    <div class="filter-field">
+      <p-calendar
+        id="fecha-unica"
+        [(ngModel)]="fechaUnica"
+        selectionMode="single"
+        dateFormat="yy-mm-dd"
+        class="w-100"
+        styleClass="calendar-full"
+        [showIcon]="true"
+        [maxDate]="today"
+        placeholder="Selecciona una fecha"
+        name="fechaUnica"
+        (onSelect)="fechagraficofiltrar()"
+        [inputStyle]="{ 'padding-right': '2.2rem' }"
+      ></p-calendar>
+      <button
+        *ngIf="fechaUnica"
+        type="button"
+        (click)="fechaUnica = null; fechagraficofiltrar()"
+        title="Limpiar fecha"
+        class="clear-btn"
+        tabindex="-1"
+      >
+        <i class="pi pi-times clear-icon"></i>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="row mb-4">
+  <div class="col-md-6">
+    <label class="form-label" for="remitente">Buscar por remitente:</label>
+    <div class="filter-field">
+      <p-autoComplete
+        id="remitente"
+        [formControl]="remitenteControl"
+        [suggestions]="remitentesFiltrados"
+        (completeMethod)="filtrarRemitentes($event)"
+        (onSelect)="onRemitenteSelect($event)"
+        optionLabel="nombreCompleto"
+        [forceSelection]="true"
+        inputClass="form-control mt-3"
+        [inputStyle]="{ width: '100%', 'padding-right': '2.2rem' }"
+        [style]="{ width: '100%' }"
+        class="w-100"
+        placeholder="Ingrese un remitente"
+        name="remitenteFiltro"
+      >
+        <ng-template let-item pTemplate="item">
+          <div
+            class="auto-opt"
+            (touchstart)="onOptionPointerDown($event, item, 'remitente')"
+            (mousedown)="onOptionPointerDown($event, item, 'remitente')"
+          >
+            <span>{{ item.nombreCompleto }}</span>
+            <span
+              *ngIf="item.area || item.nombre_area"
+              class="text-muted"
+              style="font-size: 0.9em"
+            >
+              — {{ item.area || item.nombre_area }}
+            </span>
+          </div>
+        </ng-template>
+      </p-autoComplete>
+      <button
+        *ngIf="remitenteControl.value"
+        type="button"
+        (click)="
+          remitenteControl.setValue(null);
+          remitenteSeleccionado = null;
+          filtrarRemitentes({ query: '' });
+          fechagraficofiltrar()
+        "
+        title="Limpiar remitente"
+        class="clear-btn"
+        tabindex="-1"
+      >
+        <i class="pi pi-times clear-icon"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="mb-3">
+  <label>Remitente seleccionado:</label>
+  <span class="fw-bold text-primary">
+    {{ remitenteSeleccionado?.informacion?.nombre || "" }}
+    {{ remitenteSeleccionado?.informacion?.apellido_paterno || "" }}
+    {{ remitenteSeleccionado?.informacion?.apellido_materno || "" }}
+    <span *ngIf="remitenteSeleccionado?.puesto"
+      >- {{ remitenteSeleccionado?.puesto }}</span
+    >
+    <span *ngIf="remitenteSeleccionado?.nombre_area"
+      >- {{ remitenteSeleccionado?.nombre_area }}</span
+    >
+  </span>
+</div>
+
+<ng-container *ngIf="!isMobile">
+  <div class="chart-container">
+    <ngx-charts-advanced-pie-chart
+      [results]="filteredData"
+      [view]="view"
+      [gradient]="false"
+    ></ngx-charts-advanced-pie-chart>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="isMobile">
+  <section
+    class="mobile-summary"
+    role="region"
+    aria-label="Resumen de correspondencia"
+  >
+    <div class="mobile-total">
+      <div class="mobile-total__value">{{ total | number : "1.0-0" }}</div>
+      <div class="mobile-total__label">Total</div>
+    </div>
+    <div class="mobile-cats">
+      <div
+        class="mobile-cat"
+        *ngFor="let c of categories; let i = index"
+        [style.--pct]="c.percent"
+        [attr.aria-label]="
+          'Categoría ' +
+          c.name +
+          ' ' +
+          c.count +
+          ' elementos, ' +
+          (c.percent | number : '1.0-0') +
+          '%'
+        "
+      >
+        <div class="mobile-cat__row">
+          <span class="dot" [class]="'dot color-' + (i % 5)"></span>
+          <span class="name" [title]="c.name">{{ c.name }}</span>
+          <span class="count">{{ c.count }}</span>
+        </div>
+        <div class="mobile-cat__meta">
+          <span class="percent">{{ c.percent | number : "1.0-0" }}%</span>
+        </div>
+        <div class="bar"><span class="fill"></span></div>
+      </div>
+    </div>
+  </section>
+</ng-container>
+
+<!-- Tabla -->
+<div class="mt-4">
+  <ag-grid-angular
+    class="ag-theme-quartz resumen-grid"
+    [theme]="myTheme"
+    [rowData]="filteredResumenCorrespondencia"
+    [columnDefs]="columnDefs"
+    [gridOptions]="gridOptions"
+    [pagination]="true"
+    [paginationPageSize]="10"
+  ></ag-grid-angular>
+</div>

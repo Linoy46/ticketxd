@@ -1,0 +1,62 @@
+<!--Tutorial-->
+<app-tutorial [config]="tutorialConfig" buttonText="Ayuda" [showButton]="true">
+</app-tutorial>
+
+<!-- Encabezado estandarizado -->
+<header class="header text-center text-secondary mb-4">
+  <h1>Gestión de Objetos de Gasto</h1>
+</header>
+
+<!-- Botón para agregar registro con estilo mejorado - IGUAL A USERS.COMPONENT -->
+<div class="mb-3" *ngIf="hasPermission('Financieros:view_add_button')">
+  <button
+    (click)="openAddCapituloDialog()"
+    class="btn btn-secondary me-2"
+    id="nuevo_capitulo"
+  >
+    <i class="bi bi-plus-circle"></i> Agregar Capítulo
+  </button>
+  <button
+    (click)="openAddConceptoDialog()"
+    class="btn btn-secondary"
+    id="nueva_partida"
+  >
+    <i class="bi bi-plus-circle"></i> Agregar Partida
+  </button>
+</div>
+
+<!-- AG GRID EXACTAMENTE COMO EN USERS.COMPONENT -->
+<div class="grid-container" *ngIf="filteredExpenseObjects.length > 0">
+  <ag-grid-angular
+    class="ag-theme-quartz grid-responsive"
+    style="
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    "
+    [rowData]="filteredExpenseObjects"
+    [columnDefs]="columnDefs"
+    [gridOptions]="gridOptions"
+    [pagination]="true"
+    [theme]="myTheme"
+    (gridReady)="onGridReady($event)"
+  >
+  </ag-grid-angular>
+</div>
+
+<h4
+  *ngIf="!isLoading && filteredExpenseObjects.length == 0"
+  class="text-center text-muted fw-lighter"
+>
+  Sin registros
+</h4>
+
+<!-- Loading indicator -->
+<div *ngIf="isLoading" class="text-center my-4">
+  <div class="spinner-border text-secondary" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+</div>
+
+<shared-custom-modal-component></shared-custom-modal-component>

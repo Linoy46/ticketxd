@@ -1,0 +1,73 @@
+<div class="w-100 px-4">
+  <h4 class="text-center text-secondary">
+    Unidad Administrativa: {{ this.dataRow?.id_financiero }} -
+    {{ this.dataRow?.nombre_area }}
+  </h4>
+  <br />
+  <div class="d-flex gap-3">
+    <div class="w-30">
+      <p>Seleccione el producto a restringir:</p>
+    </div>
+    <div class="w-100">
+      <p-dropdown
+        [options]="tienePartidas ? productosFiltrados : productos"
+        optionValue="id_producto"
+        [(ngModel)]="id_producto_seleccionada"
+        [optionLabel]="tienePartidas ? 'nombre' : 'nombre_producto'"
+        placeholder="--Selecciona un producto--"
+        [filter]="true"
+        [filterBy]="tienePartidas ? 'nombre,nombre_producto' : 'nombre_producto'"
+        [showClear]="false"
+        styleClass="w-100"
+        [panelStyle]="{
+          'max-width': '600px',
+          'white-space': 'normal',
+          'z-index': '1105'
+        }"
+      >
+        <ng-template *ngIf="tienePartidas" pTemplate="item" let-producto>
+          <div>
+            <div>{{producto.nombre_producto}}</div>
+            <div class="text-muted small">{{producto.partida}} - ${{producto.precio}} ({{producto.unidad_medida}})</div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+    <div class="w-20">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="descartaProducto()"
+      >
+        Guardar
+      </button>
+    </div>
+  </div>
+
+  <br />
+  <h5>Productos restringidos</h5>
+  <ag-grid-angular
+    *ngIf="displayData && displayData.length > 0"
+    style="
+      width: 100%;
+      height: 300px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    "
+    [rowData]="displayData"
+    [columnDefs]="columnDefs"
+    [gridOptions]="gridOptions"
+    [pagination]="true"
+    [theme]="myTheme"
+  >
+  </ag-grid-angular>
+  <h4 *ngIf="displayData.length == 0" class="text-center text-muted fw-lighter">
+    Sin registros
+  </h4>
+  <br />
+  <div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-secondary" (click)="closeModal()">
+      Cancelar
+    </button>
+  </div>
+</div>

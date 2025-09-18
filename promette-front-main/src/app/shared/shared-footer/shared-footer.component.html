@@ -1,0 +1,18 @@
+<footer class="footer">
+  <div class="footer-container">
+    <nav class="footer-nav">
+      <a *ngFor="let link of footerLinks"
+         [href]="link.url"
+         target="_blank"
+         rel="noopener noreferrer"
+         class="footer-link">
+        {{ link.label }}
+      </a>
+    </nav>
+
+    <p class="copyright">
+      <!--Disenado por el ingeniero pipian en lo que se ponen de acuerdo-->
+    </p>
+  </div>
+</footer>
+

@@ -1,0 +1,102 @@
+<div class="iu-login-container">
+  <div class="iu-login-box">
+    <div class="iu-logo">
+      <img src="img/Logos/PROMETTE_LOGO.png" class="img-fluid" width="100%" />
+    </div>
+
+    <div class="iu-tabs">
+      <button class="iu-tab active" data-tab="login">Iniciar sesión</button>
+    </div>
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="iu-form"
+      id="loginForm"
+    >
+      <div class="iu-form-group">
+        <p-floatLabel variant="on">
+          <input
+            id="userName"
+            type="text"
+            pInputText
+            formControlName="userName"
+            [ngClass]="{
+              'ng-invalid ng-dirty':
+                loginForm.get('userName')?.invalid &&
+                loginForm.get('userName')?.touched
+            }"
+          />
+          <label for="userName">Usuario</label>
+        </p-floatLabel>
+        <small
+          class="error-message"
+          *ngIf="
+            loginForm.get('userName')?.invalid &&
+            loginForm.get('userName')?.touched
+          "
+        >
+          Usuario requerido
+        </small>
+      </div>
+
+      <div class="form-field">
+        <p-floatLabel variant="on" style="position: relative;">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            pInputText
+            formControlName="password"
+            [ngClass]="{
+              'ng-invalid ng-dirty':
+                loginForm.get('password')?.invalid &&
+                loginForm.get('password')?.touched
+            }"
+          />
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            style="
+              position: absolute;
+              top: 50%;
+              right: 8px;
+              transform: translateY(-50%);
+              background: transparent;
+              border: none;
+              outline: none;
+              box-shadow: none;
+              padding: 0;
+              cursor: pointer;
+            "
+            tabindex="-1"
+          >
+            <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+          </button>
+          <label for="password">Contraseña</label>
+        </p-floatLabel>
+        <small
+          class="error-message"
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+        >
+          Contraseña requerida
+        </small>
+      </div>
+
+      <button
+        type="submit"
+        class="submit-button"
+        [disabled]="loginForm.invalid"
+      >
+        Ingresar
+      </button>
+
+      <div class="auth-links d-flex justify-content-between mt-3">
+        <a routerLink="/auth/forgotPassword">Recuperar contraseña</a>
+        <a routerLink="/auth/register">Registrarse</a>
+      </div>
+    </form>
+  </div>
+</div>

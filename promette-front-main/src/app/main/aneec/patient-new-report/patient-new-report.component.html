@@ -1,0 +1,28 @@
+<header class="header text-center text-secondary mb-1">
+  <h1>informes Registrados</h1>
+</header>
+
+<div class="container-fluid">
+  <!-- AG Grid - Tabla de datos -->
+  <div class="grid-container patient-new-report-grid">
+    <ag-grid-angular
+      class="ag-theme-quartz grid-responsive"
+      [rowData]="rowData"
+      [columnDefs]="columnDefs"
+      [gridOptions]="gridOptions"
+      [pagination]="true"
+      [paginationPageSize]="paginationPageSize"
+      [paginationPageSizeSelector]="paginationPageSizeSelector"
+      [theme]="myTheme"
+    ></ag-grid-angular>
+  </div>
+
+  <!-- Mensaje cuando no hay datos -->
+  <h4
+    *ngIf="rowData.length === 0"
+    class="text-center text-muted fw-lighter my-5"
+  >
+    No se encontraron informes registrados
+  </h4>
+</div>
+<shared-custom-modal-component></shared-custom-modal-component>

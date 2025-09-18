@@ -1,0 +1,93 @@
+<!--
+  @file form.component.html
+  @description Plantilla del formulario para crear/editar fuentes de financiamiento
+
+  Para integración backend:
+  - Considerar añadir mensajes de validación dinámicos
+  - Implementar indicadores de carga durante envío de datos
+  - Añadir manejo de errores de API
+-->
+<div class="container-fluid p-0">
+  <form *ngIf="source">
+    <!-- Descripción -->
+    <div class="mb-3">
+      <label for="description" class="form-label">Descripción</label>
+      <textarea
+        id="description"
+        rows="3"
+        class="form-control"
+        placeholder="Descripción de la fuente de financiamiento"
+        [(ngModel)]="source.description"
+        name="description"
+        required
+        minlength="5"
+        maxlength="500"
+      ></textarea>
+      <!-- @todo Para integración backend: Agregar mensajes de validación -->
+    </div>
+
+    <div class="row mb-3">
+      <!-- Tipo -->
+      <div class="col-md-6">
+        <label for="type" class="form-label">Tipo</label>
+        <select
+          id="type"
+          class="form-select"
+          [(ngModel)]="source.type"
+          name="type"
+          required
+        >
+          <option value="" disabled>Seleccionar tipo</option>
+          <option *ngFor="let type of typeOptions" [value]="type">{{ type }}</option>
+        </select>
+        <!-- @todo Para integración backend: Agregar mensajes de validación -->
+      </div>
+
+      <!-- Monto -->
+      <div class="col-md-6">
+        <label for="amount" class="form-label">Monto</label>
+        <input
+          id="amount"
+          type="number"
+          class="form-control"
+          placeholder="0.00"
+          [(ngModel)]="source.amount"
+          name="amount"
+          required
+          min="0"
+        />
+        <!-- @todo Para integración backend: Agregar mensajes de validación y formateo de moneda -->
+      </div>
+    </div>
+
+    <!-- Estado -->
+    <div class="mb-3">
+      <label for="status" class="form-label">Estado</label>
+      <select
+        id="status"
+        class="form-select"
+        [(ngModel)]="source.status"
+        name="status"
+        required
+      >
+        <option *ngFor="let option of statusOptions" [value]="option.value">{{ option.label }}</option>
+      </select>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <button type="button" class="btn btn-secondary" (click)="close()">
+        Cancelar
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        [disabled]="!source.description || !source.type"
+        (click)="handleSave()"
+      >
+        Guardar
+      </button>
+      <!-- @todo Para integración backend: Agregar spinner de carga durante el envío -->
+    </div>
+  </form>
+</div>

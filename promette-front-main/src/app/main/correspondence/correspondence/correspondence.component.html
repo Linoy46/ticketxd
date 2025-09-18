@@ -1,0 +1,168 @@
+<header class="header text-center text-secondary mb-4">
+  <h1 (click)="onTitleClick()" style="cursor: pointer; user-select: none">
+    Correspondencia
+  </h1>
+</header>
+<!-- Toast para el Easter Egg -->
+<p-toast
+  position="bottom-center"
+  key="easterEgg"
+  (onClose)="onReject()"
+  [baseZIndex]="5000"
+>
+  <ng-template let-message #message>
+    <div class="flex flex-col items-start flex-auto">
+      <div class="flex items-center gap-2">
+        <p-avatar
+          image="https://i.pinimg.com/736x/01/2f/c9/012fc9f27497d4a1e4869faa0ac3ff03.jpg"
+          shape="circle"
+        />
+        <span class="font-bold"> Que show!</span>
+      </div>
+      <div class="font-medium text-lg my-4">{{ message.summary }}</div>
+      <p-button
+        severity="success"
+        size="small"
+        label="Aceptar"
+        (click)="messageService.clear('easterEgg')"
+      />
+    </div>
+  </ng-template>
+</p-toast>
+<div class="mb-4 p-3 border rounded">
+  <form-selects-component
+    (filtrosSeleccionados)="aplicarFiltros($event)"
+  ></form-selects-component>
+</div>
+
+<div class="">
+  <div class="d-flex gap-2 mb-3 justify-content-between align-items-center">
+    <button (click)="add()" class="btn btn-secondary text-white">
+      <i class="pi pi-plus"></i> Agregar correspondencia
+    </button>
+    <div class="d-flex gap-2">
+      <!-- Selector para generar los Excel -->
+      <div class="d-flex gap-2 align-items-center">
+        <select
+          class="form-select form-select-sm"
+          style="width: 180px"
+          [(ngModel)]="excelType"
+          (change)="onExcelTypeChange()"
+        >
+          <option value="">Generar Excel</option>
+          <option value="byDates">Excel Diario</option>
+          <option value="monthly">Excel Mensual</option>
+        </select>
+
+        <!-- Inputs de fecha condicionales -->
+        <input
+          *ngIf="excelType === 'byDates'"
+          type="date"
+          class="form-control form-control-sm"
+          style="width: 150px"
+          [(ngModel)]="startDate"
+          placeholder="Fecha inicio"
+        />
+
+        <input
+          *ngIf="excelType === 'byDates'"
+          type="date"
+          class="form-control form-control-sm"
+          style="width: 150px"
+          [(ngModel)]="endDate"
+          placeholder="Fecha fin"
+        />
+
+        <!-- Botón generar -->
+        <button
+          *ngIf="canShowGenerateButton()"
+          class="btn btn-success text-white btn-sm"
+          (click)="generateExcel()"
+          [disabled]="!canGenerate() || isGenerating"
+        >
+          <i class="pi pi-file-excel"></i>
+          {{ isGenerating ? "Generando..." : "Generar" }}
+        </button>
+      </div>
+
+      <button class="btn btn-info text-white" (click)="showChart()">
+        <i class="pi pi-chart-pie"></i> Gráfico
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="grid-container">
+  <ag-grid-angular
+    class="ag-theme-quartz grid-responsive"
+    style="
+      width: 100%;
+      height: 60%;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    "
+    [rowData]="rowData"
+    [theme]="myTheme"
+    [gridOptions]="gridOptions"
+    [pagination]="true"
+    [columnDefs]="columnDefs"
+  >
+  </ag-grid-angular>
+</div>
+<h4 *ngIf="rowData.length == 0" class="text-center text-muted fw-lighter">
+  Sin registros
+</h4>
+
+<!-- Tabla reutilizable para las correspondencias -->
+<shared-custom-modal-component></shared-custom-modal-component>
+
+<ng-template #pdfModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ pdfTitle }}</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss(); onModalClose()"
+    ></button>
+  </div>
+  <div class="modal-body p-0" style="height: 70vh">
+    <div class="pdf-container" style="width: 100%; height: 100%">
+      <div
+        *ngIf="!pdfSrc"
+        class="d-flex justify-content-center align-items-center h-100"
+      >
+        Cargando PDF...
+      </div>
+      <object
+        *ngIf="pdfSrc"
+        [data]="pdfSrc"
+        type="application/pdf"
+        width="100%"
+        height="100%"
+      >
+        <p>
+          No se puede mostrar el PDF.
+          <a [href]="pdfSrc" target="_blank">Descargar PDF</a>
+        </p>
+      </object>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modal.dismiss(); onModalClose()"
+    >
+      Cerrar
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="!pdfSrc"
+      (click)="downloadCurrentPdf()"
+    >
+      <i class="bi bi-download me-1"></i> Descargar
+    </button>
+  </div>
+</ng-template>

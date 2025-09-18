@@ -1,0 +1,303 @@
+<form [formGroup]="profileForm">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 col-lg-4 row">
+        <div class="card profile-card">
+          <div class="profile-background">
+            <div class="background-overlay"></div>
+          </div>
+          <div
+            class="card-body d/flex flex-column align-items-center position-relative"
+          >
+            <div class="col-12 row">
+              <div class="col-md-12 text-center">
+                <h3 class="title-section">Información del Perfil</h3>
+                <hr class="divider-purple" />
+              </div>
+
+              <!-- Imagen de perfil -->
+              <div class="row pt-3 pb-3" *ngIf="dataUser.informacion_rupeet">
+                <div class="col-md-6 offset-md-3 text-center">
+                  <div class="profile-photo-container position-relative">
+                    <img
+                      *ngIf="!profileImage"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKaiKiPcLJj7ufrj6M2KaPwyCT4lDSFA5oog&s"
+                      alt="Avatar"
+                      class="img-fluid rounded-circle default-avatar"
+                    />
+                    <img
+                      *ngIf="profileImage"
+                      [src]="profileImage"
+                      alt="Foto de perfil"
+                      class="img-fluid rounded-circle"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Información básica -->
+              <div class="col-12 info-section">
+                <div class="info-item">
+                  <div class="info-text-container">
+                    <div class="nombre">
+                      {{ profileForm.get("nombre")?.value || "Sin datos" }}
+                    </div>
+                    <div class="apellido">
+                      {{
+                        profileForm.get("apellido_paterno")?.value ||
+                          "Sin datos"
+                      }}
+                    </div>
+                    <div class="puesto">
+                      {{ puesto_hellpper || "Sin datos" }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="info-item text-center">
+                  <label class="info-label text-center"
+                    >Correo para acceso</label
+                  >
+                  <div class="info-text">
+                    {{ profileForm.get("email")?.value || "Sin datos" }}
+                  </div>
+                </div>
+
+                <div class="info-item text-center">
+                  <label class="info-label text-center">Nueva contraseña</label>
+                  <div class="info-text">
+                    <div
+                      class="input-group"
+                      style="max-width: 280px; margin: 0 auto"
+                    >
+                      <input
+                        [type]="showPassword ? 'text' : 'password'"
+                        class="form-control form-control-sm"
+                        placeholder="Escriba su nueva contraseña"
+                        formControlName="newPassword"
+                        maxlength="18"
+                        pattern="[a-zA-Z0-9]*"
+                        style="text-align: center"
+                      />
+                      <div class="input-group-append">
+                        <button
+                          class="btn btn-outline-secondary btn-sm password-toggle-no-border"
+                          type="button"
+                          (click)="togglePasswordVisibility()"
+                          style="
+                            border-left: none;
+                            border: none;
+                            outline: none;
+                            box-shadow: none;
+                          "
+                        >
+                          <i
+                            [class]="
+                              showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'
+                            "
+                          ></i>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- Mensaje de error para validaciones -->
+                    <div
+                      *ngIf="
+                        profileForm.get('newPassword')?.invalid &&
+                        profileForm.get('newPassword')?.touched
+                      "
+                      class="text-danger mt-1"
+                      style="font-size: 0.75rem"
+                    >
+                      <div
+                        *ngIf="profileForm.get('newPassword')?.errors?.['maxlength']"
+                      >
+                        Máximo 18 caracteres permitidos
+                      </div>
+                      <div
+                        *ngIf="profileForm.get('newPassword')?.errors?.['pattern']"
+                      >
+                        Solo se permiten letras y números (sin caracteres
+                        especiales)
+                      </div>
+                    </div>
+                    <div class="mt-2">
+                      <button
+                        class="btn btn-update-password btn-sm custom-purple-btn"
+                        type="button"
+                        style="
+                          background-color: #572771 !important;
+                          border-color: #572771 !important;
+                          color: white !important;
+                        "
+                        [disabled]="
+                          !profileForm.get('newPassword')?.value ||
+                          profileForm.get('newPassword')?.value.length < 6 ||
+                          profileForm.get('newPassword')?.invalid
+                        "
+                        (click)="updatePassword()"
+                      >
+                        <i class="pi pi-key me-1"></i>
+                        Actualizar Contraseña
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Datos personales - Remover puesto de aquí -->
+      <div class="col-md-12 col-lg-8">
+        <div class="col-12">
+          <div class="d-flex justify-content-center align-items-center mb-3">
+            <h3 class="title-section me-3">Datos personales</h3>
+          </div>
+          <div class="separator">
+            <div class="line"></div>
+            <div class="separator-image">
+              <img src="images/florColor2.png" alt="separator" />
+            </div>
+            <div class="line"></div>
+          </div>
+        </div>
+
+        <!--Card para datos personales -->
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <!-- Primera columna -->
+              <div class="col-md-6">
+                <div class="info-list">
+                  <div class="info-item-row text-left">
+                    <span class="info-label">CURP:</span>
+                    <span class="info-value">{{
+                      profileForm.get("curp")?.value || "Sin datos"
+                    }}</span>
+                  </div>
+                  <div class="info-item-row text-left">
+                    <span class="info-label">Correo de respaldo:</span>
+                    <span class="info-value">{{
+                      profileForm.get("email_respaldo")?.value || "Sin datos"
+                    }}</span>
+                  </div>
+                  <div class="info-item-row text-left">
+                    <span class="info-label">Teléfono personal:</span>
+                    <span class="info-value">{{
+                      profileForm.get("telefono_personal")?.value || "Sin datos"
+                    }}</span>
+                  </div>
+                  <div class="info-item-row text-left">
+                    <span class="info-label">Correo institucional:</span>
+                    <span class="info-value">{{
+                      profileForm.get("email_institucional")?.value ||
+                        "Sin datos"
+                    }}</span>
+                  </div>
+                  <div class="info-item-row text-left">
+                    <span class="info-label">Teléfono de casa:</span>
+                    <span class="info-value">{{
+                      profileForm.get("telefono_casa")?.value || "Sin datos"
+                    }}</span>
+                  </div>
+                  <div class="info-item-row text-left">
+                    <span class="info-label">Teléfono de oficina:</span>
+                    <span class="info-value">{{
+                      profileForm.get("telefono_trabajo")?.value || "Sin datos"
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Segunda columna -->
+              <div class="col-md-6">
+                <div class="info-list">
+                  <div class="info-item-row text-left">
+                    <span class="info-label">Fecha de nacimiento:</span>
+                    <span class="info-value">{{
+                      profileForm.get("fechaNacimiento")?.value || "Sin datos"
+                    }}</span>
+                  </div>
+                  <div class="info-item-row text-left">
+                    <span class="info-label">Género:</span>
+                    <span class="info-value">{{
+                      profileForm.get("genero")?.value || "Sin datos"
+                    }}</span>
+                  </div>
+                  <div class="info-item-row text-left">
+                    <span class="info-label">RFC:</span>
+                    <span class="info-value">{{
+                      profileForm.get("rfc")?.value || "Sin datos"
+                    }}</span>
+                  </div>
+                  <div class="info-item-row text-left">
+                    <span class="info-label">NSS:</span>
+                    <span class="info-value">{{
+                      profileForm.get("nss")?.value || "Sin datos"
+                    }}</span>
+                  </div>
+                  <div class="info-item-row text-left">
+                    <span class="info-label">Fecha ingreso SEP:</span>
+                    <span class="info-value">{{
+                      profileForm.get("fecha_ingreso_sep")?.value
+                        ? (profileForm.get("fecha_ingreso_sep")?.value
+                          | date : "dd/MM/yyyy")
+                        : "Sin datos"
+                    }}</span>
+                  </div>
+                  <div class="info-item-row text-left">
+                    <span class="info-label">Estado civil:</span>
+                    <span class="info-value">{{
+                      estado_civil_hellpper || "Sin datos"
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div formArrayName="domicilios">
+                  <div
+                    *ngFor="let domicilio of domicilios.controls; let i = index"
+                    [formGroupName]="i"
+                    class="domicilio"
+                  >
+                    <div class="domicilio-container">
+                      <h5>Domicilio {{ i + 1 }}</h5>
+                      <div class="domicilio-texto">
+                        {{ domicilio.get("calle")?.value }}
+                        {{ domicilio.get("numero_externo")?.value }}
+                        <ng-container
+                          *ngIf="domicilio.get('numero_interno')?.value"
+                          >, Int.
+                          {{
+                            domicilio.get("numero_interno")?.value
+                          }}</ng-container
+                        >
+                        , Col. {{ domicilio.get("colonia")?.value }},
+                        {{ domicilio.get("municipio")?.value }},
+                        {{ domicilio.get("estado")?.value }}, CP
+                        {{ domicilio.get("codigo_postal")?.value }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Botón de editar -->
+              <div class="col-12 text-center mt-3">
+                <p-button
+                  icon="pi pi-pencil"
+                  styleClass="p-button-edit"
+                  label="Editar Información"
+                  (onClick)="editProfile()"
+                ></p-button>
+              </div>
+
+              <!-- Sección de domicilios -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

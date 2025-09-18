@@ -1,0 +1,57 @@
+/* Overlay para bloquear la pantalla */
+.loading-overlay {
+  position: fixed; /* Fija el overlay en la pantalla */
+  top: 0; /* Alinea al tope de la pantalla */
+  left: 0; /* Alinea al borde izquierdo de la pantalla */
+  width: 100%; /* Ocupa el 100% del ancho de la pantalla */
+  height: 100%; /* Ocupa el 100% del alto de la pantalla */
+  background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente negro */
+  display: flex; /* Usamos Flexbox para centrar el contenido */
+  justify-content: center; /* Centra el contenido horizontalmente */
+  align-items: center; /* Centra el contenido verticalmente */
+  z-index: 9999; /* Asegura que el overlay esté sobre todo el contenido */
+  overflow: hidden; /* Evita que aparezcan barras de desplazamiento */
+}
+
+/* Contenedor del spinner */
+.spinner-container {
+  display: flex; /* Usamos Flexbox para organizar los elementos */
+  justify-content: center; /* Centra los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
+  flex-direction: column; /* Organiza los elementos en columna */
+  position: relative; /* Establece posición relativa para el contenedor */
+  height: 100%; /* El contenedor ocupa todo el alto de la pantalla */
+  width: 100%; /* El contenedor ocupa todo el ancho de la pantalla */
+  max-width: 300px; /* Opcional: limita el tamaño máximo del contenedor */
+  margin: auto; /* Centra el contenedor dentro del overlay */
+}
+
+/* Imagen del spinner con animación */
+.spinner {
+  width: 100px; /* Tamaño del spinner */
+  height: 100px; /* Tamaño del spinner */
+  animation: scaleUpDown 1s infinite; /* Animación de expansión y contracción */
+}
+
+/* Animación para hacer la imagen grande y chica */
+@keyframes scaleUpDown {
+  0% {
+    transform: scale(1); /* Escala normal al inicio */
+  }
+  50% {
+    transform: scale(1.2); /* Aumenta el tamaño al 120% */
+  }
+  100% {
+    transform: scale(1); /* Vuelve al tamaño original */
+  }
+}
+
+/* Texto debajo de la imagen */
+.loading-text {
+  margin-top: 10px; /* Espaciado superior para separar el texto del spinner */
+  color: #fff; /* Color blanco para el texto */
+  font-size: 18px; /* Tamaño de fuente del texto */
+  font-weight: bold; /* Hace que el texto sea en negrita */
+  text-align: center; /* Centra el texto */
+  padding-top: 10px; /* Añade espacio en la parte superior del texto */
+}

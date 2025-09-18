@@ -1,0 +1,46 @@
+<div style="background-color: #f0f4f9; padding: 40px">
+  <div
+    style="
+      font-family: Roboto, Helvetica, Arial, sans-serif;
+      max-width: 500px;
+      margin: auto;
+      padding: 40px;
+      background-color: #fff;
+      border-radius: 20px;
+    "
+  >
+    <h2 style="text-align: center; margin: 0 40px">
+      Hola {{nombre_usuario}} Le damos la bienvenida a PROMETTE
+    </h2>
+    <p style="margin-top: 30px; text-align: justify">
+      A continuación, encontrará instrucciones para acceder a su cuenta de
+      Promette por primera vez:
+    </p>
+    <ol>
+      <li style="margin-bottom: 10px">
+        Acceda al sitio
+        <a href="{{link_login}}">{{link_login}}</a>
+        con este enlace o el botón mostrado a continuación.<br />
+        <a
+          href="{{link_login}}"
+          style="
+            border-radius: 3px;
+            background-color: #572574;
+            color: #fff;
+            display: inline-block;
+            padding: 8px 16px;
+            text-decoration: none;
+          "
+          target="_blank"
+          >PROMETTE</a
+        >
+      </li>
+      <li style="margin-bottom: 10px">
+        Ingrese su nombre de usuario: <b>{{nombre_usuario}}</b>
+      </li>
+      <li style="margin-bottom: 10px">
+        Ingrese su contraseña : <b>{{contrasena}}</b>
+      </li>
+    </ol>
+  </div>
+</div>

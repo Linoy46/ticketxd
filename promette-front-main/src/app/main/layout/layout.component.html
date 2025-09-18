@@ -1,0 +1,29 @@
+<shared-loading-component *ngIf="loading"></shared-loading-component>
+
+<!-- Componente que maneja la inactividad del usuario -->
+<shared-inactivity-component [openRenewTokenModal]="openRenewTokenModal">
+</shared-inactivity-component>
+
+<div class="d-flex vh-100">
+  <!-- Drawer (Menú lateral) -->
+  <shared-drawer-component [isMini]="isMini"></shared-drawer-component>
+
+  <!-- Contenido principal con scroll en el RouterOutlet -->
+  <div class="flex-grow-1 d-flex flex-column">
+    <!-- AppBar -->
+    <shared-app-bar-component
+      [show]="true"
+      (toggleDrawerEvent)="toggleDrawer()"
+    ></shared-app-bar-component>
+
+    <!-- Breadcrumb -->
+    <div class="">
+      <shared-bread-crumb-component></shared-bread-crumb-component>
+    </div>
+
+    <!-- Contenedor con Scroll -->
+    <div class="flex-grow-1 overflow-auto p-3">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

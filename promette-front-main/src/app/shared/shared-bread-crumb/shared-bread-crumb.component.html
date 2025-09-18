@@ -1,0 +1,29 @@
+<!-- Navegación de migas de pan (breadcrumb), accesible mediante un aria-label -->
+<nav aria-label="breadcrumb" class="px-2 py-1">
+  <!-- Lista ordenada que contiene los elementos de la miga de pan -->
+  <ol class="breadcrumb">
+    <!-- Primer elemento de la miga de pan, con un enlace a la página principal -->
+    <li class="breadcrumb-item">
+      <!-- Enlace que lleva a la página de inicio. 'routerLink' se usa para la navegación interna de Angular -->
+      <a routerLink="/promette/home">
+        <!-- Ícono de casa para representar el inicio -->
+        <i class="bi bi-house-door"></i> Inicio
+      </a>
+    </li>
+
+    <!-- Segundo elemento de la miga de pan, con un enlace para volver a la página anterior -->
+    <li class="breadcrumb-item" style="cursor: pointer">
+      <!-- Enlace que ejecuta el método 'goBack()' al hacer clic, lo cual navega hacia la página anterior -->
+      <a routerLink="" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i> Regresar
+        <!-- Ícono de flecha hacia atrás -->
+      </a>
+    </li>
+
+    <!-- Tercer elemento de la miga de pan, que muestra la ruta actual (variable 'currentRoute') -->
+    <li class="breadcrumb-item active" aria-current="page">
+      <!-- Muestra el valor de 'currentRoute' que se establece dinámicamente en el componente -->
+      {{ currentRoute }}
+    </li>
+  </ol>
+</nav>

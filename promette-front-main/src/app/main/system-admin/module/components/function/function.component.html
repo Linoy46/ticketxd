@@ -1,0 +1,41 @@
+<header class="header text-center text-secondary py-4 mb-4">
+  <h3>Funciones del Módulo</h3>
+</header>
+
+<!-- Add button -->
+<div class="m-3">
+  <button (click)="add(data?.id_modulo)" class="btn btn-secondary">
+    <i class="bi bi-plus-circle"></i> Agregar función
+  </button>
+</div>
+
+<div *ngIf="rowData.length > 0" class="px-3">
+
+  <div class="card text-bg-light mb-3" *ngFor="let funcion of rowData; index as i; first as isFirst">
+    <div class="card-body container">
+      <div class="row align-items-center">
+        <div class="col-lg-10">
+          <h5 class="card-title text-secondary">{{funcion.nombre_funcion }}</h5>
+          <p class="card-text">{{funcion.descripcion }}</p>
+        </div>
+        <div class="col-lg-2">
+          <button title="Editar" (click)="edit(funcion.id_funcion)" class="btn btn-primary me-2"> <i class="bi bi-pencil-fill"></i> </button>
+          <button title="Eliminar" (click)="delete(funcion)" class="btn btn-danger"> <i class="bi bi-trash-fill"></i> </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="rowData.length == 0">
+  <h3 class="text-center fw-lighter mb-4">Sin permisos</h3>
+</div>
+
+<!--  Display Form Data for Debugging
+<div class="mt-4">
+  <pre>{{ data | json }}
+  </pre>
+</div>
+
+-->

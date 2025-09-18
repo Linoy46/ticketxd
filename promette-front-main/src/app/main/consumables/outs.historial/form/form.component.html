@@ -1,0 +1,65 @@
+<div class="modal-content">
+  <!-- Icono para estados de éxito/error -->
+  <div *ngIf="isSuccess || isError" class="text-center mb-4">
+    <i *ngIf="isSuccess" class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+    <i *ngIf="isError" class="bi bi-x-circle-fill text-danger" style="font-size: 4rem;"></i>
+  </div>
+
+  <!-- Título o mensaje principal -->
+  <div class="modal-header" *ngIf="title && !isSuccess && !isError">
+    <h5 class="modal-title">{{ title }}</h5>
+  </div>
+
+  <!-- Contenido del modal -->
+  <div class="modal-body">
+    <!-- Mensaje estándar -->
+    <p *ngIf="message" class="mb-3" [ngClass]="{
+      'text-success': isSuccess,
+      'text-danger': isError
+    }">{{ message }}</p>
+
+    <!-- Contenido HTML (para detalles de salida) -->
+    <div *ngIf="content" [innerHTML]="content"></div>
+
+    <!-- Información de folio (para éxito) -->
+    <div *ngIf="isSuccess && folio" class="alert alert-success mt-3">
+      <i class="bi bi-info-circle me-2"></i>
+      El folio de esta salida es: <strong>{{ folio }}</strong>
+    </div>
+  </div>
+
+  <!-- Botones de acción -->
+  <div class="modal-footer">
+    <!-- Botón para cerrar/cancelar -->
+    <button type="button" class="btn"
+      [ngClass]="{
+        'btn-secondary': !isSuccess && !isError,
+        'btn-outline-success': isSuccess,
+        'btn-outline-danger': isError
+      }"
+      (click)="closeModal()">
+      <i class="bi" [ngClass]="{
+        'bi-x-lg': !isSuccess && !isError,
+        'bi-plus-lg': isSuccess,
+        'bi-arrow-left': isError
+      }"></i>
+      {{ cancelText }}
+    </button>
+
+    <!-- Botón principal (ver PDF en detalles, ver historial en éxito) -->
+    <button type="button" class="btn"
+      [ngClass]="{
+        'btn-primary': !isSuccess && !isError,
+        'btn-success': isSuccess,
+        'btn-danger': isError
+      }"
+      (click)="isSuccess ? navigateToHistory() : generatePdf()">
+      <i class="bi" [ngClass]="{
+        'bi-file-pdf': !isSuccess && !isError,
+        'bi-clock-history': isSuccess,
+        'bi-arrow-clockwise': isError
+      }"></i>
+      {{ confirmText }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,119 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- Selección de Usuario/Analista -->
+    <div class="form-group mb-3">
+      <label for="ct_usuario_id" class="form-label"
+        >Usuario/Analista <span class="text-danger">*</span></label
+      >
+      <p-dropdown
+        id="ct_usuario_id"
+        [options]="users"
+        formControlName="ct_usuario_id"
+        optionLabel="nombre_usuario"
+        optionValue="id_usuario"
+        [filter]="true"
+        filterBy="nombre_usuario"
+        placeholder="Seleccione un usuario"
+        [showClear]="true"
+        [loading]="loadingUsers"
+        styleClass="w-100"
+        [disabled]="mode === 'view'"
+      >
+        <ng-template pTemplate="selectedItem" let-user>
+          <div *ngIf="user">
+            <div>{{ user.nombre_usuario }}</div>
+            <div class="text-muted small">{{ user.puesto }}</div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="item" let-user>
+          <div>
+            <div>{{ user.nombre_usuario }}</div>
+            <div class="text-muted small">{{ user.puesto }}</div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+      <div
+        *ngIf="
+          form.get('ct_usuario_id')?.invalid &&
+          form.get('ct_usuario_id')?.touched
+        "
+        class="text-danger"
+      >
+        Usuario requerido
+      </div>
+    </div>
+
+    <!-- Selección de Unidad Administrativa -->
+    <div class="form-group mb-3" *ngIf="!administrativeUnitId && puedeVerSelectUnidadAdmin">
+      <label for="rl_area_financiero_id" class="form-label">
+        Unidad Administrativa
+      </label>
+      <p-dropdown
+        id="rl_area_financiero_id"
+        [options]="administrativeUnits"
+        formControlName="rl_area_financiero_id"
+        optionLabel="nombre_area"
+        optionValue="id_area_fin"
+        [filter]="true"
+        filterBy="nombre_area"
+        placeholder="Seleccione una unidad administrativa"
+        [showClear]="true"
+        [loading]="loadingAdminUnits"
+        styleClass="w-100"
+        [disabled]="mode === 'view'">
+        <ng-template let-area pTemplate="item">
+          {{ area.nombre_area }}
+        </ng-template>
+        <ng-template let-area pTemplate="selectedItem">
+          {{ area.nombre_area }}
+        </ng-template>
+      </p-dropdown>
+    </div>
+
+    <!-- Campo de solo lectura si la unidad administrativa está predefinida -->
+    <div class="form-group mb-3" *ngIf="administrativeUnitId">
+      <label for="adminUnitReadonly" class="form-label"
+        >Unidad Administrativa</label
+      >
+      <input
+        type="text"
+        id="adminUnitReadonly"
+        class="form-control"
+        [value]="administrativeUnitName"
+        readonly
+      />
+    </div>
+
+    <!-- Estado -->
+    <div class="form-group mb-3">
+      <div class="form-check form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="estado"
+          [checked]="getEstadoValue()"
+          (change)="onEstadoChange($event)"
+          [disabled]="mode === 'view'"
+        />
+        <label class="form-check-label" for="estado">
+          Estado: {{ getEstadoValue() ? "Activo" : "Inactivo" }}
+        </label>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <button type="button" class="btn btn-secondary" (click)="close()">
+        <i class="bi bi-x-circle me-1"></i> Cancelar
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="form.invalid || mode === 'view'"
+      >
+        <i class="bi bi-check-circle me-1"></i>
+        {{ mode === "edit" ? "Actualizar" : "Guardar" }}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,280 @@
+<div class="inventory-form-container">
+  <div *ngIf="loadingService.loading$ | async" class="loading-overlay">
+    <div class="spinner-container">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-2">Procesando...</p>
+    </div>
+  </div>
+
+  <!-- Form content -->
+  <form [formGroup]="inventoryForm" (ngSubmit)="onSubmit()">
+    <div class="row mb-3">
+      <!-- Folio -->
+      <div class="col-md-6 mb-3">
+        <label for="folio" class="form-label">Folio</label>
+        <input
+          type="text"
+          pInputText
+          id="folio"
+          formControlName="folio"
+          class="form-control"
+          [readonly]="editMode && !isModal"
+          [ngClass]="{
+            'ng-invalid ng-dirty':
+              inventoryForm.get('folio')?.invalid &&
+              inventoryForm.get('folio')?.touched
+          }"
+        />
+        <small
+          class="text-danger"
+          *ngIf="
+            inventoryForm.get('folio')?.invalid &&
+            inventoryForm.get('folio')?.touched
+          "
+        >
+          Folio es requerido
+        </small>
+      </div>
+
+      <!-- Cantidad -->
+      <div class="col-md-6 mb-3">
+        <label for="cantidad" class="form-label">Cantidad</label>
+        <div class="d-flex align-items-center">
+          <p-inputNumber
+            id="cantidad"
+            formControlName="cantidad"
+            [showButtons]="true"
+            [min]="1"
+            [inputStyleClass]="
+              inventoryForm.get('cantidad')?.invalid &&
+              inventoryForm.get('cantidad')?.touched
+                ? 'ng-invalid ng-dirty form-control'
+                : 'form-control'
+            "
+            styleClass="w-100"
+            [step]="1"
+          >
+          </p-inputNumber>
+        </div>
+        <small
+          class="text-danger"
+          *ngIf="
+            inventoryForm.get('cantidad')?.invalid &&
+            inventoryForm.get('cantidad')?.touched
+          "
+        >
+          La cantidad debe ser mayor que cero
+        </small>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <!-- Descripción -->
+      <div class="col-md-6 mb-3">
+        <label for="descripcion" class="form-label">Descripción</label>
+        <textarea
+          pInputText
+          id="descripcion"
+          formControlName="descripcion"
+          class="form-control"
+          rows="3"
+          [ngClass]="{
+            'ng-invalid ng-dirty':
+              inventoryForm.get('descripcion')?.invalid &&
+              inventoryForm.get('descripcion')?.touched
+          }"
+        ></textarea>
+        <small
+          class="text-danger"
+          *ngIf="
+            inventoryForm.get('descripcion')?.invalid &&
+            inventoryForm.get('descripcion')?.touched
+          "
+        >
+          Descripción es requerida
+        </small>
+      </div>
+
+      <!-- Observaciones -->
+      <div class="col-md-6 mb-3">
+        <label for="observaciones" class="form-label">Observaciones</label>
+        <textarea
+          pInputText
+          id="observaciones"
+          formControlName="observaciones"
+          class="form-control"
+          rows="3"
+          placeholder="Observaciones adicionales (opcional)"
+          maxlength="255"
+        ></textarea>
+        <small class="text-muted"> Máximo 255 caracteres </small>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+    
+
+      <!-- Partida -->
+      <div class="col-md-4 mb-3">
+        <label for="partida" class="form-label">Partida</label>
+        <p-dropdown
+          id="partida"
+          formControlName="ct_partida_id"
+          [options]="partidas"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Seleccionar partida"
+          [filter]="true"
+          filterBy="label"
+          [showClear]="true"
+          styleClass="w-100"
+          [ngClass]="{
+            'ng-invalid ng-dirty':
+              inventoryForm.get('ct_partida_id')?.invalid &&
+              inventoryForm.get('ct_partida_id')?.touched
+          }"
+        ></p-dropdown>
+        <small
+          class="text-danger"
+          *ngIf="
+            inventoryForm.get('ct_partida_id')?.invalid &&
+            inventoryForm.get('ct_partida_id')?.touched
+          "
+        >
+          Seleccione una partida
+        </small>
+      </div>
+
+      <!-- Unidad de Medida -->
+      <div class="col-md-4 mb-3">
+        <label for="unidadMedida" class="form-label">Unidad de Medida</label>
+        <p-dropdown
+          id="unidadMedida"
+          formControlName="ct_unidad_id"
+          [options]="unidades"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Seleccionar unidad"
+          [filter]="true"
+          filterBy="label"
+          [showClear]="true"
+          styleClass="w-100"
+          [ngClass]="{
+            'ng-invalid ng-dirty':
+              inventoryForm.get('ct_unidad_id')?.invalid &&
+              inventoryForm.get('ct_unidad_id')?.touched
+          }"
+        ></p-dropdown>
+        <small
+          class="text-danger"
+          *ngIf="
+            inventoryForm.get('ct_unidad_id')?.invalid &&
+            inventoryForm.get('ct_unidad_id')?.touched
+          "
+        >
+          Seleccione una unidad de medida
+        </small>
+      </div>
+
+      <!-- Factura -->
+      <div class="col-md-4 mb-3">
+        <label for="factura" class="form-label">Factura</label>
+        <p-dropdown
+          id="factura"
+          formControlName="ct_factura_id"
+          [options]="facturas"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Seleccionar factura"
+          [filter]="true"
+          filterBy="label"
+          [showClear]="true"
+          styleClass="w-100"
+          [ngClass]="{
+            'ng-invalid ng-dirty':
+              inventoryForm.get('ct_factura_id')?.invalid &&
+              inventoryForm.get('ct_factura_id')?.touched
+          }"
+        ></p-dropdown>
+        <small
+          class="text-danger"
+          *ngIf="
+            inventoryForm.get('ct_factura_id')?.invalid &&
+            inventoryForm.get('ct_factura_id')?.touched
+          "
+        >
+          Seleccione una factura
+        </small>
+      </div>
+    </div>
+
+
+    <!-- Fecha -->
+    <div class="col-md-6 mb-3">
+      <label for="fecha" class="form-label me-1">Fecha</label>
+      <p-calendar
+        id="fecha"
+        formControlName="fecha"
+        [showIcon]="true"
+        dateFormat="dd/mm/yy"
+        [ngClass]="{
+          'ng-invalid ng-dirty':
+            inventoryForm.get('fecha')?.invalid &&
+            inventoryForm.get('fecha')?.touched
+        }"
+      ></p-calendar>
+      <small
+        class="text-danger"
+        *ngIf="
+          inventoryForm.get('fecha')?.invalid &&
+          inventoryForm.get('fecha')?.touched
+        "
+      >
+        La fecha es requerida
+      </small>
+    </div>
+
+    <!-- Nuevo campo específico para reposición de stock -->
+    <div class="mb-3" *ngIf="isStockReplenishment">
+      <label for="replenishQuantity" class="form-label"
+        >Cantidad a reponer</label
+      >
+      <input
+        type="number"
+        id="replenishQuantity"
+        formControlName="replenishQuantity"
+        class="form-control"
+        placeholder="Ingrese la cantidad a añadir al stock"
+        min="1"
+      />
+      <small class="text-info" *ngIf="statusMessage">{{ statusMessage }}</small>
+    </div>
+
+    <!-- Form buttons -->
+    <div class="d-flex justify-content-end mt-4">
+      <button
+        type="button"
+        class="btn btn-outline-secondary me-2"
+        (click)="onCancel()"
+      >
+        <i class="bi bi-x-circle me-1"></i> Cancelar
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="submitting || inventoryForm.invalid"
+      >
+        <span
+          *ngIf="submitting"
+          class="spinner-border spinner-border-sm me-1"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        <i *ngIf="!submitting" class="bi bi-check-circle me-1"></i>
+        {{ submitting ? "Procesando..." : editMode ? "Actualizar" : "Guardar" }}
+      </button>
+    </div>
+  </form>
+</div>

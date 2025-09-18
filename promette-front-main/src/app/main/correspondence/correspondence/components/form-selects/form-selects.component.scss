@@ -1,0 +1,94 @@
+/*FORM-SELECTS - RESPONSIVO*/
+
+/* Diseño responsivo para dispositivos móviles/tablet */
+@media (max-width: 991px) {
+  /* Hacer que el contenedor se apile */
+  .d-flex.w-100.justify-content-center.gap-3 {
+    flex-direction: column !important;
+    gap: 1rem !important;
+
+    .col-md-3 {
+      width: 100% !important;
+      margin-bottom: 0.5rem !important;
+    }
+  }
+
+  /* Labels más pequeños */
+  .form-label {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+
+    @media (max-width: 576px) {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Controles más compactos */
+  .form-select,
+  .form-control {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+
+    @media (max-width: 576px) {
+      font-size: 0.75rem;
+      padding: 0.375rem;
+    }
+  }
+
+  /* Botón buscar */
+  .text-center.mt-3 {
+    margin-top: 1rem !important;
+
+    button {
+      width: 100%;
+      max-width: 300px;
+
+      @media (max-width: 576px) {
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  /* Padding del contenedor */
+  .container {
+    padding: 1rem 0.5rem;
+
+    @media (max-width: 576px) {
+      padding: 0.75rem 0.25rem;
+    }
+  }
+
+  .py-3 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+
+    @media (max-width: 576px) {
+      padding-top: 0.75rem !important;
+      padding-bottom: 0.75rem !important;
+    }
+  }
+}
+
+/*TABLET - Ajuste: todas las columnas a ancho completo para uniformidad*/
+@media (min-width: 576px) and (max-width: 991px) {
+  .d-flex.w-100.justify-content-center.gap-3 {
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    .col-md-3 {
+      width: 100% !important;
+    }
+  }
+  .text-center.mt-3 {
+    margin-top: 1.5rem !important;
+  }
+}
+
+/* Extra breakpoint: hasta 1180px seguimos mostrando cada filtro a 100% */
+@media (min-width: 992px) and (max-width: 1180px) {
+  .d-flex.w-100.justify-content-center.gap-3 {
+    flex-direction: column !important;
+    .col-md-3 {
+      width: 100% !important;
+    }
+  }
+}

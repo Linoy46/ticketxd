@@ -1,0 +1,58 @@
+<!-- Modal de inactividad -->
+<div
+  class="modal fade"
+  id="inactivityModal"
+  tabindex="-1"
+  aria-labelledby="inactivityModalLabel"
+  aria-hidden="true"
+>
+  <!-- ID para referirse al modal en el componente TypeScript -->
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Encabezado del modal -->
+      <div class="modal-header">
+        <!-- Título del modal -->
+        <h5 class="modal-title" id="inactivityModalLabel">
+          Inactividad detectada
+        </h5>
+      </div>
+
+      <!-- Cuerpo del modal -->
+      <div class="modal-body">
+        <!-- Mensaje informativo sobre la inactividad -->
+        Has estado inactivo durante un tiempo. ¿Deseas continuar?
+
+        <!-- Barra de progreso que indica el tiempo restante -->
+        <div class="progress mt-3">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            [style.width.%]="progress"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            Cierre de sesión
+          </div>
+        </div>
+      </div>
+
+      <!-- Pie del modal con botones de acción -->
+      <div class="modal-footer">
+        <!-- Botón para cancelar la acción y cerrar sesión -->
+        <button type="button" class="btn btn-primary" (click)="logOut()">
+          No
+        </button>
+
+        <!-- Botón para renovar la sesión -->
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          (click)="renewSession()"
+        >
+          Sí
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

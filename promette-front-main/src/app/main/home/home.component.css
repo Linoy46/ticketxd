@@ -1,0 +1,232 @@
+/* Variables de color */
+:root {
+  --primary-color: #a11a5c;
+  --secondary-color: #422b7c;
+  --accent-color: #ce93d8;
+  --light-bg: #f8f9fa;
+  --dark-bg: #343a40;
+  --text-color: #333;
+  --text-light: #6c757d;
+  --border-color: #dee2e6;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --header-bg: #a11a5c;
+}
+
+/* Estilos generales */
+.home-container {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: var(--text-color);
+  max-width: 100%;
+  overflow-x: hidden;
+  letter-spacing: -0.02em;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Estilos para el header de bienvenida con color sólido */
+.welcome-header {
+  position: relative;
+  height: 300px;
+  background-color: var(--header-bg);
+  background-image: none;
+  color: #422b7c;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.welcome-header .overlay {
+  display: none;
+}
+
+.welcome-content {
+  position: relative;
+  z-index: 2;
+  padding: 2rem;
+}
+
+.welcome-title {
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+  text-shadow: none;
+  letter-spacing: -0.03em;
+}
+
+.welcome-subtitle {
+  font-size: 1.6rem;
+  font-weight: 300;
+  margin-bottom: 2rem;
+  text-shadow: none;
+}
+
+.welcome-message {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.last-login {
+  display: block;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  opacity: 0.8;
+}
+
+/* Estilos de las secciones */
+section {
+  margin-bottom: 4rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.03em;
+}
+
+.divider-purple {
+  width: 60px;
+  height: 3px;
+  background-color: var(--primary-color);
+  margin: 0 auto;
+  border: none;
+}
+.about-content {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Sección Características */
+.features-container {
+  margin-top: 3rem;
+}
+
+.feature-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.8rem;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: none;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1.25rem;
+  height: 70px;
+  width: 70px;
+  background-color: rgba(161, 26, 92, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-card h4 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+.feature-card p {
+  color: var(--text-light);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .welcome-header {
+    height: 250px;
+  }
+
+  .welcome-title {
+    font-size: 2.2rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 1.3rem;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+  }
+
+  .about-content {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .welcome-title {
+    font-size: 1.8rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .feature-icon {
+    font-size: 2rem;
+    height: 60px;
+    width: 60px;
+  }
+}
+
+/* Estilos para PrimeNG */
+:host ::ng-deep .p-button {
+  font-weight: 600;
+}
+
+:host ::ng-deep .p-button-raised {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+:host ::ng-deep .p-button-sm {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+:host ::ng-deep .p-card {
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+}
+
+:host ::ng-deep .p-card .p-card-header {
+  padding: 0;
+}
+
+:host ::ng-deep .p-card .p-card-content {
+  padding: 1rem;
+}
+
+.h-80 {
+  height: 84%;
+}

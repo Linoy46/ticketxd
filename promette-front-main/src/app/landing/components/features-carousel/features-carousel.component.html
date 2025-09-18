@@ -1,0 +1,34 @@
+<section class="features-section">
+  <div class="features-container">
+    <h2 class="section-title" @fadeIn>Nuestras Características</h2>
+
+    <div class="carousel-container">
+      <div class="feature-carousel"
+           #carousel
+           (mousedown)="onMouseDown($event)"
+           (mousemove)="onMouseMove($event)"
+           (mouseup)="onMouseUp()"
+           (mouseleave)="onMouseLeave()"
+           (touchstart)="onTouchStart($event)"
+           (touchmove)="onTouchMove($event)"
+           (touchend)="onTouchEnd()">
+        <div class="feature-card"
+             *ngFor="let feature of features"
+             @fadeIn>
+          <div class="feature-content">
+            <div class="feature-icon">
+              <i [class]="feature.icon"></i>
+            </div>
+            <h3 class="feature-title">{{feature.title}}</h3>
+            <p class="feature-description">{{feature.description}}</p>
+          </div>
+          <div class="feature-footer">
+            <a class="learn-more-link">
+              Leer más <i class="pi pi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,130 @@
+.confirmation-modal {
+  text-align: center;
+  padding: 1rem;
+
+  .text-success {
+    color: #10b981 !important;
+  }
+
+  .text-danger {
+    color: #ef4444 !important;
+  }
+
+  .btn-success {
+    background-color: #10b981;
+    border-color: #10b981;
+
+    &:hover {
+      background-color: #059669;
+      border-color: #059669;
+    }
+  }
+
+  .btn-outline-success {
+    color: #10b981;
+    border-color: #10b981;
+
+    &:hover {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: #059669;
+    }
+  }
+
+  .btn-danger {
+    background-color: #ef4444;
+    border-color: #ef4444;
+
+    &:hover {
+      background-color: #dc2626;
+      border-color: #dc2626;
+    }
+  }
+
+  .btn-outline-danger {
+    color: #ef4444;
+    border-color: #ef4444;
+
+    &:hover {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #dc2626;
+    }
+  }
+}
+
+.confirmation-modal i {
+  margin-bottom: 1rem;
+  animation: fadeInScale 0.5s ease-out;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.text-success, .btn-success {
+  color: #28a745 !important;
+}
+
+.text-danger, .btn-danger {
+  color: #dc3545 !important;
+}
+
+.btn {
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  min-width: 160px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn i {
+  margin: 0;
+  animation: none;
+}
+
+.bi-exclamation-triangle {
+  font-size: 3rem;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+
+  &:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+  }
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+
+  &:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+  }
+}
+
+// Custom spinner styles
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  color: #9c27b0;
+}

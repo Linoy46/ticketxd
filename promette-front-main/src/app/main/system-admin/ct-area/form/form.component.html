@@ -1,0 +1,96 @@
+<div class="container py-3">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- Form Header -->
+    <h3 class="text-center text-secondary">Gestión de Áreas</h3>
+
+    <!-- Nombre Area Input Group -->
+    <div class="mb-4 mt-4">
+      <p-inputgroup>
+        <p-floatlabel>
+          <input
+            pInputText
+            formControlName="nombre_area"
+            id="nombre_area"
+            [ngClass]="{
+              'is-invalid':
+                form.get('nombre_area')?.invalid &&
+                form.get('nombre_area')?.touched
+            }"
+            class="form-control"
+          />
+          <label for="nombre_area">Nombre del Área</label>
+        </p-floatlabel>
+      </p-inputgroup>
+      <div
+        *ngIf="
+          form.get('nombre_area')?.invalid && form.get('nombre_area')?.touched
+        "
+        class="invalid-feedback d-block"
+      >
+        El nombre es requerido.
+      </div>
+    </div>
+
+    <!-- Departamento Autocomplete -->
+    <div class="mb-4">
+      <p-floatlabel>
+
+      <p-autocomplete
+        formControlName="ct_departamento"
+        [suggestions]="filteredDepartments"
+        (completeMethod)="filterDepartment($event)"
+        optionLabel="Pertenece al departamento"
+        [dropdown]="true"
+        field="nombre_departamento"
+        (onSelect)="onDepartmentSelect($event)"
+        [style]="{'width':'100%'}"
+        [inputStyle]="{'width':'100%'}"
+      />
+      <label for="over_label">Departamento del área</label>
+    </p-floatlabel>
+    </div>
+
+    <!-- Área Autocomplete de tipo hide que guarda el ID del area -->
+    <div class="mb-4" [hidden]="true">
+      <p-autocomplete
+        formControlName="ct_area_id"
+        [suggestions]="filteredDepartments"
+        (completeMethod)="filterDepartment($event)"
+        field="nombre_departamento"
+        (onSelect)="onDepartmentSelect($event)"
+      />
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+      <button
+        type="button"
+        class="btn btn-outline-secondary w-25 fw-bold"
+        (click)="close()"
+      >
+        Cerrar
+      </button>
+      <div *ngIf="data?.mode !== 'view'" class="w-25">
+        <button
+          type="submit"
+          class="btn btn-primary w-100 fw-bold"
+          [disabled]="form.invalid && data?.mode !== 'view'"
+        >
+          {{
+            data?.mode === "add"
+              ? "Agregar"
+              : data?.mode === "edit"
+              ? "Guardar Cambios"
+              : "Ver"
+          }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Display Form Data for Debugging
+<div class="mt-4">
+  <pre>{{ form.value | json }}</pre>
+</div>
+-->

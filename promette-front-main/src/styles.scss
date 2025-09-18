@@ -1,0 +1,19 @@
+// Añadir al final del archivo
+
+/* Estilos para el modal de analistas */
+.analyst-modal .modal-dialog {
+  max-width: 500px; /* Ancho fijo para este tipo específico de modal */
+}
+
+.analyst-modal .modal-content {
+  overflow: hidden; /* Evitar desbordamiento de contenido */
+  border-radius: 8px;
+}
+
+/* Ajustes responsive para todos los modales */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 0.5rem;
+    max-width: calc(100% - 1rem);
+  }
+}

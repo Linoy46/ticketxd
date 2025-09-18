@@ -1,0 +1,144 @@
+<div class="container py-3">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- Form Header -->
+    <h3 class="text-center text-secondary mb-4">Asignación de Puestos</h3>
+
+    <!-- Puesto Autocomplete que muestra el nombre del puesto y nombre del área -->
+    <div class="mb-4">
+      <p-floatlabel>
+        <p-autoComplete
+          formControlName="ct_puesto"
+          [suggestions]="filteredPositions"
+          (completeMethod)="filterPosition($event)"
+          field="nombre_puesto"
+          (onSelect)="onPositionSelect($event)"
+          [dropdown]="true"
+          [style]="{ width: '100%' }"
+          [inputStyle]="{ width: '100%' }"
+        >
+          <ng-template let-pos pTemplate="item">
+            {{ pos.nombre_puesto }} - {{ pos.nombre_area }}
+          </ng-template>
+        </p-autoComplete>
+        <label for="over_label">Puesto</label>
+      </p-floatlabel>
+    </div>
+
+    <!-- Puesto Autocomplete de tipo oculto que guarda el ID del puesto -->
+    <div class="mb-4" [hidden]="true">
+      <p-autoComplete
+        formControlName="ct_puesto_id"
+        [suggestions]="filteredPositions"
+        (completeMethod)="filterPosition($event)"
+        field="nombre_puesto"
+        (onSelect)="onPositionSelect($event)"
+      />
+    </div>
+
+    <!-- Fechas -->
+    <div class="row">
+      <div class="col-6">
+        <p-datepicker
+          formControlName="periodo_inicio"
+          showIcon="true"
+          placeholder="Fecha de inicio"
+          [style]="{ width: '100%' }"
+        ></p-datepicker>
+      </div>
+
+      <div class="col-6">
+        <p-datepicker
+          formControlName="periodo_final"
+          showIcon="true"
+          placeholder="Fecha de finalización (Dejar vacio si está activo)"
+          [style]="{ width: '100%' }"
+        ></p-datepicker>
+      </div>
+    </div>
+
+    <!-- Plaza -->
+    <div class="mb-4 mt-4">
+      <p-inputgroup>
+        <p-floatlabel>
+          <input
+            pInputText
+            formControlName="plaza"
+            id="plaza"
+            [ngClass]="{
+              'is-invalid':
+                form.get('plaza')?.invalid && form.get('plaza')?.touched
+            }"
+            class="form-control"
+          />
+          <label for="plaza">Tipo de Plaza</label>
+        </p-floatlabel>
+      </p-inputgroup>
+      <div
+        *ngIf="
+          form.get('plaza')?.invalid && form.get('plaza')?.touched
+        "
+        class="invalid-feedback d-block"
+      >
+        La plaza es requerida.
+      </div>
+    </div>
+
+    <!-- Sindicato Autocomplete que muestra el nombre del sindicato -->
+    <div class="mb-4">
+      <p-floatlabel>
+        <p-autoComplete
+          formControlName="ct_sindicato"
+          [suggestions]="filteredSindicates"
+          (completeMethod)="filterSindicate($event)"
+          field="nombre_sindicato"
+          (onSelect)="onSindicateSelect($event)"
+          [dropdown]="true"
+          [style]="{ width: '100%' }"
+          [inputStyle]="{ width: '100%' }"
+        >
+          <ng-template let-sind pTemplate="item">
+            {{ sind.nombre_sindicato }}
+          </ng-template>
+        </p-autoComplete>
+        <label for="over_label">Nombre del sindicato</label>
+      </p-floatlabel>
+    </div>
+
+    <!-- Sindicato Autocomplete oculto que guarda el ID -->
+    <div class="mb-4" [hidden]="true">
+      <p-autoComplete
+        formControlName="ct_sindicato_id"
+        [suggestions]="filteredSindicates"
+        (completeMethod)="filterSindicate($event)"
+        field="nombre_sindicato"
+        (onSelect)="onSindicateSelect($event)"
+      />
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="d-flex justify-content-between mt-4">
+      <button
+        type="button"
+        class="btn btn-outline-secondary w-25 fw-bold"
+        (click)="close()"
+      >
+        Cerrar
+      </button>
+      <div *ngIf="data?.mode !== 'view'" class="w-25">
+        <button
+          type="submit"
+          class="btn btn-primary w-100 fw-bold"
+          [disabled]="form.invalid && data?.mode !== 'view'"
+        >
+          {{
+            data?.mode === "add"
+              ? "Agregar"
+              : data?.mode === "edit"
+              ? "Guardar Cambios"
+              : "Ver"
+          }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

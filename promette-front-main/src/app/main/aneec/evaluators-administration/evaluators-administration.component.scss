@@ -1,0 +1,563 @@
+// Estilos específicos para el componente
+.card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin-bottom: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem 0.5rem 0 0;
+  background-color: #9c27b0;
+  color: white;
+
+  // Force all text inside the purple header to be white
+  &,
+  * {
+    color: #fff !important;
+  }
+}
+
+.card-title {
+  margin-bottom: 0.5rem;
+  color: white;
+  font-weight: 600;
+}
+
+.card-description {
+  margin-bottom: 0;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-footer {
+  padding: 1.5rem;
+  background-color: transparent;
+}
+
+// Header styles
+.header {
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    color: #a11a5c;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+.table {
+  th {
+    background-color: #e9ddff;
+    color: #422b7c;
+    font-weight: 600;
+    padding: 1rem;
+  }
+
+  td {
+    padding: 1rem;
+    vertical-align: middle;
+  }
+
+  tr:hover {
+    background-color: #fdf7ff;
+  }
+}
+
+// Estilos de los botones
+.btn-primary {
+  background-color: #a11a5c;
+  border-color: #a11a5c;
+  color: white;
+
+  &:hover {
+    background-color: #801548;
+    border-color: #801548;
+  }
+
+  &:disabled {
+    background-color: #d88aaa;
+    border-color: #d88aaa;
+  }
+}
+
+.btn-outline-secondary {
+  border-color: #d1d5db;
+  color: #4b5563;
+
+  &:hover {
+    background-color: #f3f4f6;
+    color: #111827;
+  }
+}
+
+// Estilo para los dropdown
+.dropdown-menu {
+  padding: 0.5rem 0;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+
+  &:hover {
+    background-color: rgba(156, 39, 176, 0.1);
+  }
+
+  &:active {
+    background-color: rgba(156, 39, 176, 0.2);
+  }
+}
+
+// Estilos para p-select de PrimeNG
+::ng-deep {
+  .p-select {
+    width: 100%;
+  }
+
+  .p-select .p-select-label {
+    font-weight: normal;
+  }
+
+  .p-select-panel {
+    .p-select-items {
+      padding: 0.5rem 0;
+    }
+
+    .p-select-item {
+      padding: 0.5rem 1rem;
+
+      &:hover {
+        background-color: rgba(156, 39, 176, 0.1);
+      }
+
+      &.p-highlight {
+        background-color: rgba(156, 39, 176, 0.2);
+        color: #333;
+      }
+
+      .partida-item {
+        .fw-medium {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .p-select-filter-container {
+    padding: 0.5rem;
+
+    .p-select-filter {
+      padding: 0.5rem;
+    }
+  }
+
+  // Estilos para p-dropdown de PrimeNG
+  .p-dropdown {
+    width: 100%;
+
+    .p-dropdown-label {
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .p-dropdown-panel {
+      .p-dropdown-items {
+        padding: 0.5rem 0;
+      }
+
+      .p-dropdown-item {
+        padding: 0.75rem 1rem;
+
+        &:hover {
+          background-color: rgba(156, 39, 176, 0.1);
+        }
+
+        &.p-highlight {
+          background-color: rgba(156, 39, 176, 0.2);
+          color: #333;
+        }
+      }
+    }
+
+    .p-dropdown-filter-container {
+      padding: 0.5rem;
+
+      .p-dropdown-filter {
+        padding: 0.5rem;
+        width: 100%;
+      }
+    }
+
+    // Fix for selected item display
+    .producto-seleccionado,
+    .producto-item {
+      padding: 4px 0;
+      white-space: normal;
+      word-break: break-word;
+    }
+  }
+}
+
+// Estilos para la tabla de productos
+.producto-info {
+  display: flex;
+  flex-direction: column;
+
+  .producto-descripcion {
+    font-weight: 500;
+  }
+
+  .producto-folio {
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+}
+
+// Estilos para la partida en dropdown y tabla
+.partida-item,
+.partida-info {
+  display: flex;
+  flex-direction: column;
+}
+
+// Style for factura items in dropdown and table
+.factura-item,
+.factura-info {
+  display: flex;
+  flex-direction: column;
+
+  .fw-medium {
+    font-weight: 500;
+  }
+}
+
+// Estilo para el input de cantidad en la tabla
+.cantidad-input {
+  min-width: 60px;
+  text-align: center;
+
+  // Remove arrows from number input
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  // Firefox and standard property for all browsers
+  & {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  // Style focus state
+  &:focus {
+    border-color: #9c27b0;
+    box-shadow: 0 0 0 0.2rem rgba(156, 39, 176, 0.25);
+  }
+
+  // Style for invalid state
+  &.is-invalid {
+    border-color: #dc3545;
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+  }
+}
+
+// Container for quantity controls and error message
+.quantity-container {
+  position: relative;
+  padding-bottom: 30px; // Increased padding for the error message
+  min-height: 70px; // Ensure minimum height for the container
+}
+
+// Improved error message styling with better positioning
+.inventory-error-message {
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  color: #dc3545;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-top: 6px;
+  padding-top: 5px; // Add padding at top
+  padding-left: 2px;
+
+  // Improved text wrapping for longer messages
+  white-space: normal;
+  overflow: visible;
+  text-overflow: initial; // Allow text to display fully
+  height: auto; // Let height adjust to content
+  min-width: 150px; // Ensure minimum width
+  max-width: 250px; // But not too wide
+  word-wrap: break-word; // Ensure long words wrap
+
+  // Clear spacing to avoid overlapping with controls
+  clear: both;
+  display: block;
+}
+
+// Error message styling
+.text-danger.small {
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
+
+// Ajustes responsive
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+
+  .card-footer {
+    padding: 1rem;
+  }
+}
+
+// Utility class for max width
+.max-w-7xl {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+}
+
+// Estilos para los tabs de Bootstrap
+:host ::ng-deep .nav-tabs {
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  background-color: #f8f9fa;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+:host ::ng-deep .nav-link {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  margin-right: 0.25rem;
+  color: #495057;
+
+  &.active {
+    background-color: white;
+    color: #422b7c;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+}
+
+@media (max-width: 900px) {
+  .evaluators-grid-container {
+    height: 70vh;
+    min-height: 420px;
+    padding: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+  ag-grid-angular.evaluators-grid {
+    height: 100%;
+    width: 100%;
+    display: block;
+  }
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-center-cols-viewport {
+    width: 360px !important;
+    max-width: 360px !important;
+    overflow-x: auto !important;
+  }
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-center-cols-container {
+    min-width: max-content !important;
+  }
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-header-cell,
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-cell {
+    min-width: 120px !important;
+    max-width: 120px !important;
+    width: 120px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-cell {
+    padding: 3px 4px !important;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+  }
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-header-cell {
+    padding: 3px 4px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+  }
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-paging-panel {
+    width: 100% !important;
+    padding: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    font-size: 12px !important;
+  }
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-paging-panel > * {
+    flex-shrink: 0;
+  }
+}
+
+/* Contenedor base similar a patient*/
+.grid-container {
+  width: 100%;
+  height: 60vh;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.grid-responsive {
+  width: 100%;
+  height: 100%;
+}
+
+/* Footer y ajustes responsivos equivalentes a patient*/
+@media (min-width: 768px) and (max-width: 1024px) {
+  .grid-container {
+    height: 65vh;
+    min-height: 500px;
+  }
+  .grid-responsive {
+    min-width: 600px; /* mismo ancho de scroll que patient tablet */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  :host ::ng-deep .evaluators-admin-grid.ag-theme-quartz .ag-paging-panel {
+    width: 100% !important;
+    padding: 8px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+  :host ::ng-deep .evaluators-admin-grid.ag-theme-quartz .ag-paging-panel > * {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    height: 70vh;
+    min-height: 420px;
+    padding: 0;
+    border-radius: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+  .grid-responsive {
+    min-width: 600px; /* permite scroll horizontal igual que patient */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  :host ::ng-deep .evaluators-admin-grid.ag-theme-quartz {
+    .ag-cell {
+      padding: 4px 6px !important;
+      font-size: 12px !important;
+      line-height: 1.2 !important;
+    }
+    .ag-header-cell {
+      padding: 4px 6px !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
+    }
+    .ag-row {
+      min-height: 40px !important;
+    }
+    .ag-paging-panel {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 8px !important;
+      font-size: 12px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+    }
+    .ag-paging-panel > * {
+      flex-shrink: 0;
+    }
+    .ag-paging-button {
+      padding: 4px 8px !important;
+      font-size: 12px !important;
+    }
+    .ag-body-horizontal-scroll {
+      height: 12px !important;
+    }
+    .ag-horizontal-left-spacer,
+    .ag-horizontal-right-spacer {
+      min-width: 8px !important;
+    }
+  }
+}
+
+/* Tablets: solo 3 columnas visibles (150px c/u = 450px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .evaluators-grid-container {
+    height: 65vh;
+    min-height: 500px;
+    padding: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+  ag-grid-angular.evaluators-grid {
+    height: 100%;
+    width: 100%;
+    display: block;
+  }
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-center-cols-viewport {
+    width: 480px !important;
+    max-width: 480px !important;
+    overflow-x: auto !important;
+  }
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-center-cols-container {
+    min-width: max-content !important;
+  }
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-header-cell,
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-cell {
+    min-width: 160px !important;
+    max-width: 160px !important;
+    width: 160px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-cell {
+    padding: 5px 8px !important;
+    font-size: 12px !important;
+  }
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-header-cell {
+    padding: 6px 8px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+  }
+  :host ::ng-deep ag-grid-angular.evaluators-grid .ag-paging-panel {
+    width: 100% !important;
+    padding: 10px !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 8px !important;
+  }
+}

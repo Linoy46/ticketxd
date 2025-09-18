@@ -1,0 +1,33 @@
+<header class="header text-center text-secondary mb-4">
+  <h1>Módulos</h1>
+</header>
+
+<div class="actions-bar mb-3">
+  <button (click)="add()" class="btn btn-secondary">
+    <i class="bi bi-plus-circle"></i> Agregar módulo
+  </button>
+</div>
+
+<div class="grid-container aligned-with-button" *ngIf="rowData.length > 0">
+  <ag-grid-angular
+    class="ag-theme-quartz grid-responsive"
+    style="
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    "
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [gridOptions]="gridOptions"
+    [pagination]="true"
+    [theme]="myTheme"
+  >
+  </ag-grid-angular>
+</div>
+
+<h4 *ngIf="rowData.length == 0" class="text-center text-muted fw-lighter">
+  Sin registros
+</h4>
+
+<shared-custom-modal-component></shared-custom-modal-component>

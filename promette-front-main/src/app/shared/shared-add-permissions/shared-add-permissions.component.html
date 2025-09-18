@@ -1,0 +1,11 @@
+<div class="card">
+  <p-tree
+    [value]="files"
+    selectionMode="checkbox"
+    styleClass="w-full md:w-[30rem]"
+    [(selection)]="selectedFiles"
+  >
+  </p-tree>
+</div>
+
+<button class="btn btn-primary py-0" (click)="onSubmmit()">Guardar</button>

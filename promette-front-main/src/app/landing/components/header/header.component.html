@@ -1,0 +1,31 @@
+<header class="sticky-header" @slideDown>
+  <nav class="nav-container">
+    <div class="logo-section">
+      <a [routerLink]="['/']" class="logo-link">
+        <span class="sr-only">PROMETTE</span>
+        <div class="logo-image"></div>
+      </a>
+    </div>
+
+    <div class="nav-links">
+      <a (click)="scrollToSection('features')"
+         class="nav-link">
+        Características
+      </a>
+      <a (click)="scrollToSection('portfolio')"
+         class="nav-link">
+        Portafolio
+      </a>
+      <a (click)="scrollToSection('contact')"
+         class="nav-link">
+        Contacto
+      </a>
+    </div>
+
+    <div class="actions-container">
+      <a routerLink="/auth/login" class="learn-more-link">
+        Iniciar Sesión <i class="pi pi-arrow-right"></i>
+      </a>
+    </div>
+  </nav>
+</header>

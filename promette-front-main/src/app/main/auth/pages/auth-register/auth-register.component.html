@@ -1,0 +1,293 @@
+<div class="iu-login-container">
+  <div class="iu-login-box">
+    <div class="iu-logo text-center mb-3">
+      <img src="img/Logos/PROMETTE_LOGO.png" class="img-fluid" alt="Promette" />
+    </div>
+
+    <div class="iu-tabs text-center mb-4">
+      <button class="iu-tab active">Registrarse</button>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="iu-form">
+      <!-- Nombre de usuario -->
+      <div class="iu-form-group">
+        <p-floatLabel>
+          <input
+            pInputText
+            id="nombre_usuario"
+            formControlName="nombre_usuario"
+          />
+          <label for="nombre_usuario">Nombre de usuario</label>
+        </p-floatLabel>
+        <small
+          class="error-message"
+          *ngIf="
+            registerForm.get('nombre_usuario')?.invalid &&
+            registerForm.get('nombre_usuario')?.touched
+          "
+        >
+          Nombre es requerido
+        </small>
+      </div>
+
+      <!-- Email -->
+      <div class="iu-form-group">
+        <p-floatLabel>
+          <input pInputText id="email" formControlName="email" type="email" />
+          <label for="email">Correo electrónico</label>
+        </p-floatLabel>
+        <small
+          class="error-message"
+          *ngIf="
+            registerForm.get('email')?.invalid &&
+            registerForm.get('email')?.touched
+          "
+        >
+          {{
+            registerForm.get("email")?.hasError("required")
+              ? "Email requerido"
+              : "Formato inválido"
+          }}
+        </small>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="iu-form-group">
+        <p-floatLabel>
+          <input
+            pInputText
+            id="telefono"
+            formControlName="telefono"
+            type="tel"
+          />
+          <label for="telefono">Teléfono</label>
+        </p-floatLabel>
+        <small
+          class="error-message"
+          *ngIf="
+            registerForm.get('telefono')?.invalid &&
+            registerForm.get('telefono')?.touched
+          "
+        >
+          Teléfono requerido
+        </small>
+      </div>
+
+      <!-- CURP -->
+      <div class="iu-form-group">
+        <p-floatLabel>
+          <input pInputText id="curp" formControlName="curp" />
+          <label for="curp">CURP</label>
+        </p-floatLabel>
+        <small
+          class="error-message"
+          *ngIf="
+            registerForm.get('curp')?.invalid &&
+            registerForm.get('curp')?.touched
+          "
+        >
+          {{
+            registerForm.get("curp")?.hasError("required")
+              ? "CURP requerido"
+              : "CURP inválido"
+          }}
+        </small>
+      </div>
+
+      <!-- Campo Contraseña -->
+      <div class="form-group auth-register-password">
+        <p-floatLabel variant="on">
+          <p-password
+            #passwordComponent
+            id="contrasena"
+            formControlName="contrasena"
+            [(ngModel)]="value"
+            [feedback]="true"
+            [toggleMask]="true"
+            styleClass="w-full password-panel"
+            [appendTo]="'body'"
+            [style]="{ width: '100%' }"
+            [inputStyleClass]="
+              registerForm.get('contrasena')?.invalid &&
+              registerForm.get('contrasena')?.touched
+                ? 'ng-invalid ng-dirty'
+                : ''
+            "
+            autocomplete="off"
+          >
+            <ng-template pTemplate="header">
+              <div class="font-semibold text-xm mb-4">
+                Elige una contraseña segura
+              </div>
+            </ng-template>
+            <ng-template pTemplate="content">
+              <div class="px-2 py-1">
+                <div class="my-2">
+                  Fortaleza de la contraseña: {{ calculateStrength(value) }}%
+                </div>
+                <p-progressBar
+                  [value]="calculateStrength(value)"
+                  [showValue]="false"
+                  [styleClass]="
+                    calculateStrength(value) < 40
+                      ? 'bg-red-500'
+                      : calculateStrength(value) < 80
+                      ? 'bg-yellow-500'
+                      : 'bg-green-500'
+                  "
+                ></p-progressBar>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+              <p-divider></p-divider>
+              <ul class="pl-2 ml-2 my-0 leading-normal">
+                <!-- Validación minúscula -->
+                <li class="flex items-center mb-2">
+                  <i
+                    [class]="
+                      !registerForm.get('contrasena')?.hasError('lowercase')
+                        ? 'pi pi-check text-green-500'
+                        : 'pi pi-times text-red-500'
+                    "
+                    class="mr-2"
+                  ></i>
+                  <span
+                    [class]="
+                      !registerForm.get('contrasena')?.hasError('lowercase')
+                        ? 'text-green-500'
+                        : 'text-red-500'
+                    "
+                    >Al menos una letra minúscula</span
+                  >
+                </li>
+
+                <!-- Validación mayúscula -->
+                <li class="flex items-center mb-2">
+                  <i
+                    [class]="
+                      !registerForm.get('contrasena')?.hasError('uppercase')
+                        ? 'pi pi-check text-green-500'
+                        : 'pi pi-times text-red-500'
+                    "
+                    class="mr-2"
+                  ></i>
+                  <span
+                    [class]="
+                      !registerForm.get('contrasena')?.hasError('uppercase')
+                        ? 'text-green-500'
+                        : 'text-red-500'
+                    "
+                    >Al menos una letra mayúscula</span
+                  >
+                </li>
+
+                <!-- Validación número -->
+                <li class="flex items-center mb-2">
+                  <i
+                    [class]="
+                      !registerForm.get('contrasena')?.hasError('number')
+                        ? 'pi pi-check text-green-500'
+                        : 'pi pi-times text-red-500'
+                    "
+                    class="mr-2"
+                  ></i>
+                  <span
+                    [class]="
+                      !registerForm.get('contrasena')?.hasError('number')
+                        ? 'text-green-500'
+                        : 'text-red-500'
+                    "
+                    >Al menos un número</span
+                  >
+                </li>
+
+                <!-- Validación longitud -->
+                <li class="flex items-center">
+                  <i
+                    [class]="
+                      value.length >= 8
+                        ? 'pi pi-check text-green-500'
+                        : 'pi pi-times text-red-500'
+                    "
+                    class="mr-2"
+                  ></i>
+                  <span
+                    [class]="
+                      value.length >= 8 ? 'text-green-500' : 'text-red-500'
+                    "
+                    >Mínimo 8 caracteres</span
+                  >
+                </li>
+              </ul>
+            </ng-template>
+          </p-password>
+          <label for="contrasena">Contraseña</label>
+        </p-floatLabel>
+        <!-- Mensajes de error generales -->
+        <div
+          *ngIf="
+            registerForm.get('contrasena')?.invalid &&
+            (registerForm.get('contrasena')?.dirty ||
+              registerForm.get('contrasena')?.touched)
+          "
+          class="text-sm text-red-600 mt-1"
+        >
+          <div *ngIf="registerForm.get('contrasena')?.errors?.['required']">
+            La contraseña es requerida
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirmar Contraseña -->
+      <div class="form-group mt-4">
+        <p-floatLabel variant="on">
+          <p-password
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            [toggleMask]="true"
+            styleClass="w-100"
+            [inputStyleClass]="
+              registerForm.get('confirmPassword')?.invalid &&
+              registerForm.get('confirmPassword')?.touched
+                ? 'ng-invalid ng-dirty'
+                : ''
+            "
+            [feedback]="false"
+          ></p-password>
+          <label for="confirmPassword">Confirmar Contraseña</label>
+        </p-floatLabel>
+        <div
+          *ngIf="
+            registerForm.get('confirmPassword')?.invalid &&
+            registerForm.get('confirmPassword')?.touched
+          "
+          class="text-sm text-red-600 mt-1"
+        >
+          <div
+            *ngIf="registerForm.get('confirmPassword')?.errors?.['required']"
+          >
+            Confirmar contraseña es requerida
+          </div>
+          <div
+            *ngIf="registerForm.get('confirmPassword')?.errors?.['mustMatch']"
+          >
+            Las contraseñas no coinciden
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón -->
+      <button
+        type="submit"
+        class="submit-button w-100 mt-3"
+        [disabled]="registerForm.invalid"
+      >
+        Registrarse
+      </button>
+
+      <div class="auth-links text-center mt-3">
+        <a routerLink="/auth/login">¿Ya tienes cuenta? Inicia sesión</a>
+      </div>
+    </form>
+  </div>
+</div>

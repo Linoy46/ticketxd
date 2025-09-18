@@ -1,0 +1,214 @@
+// Essential variables
+$color-rose: #a11a5c;
+$color-purple: #9c27b0;
+
+// Form container
+.inventory-form-container {
+  position: relative;
+  padding: 1.5rem;
+}
+
+// Loading overlay
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  border-radius: 0.5rem;
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+// Form elements
+.form-label {
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+// Primary button
+.btn-primary {
+  background-color: $color-purple;
+  color: white;
+  border: none;
+
+  &:hover {
+    background-color: darken($color-purple, 10%);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+  }
+}
+
+// Secondary button
+.btn-outline-secondary {
+  border-color: $color-rose;
+  color: $color-rose;
+  background-color: transparent;
+
+  &:hover:not(:disabled) {
+    background-color: rgba($color-rose, 0.1);
+    color: $color-rose;
+    border-color: $color-rose;
+  }
+}
+
+// Validation styles
+.invalid-feedback,
+.text-danger {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #dc3545;
+}
+
+// Header styling
+.header {
+  margin-bottom: 2rem;
+  h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    color: $color-rose; // Usando la variable
+    margin-bottom: 1.5rem;
+  }
+}
+
+// Card styling
+.card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+// PrimeNG styles
+:host ::ng-deep {
+  .p-inputtext,
+  .p-dropdown {
+    width: 100%;
+  }
+
+  .p-dropdown {
+    .p-dropdown-label {
+      padding: 0.75rem;
+    }
+  }
+
+  .p-button {
+    &.p-button-text {
+      color: #6b7280;
+      &:hover {
+        color: #111827;
+        background-color: #f3f4f6;
+      }
+    }
+  }
+
+  .p-inputnumber-buttons-stacked .p-button.p-inputnumber-button {
+    height: 1.75rem;
+  }
+
+  // Fix for input number alignment
+  .p-inputnumber {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .p-inputtext {
+      height: 38px; // Match standard Bootstrap form-control height
+      line-height: 1.5;
+      padding: 0.375rem 0.75rem;
+    }
+
+    .p-inputnumber-buttons-stacked .p-button.p-inputnumber-button {
+      height: 1.75rem;
+    }
+
+    // Ensure buttons don't disrupt alignment
+    .p-inputnumber-button-group {
+      display: flex;
+      height: 38px; // Match the input height
+    }
+  }
+
+  // Aumentar especificidad para dropdown
+  .p-dropdown {
+    &.ng-invalid.ng-dirty {
+      .p-dropdown-label {
+        border-color: #dc3545 !important;
+      }
+    }
+  }
+}
+
+// Botón de confirmación (reemplazando el verde por púrpura para consistencia)
+button.btn.btn-purple {
+  background-color: $color-purple !important;
+  color: white !important;
+  border: none;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  i {
+    font-size: 1rem;
+  }
+}
+
+// Botón de cancelar consistente con el color rosa
+button.btn.btn-outline-secondary {
+  border-color: $color-rose !important;
+  color: $color-rose !important;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover:not(:disabled) {
+    background-color: #f9e6ee !important;
+    color: $color-rose !important;
+    border-color: $color-rose !important;
+  }
+
+  &:active:not(:disabled) {
+    background-color: #f4d4e2 !important;
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed;
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+// Utility class for max width
+.max-w-7xl {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+}

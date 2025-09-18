@@ -1,0 +1,51 @@
+<div
+  #modalElement
+  class="modal fade"
+  tabindex="-1"
+  aria-labelledby="modalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl modal-dialog-centered custom-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">{{ title }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="close()"
+          aria-label="Cerrar"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- Mostrar PDF si existe pdfUrl -->
+        <ng-container *ngIf="pdfUrl">
+          <iframe
+            *ngIf="pdfUrl"
+            [src]="pdfUrl | safeUrl"
+            width="100%"
+            height="600px"
+            style="border: none"
+          ></iframe>
+        </ng-container>
+
+        <!-- Mostrar imagen si existe imageUrl -->
+        <ng-container *ngIf="imageUrl">
+          <img
+            *ngIf="imageUrl"
+            [src]="imageUrl"
+            alt="image"
+            style="width: 100%; height: auto"
+          />
+        </ng-container>
+
+        <!-- Contenedor para componentes dinámicos -->
+        <ng-container #contentContainer></ng-container>
+      </div>
+      <div *ngIf="imageUrl || pdfUrl" class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="close()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

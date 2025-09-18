@@ -1,0 +1,86 @@
+// Estilos para el componente de paginación personalizado
+
+.pagination-container {
+  padding: 0.75rem 1rem;
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+
+  .form-select {
+    width: auto;
+  }
+
+  .pagination-pages {
+    display: flex;
+    flex-wrap: wrap;
+
+    .btn {
+      min-width: 36px;
+      font-size: 0.85rem;
+      padding: 0.25rem 0.5rem;
+
+      &.btn-primary {
+        background-color: #a11a5c;
+        border-color: #a11a5c;
+        color: white;
+
+        &:hover {
+          background-color: darken(#a11a5c, 10%);
+          border-color: darken(#a11a5c, 10%);
+        }
+      }
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+
+  .pagination-info {
+    white-space: nowrap;
+  }
+}
+
+// Media queries para responsive
+@media (max-width: 768px) {
+  .pagination-container {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+
+    .pagination-pages {
+      order: 0;
+      margin-bottom: 0.5rem;
+
+      .btn {
+        min-width: 32px;
+        padding: 0.2rem 0.4rem;
+        margin: 0 0.1rem;
+        font-size: 0.8rem;
+      }
+    }
+
+    div:first-child {
+      order: 1;
+    }
+
+    .pagination-info {
+      order: 2;
+      text-align: center;
+      width: 100%;
+    }
+  }
+}
+
+// Para pantallas muy pequeñas, ajustar aún más los botones
+@media (max-width: 380px) {
+  .pagination-container {
+    .pagination-pages {
+      .btn {
+        min-width: 28px;
+        padding: 0.2rem;
+        margin: 0 0.05rem;
+        font-size: 0.75rem;
+      }
+    }
+  }
+}

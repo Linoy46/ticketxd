@@ -1,0 +1,180 @@
+// Botón con z index alto
+.tutorial-help-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1200;
+}
+@import "intro.js/introjs.css";
+
+.tutorial-btn {
+  position: fixed;
+  bottom: 65px;
+  right: 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  touch-action: none;
+
+  &:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  i {
+    font-size: 1.2em;
+  }
+}
+
+:host ::ng-deep {
+  // Estilos base para el tooltip
+  .introjs-tooltip {
+    max-width: 450px !important;
+    min-width: 400px !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 8px !important;
+    padding: 20px !important;
+    position: relative !important;
+  }
+
+  // Estilo para el resaltado
+  .intro-highlight {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border: 2px solid #3498db !important;
+    border-radius: 4px !important;
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.5) !important;
+  }
+
+  // Estilo para el botón de cerrar (X)
+  .introjs-skipbutton {
+    position: absolute !important;
+    right: 10px !important;
+    top: 10px !important;
+    width: 30px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    text-align: center !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    background: #e74c3c !important;
+    color: white !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+
+    &:hover {
+      background: #c0392b !important;
+      transform: rotate(90deg) !important;
+    }
+  }
+
+  // Estilos para el texto del tooltip
+  .introjs-tooltiptext {
+    color: #2c3e50 !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+    margin: 15px 0 20px !important;
+    text-align: center !important;
+  }
+
+  // Estilos para los botones de navegación
+  .introjs-tooltipbuttons {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    padding-top: 15px !important;
+    border-top: 1px solid #eee !important;
+
+    .introjs-button {
+      color: white !important;
+      border: none !important;
+      padding: 12px 20px !important;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      text-align: center !important;
+      border-radius: 6px !important;
+      transition: all 0.3s ease !important;
+      min-width: 120px !important;
+
+      &.introjs-prevbutton {
+        background-color: #95a5a6 !important;
+
+        &:hover {
+          background-color: #7f8c8d !important;
+        }
+      }
+
+      &.introjs-nextbutton {
+        background-color: #3498db !important;
+
+        &:hover {
+          background-color: #2980b9 !important;
+        }
+      }
+
+      &.introjs-disabled {
+        opacity: 0.5 !important;
+        cursor: not-allowed !important;
+        &:hover {
+          transform: none !important;
+        }
+      }
+
+      &:hover:not(.introjs-disabled) {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+      }
+    }
+  }
+
+  // Estilos para los bullets de navegación
+  .introjs-bullets {
+    margin: 15px 0 !important;
+    text-align: center !important;
+
+    ul {
+      display: inline-block !important;
+
+      li {
+        margin: 0 4px !important;
+
+        a {
+          width: 8px !important;
+          height: 8px !important;
+          background-color: #bdc3c7 !important;
+          border-radius: 50% !important;
+
+          &.active {
+            background-color: #3498db !important;
+          }
+        }
+      }
+    }
+  }
+
+  // Barra de progreso
+  .introjs-progress {
+    margin: 10px 0 !important;
+    height: 8px !important;
+    background-color: #f1f1f1 !important;
+    border-radius: 4px !important;
+
+    .introjs-progressbar {
+      background-color: #3498db !important;
+      border-radius: 4px !important;
+    }
+  }
+}

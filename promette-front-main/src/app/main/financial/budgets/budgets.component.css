@@ -1,0 +1,147 @@
+/* Estilos para el autocompletado */
+.dropdown-menu {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.dropdown-item:hover {
+  background-color: #e9ecef;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+/* Estilos para la tabla de archivos */
+.download-files-table .table {
+  margin-bottom: 0;
+}
+
+.download-files-table .table th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+}
+
+.download-files-table .table td {
+  vertical-align: middle;
+  padding: 1rem 0.75rem;
+}
+
+.download-files-table .badge {
+  font-size: 0.75rem;
+}
+
+/* Estilos para el input de búsqueda */
+.input-group .form-control:focus {
+  border-color: #6f42c1;
+  box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
+}
+
+/* Estilos para el botón de seleccionar área */
+.btn-primary {
+  background-color: #6f42c1;
+  border-color: #6f42c1;
+}
+
+.btn-primary:hover {
+  background-color: #5a32a3;
+  border-color: #5a32a3;
+}
+
+/* Estilos para los botones de descarga */
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.btn-success:disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+/* Animación para el dropdown */
+.dropdown-menu.show {
+  animation: fadeInDown 0.2s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para las pestañas */
+.nav-tabs .nav-link {
+  color: #6c757d;
+  border: none;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-tabs .nav-link.active {
+  color: #6f42c1;
+  background-color: transparent;
+  border-bottom: 2px solid #6f42c1;
+}
+
+.nav-tabs .nav-link:hover {
+  color: #6f42c1;
+  border-color: transparent;
+}
+
+/* Estilos para las tarjetas */
+.card-header.bg-purple {
+  background-color: #6f42c1 !important;
+}
+
+/* Estilos para los badges de financiamiento */
+.badge.bg-primary {
+  background-color: #007bff !important;
+}
+
+.badge.bg-info {
+  background-color: #17a2b8 !important;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+  color: #212529;
+}
+
+/* Estilos para el estado de área seleccionada */
+.badge.bg-success {
+  background-color: #28a745 !important;
+}
+
+/* Estilos para la información del usuario */
+.card-header.bg-info {
+  background-color: #17a2b8 !important;
+}
+
+/* Estilos para el texto de información */
+.text-muted {
+  color: #6c757d !important;
+}
+
+/* Estilos para el badge del tipo de usuario */
+.badge.bg-primary {
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+} 

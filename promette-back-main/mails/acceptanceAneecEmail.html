@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bienvenido a ANEEC</title>
+    <style>
+        @media only screen and (max-width: 600px) {
+            table {
+                width: 100% !important;
+            }
+            img {
+                max-width: 70% !important;
+                height: auto !important;
+                display: block;
+                margin: 10px auto;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .hero {
+                max-width: 100% !important;
+                height: auto !important;
+                display: block;
+                margin: 10px auto;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            } 
+
+            h1 {
+                font-size: 20px !important;
+            }
+            p {
+                font-size: 14px !important;
+            }
+            .logo-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+            <td align="center" style="padding: 20px 0;">
+                <div class="logo-container">
+                    <img src="https://remi.septlaxcala.gob.mx/img/Logos/Imagotipo-ANEEC.png" alt="Logo ANEEC" style="max-width: 300px; height: auto;">
+                    <!-- <img src="https://promette.septlaxcala.gob.mx/img/Logos/SEPE_USET.png" alt="Logo SEPE | USET" style="max-width: 600px; height: auto;"> -->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 20px 0;">
+                <div class="welcome-container">
+                    <h1 class="welcome-title">¡Hola, <strong>{{nombre}} {{apellido_paterno}} {{apellido_materno}}!</strong></h1>
+                    <p class="welcome-text">
+                        Te damos la bienvenida a ANEEC. Su registro ha sido exitoso, a partir de la revisión de su información, su solicitud para formar parte del programa ANEEC como facilitador ha sido <strong>AUTORIZADA</strong>. Nos es grato informarte que has sido seleccionado.
+                    </p>
+                    <p class="welcome-text">
+                        Para continuar con el proceso, sigue los siguientes pasos cuando se le indique:
+                    </p>
+                    <ol>
+                        <li>Ingresa al siguiente sitio: <a href="https://remi.septlaxcala.gob.mx/remi/uploads-reports">https://remi.septlaxcala.gob.mx/remi/uploads-reports</a>.</li>
+                        <li>Valida tu CURP.</li>
+                        <li>Subir el documento correspondiente.</li>
+                    </ol>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" style="padding: 40px 0;">
+                <img class="hero" src="https://promette.septlaxcala.gob.mx/img/MaterialIU/PROMETTE-desktop-hero-ALT.png" alt="Imagen PROMETTE" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.15);">
+            </td>
+        </tr>
+    </table>
+</body>

@@ -1,0 +1,110 @@
+/* Layout responsivo para móviles y desktop se mantiene igual*/
+/* Drawer responsivo para móviles */
+@media (max-width: 767px) {
+  /* Drawer oculto por defecto en móvil */
+  .d-flex.vh-100 shared-drawer-component {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1050;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* Drawer visible cuando tiene la clase */
+  .d-flex.vh-100 shared-drawer-component.mobile-drawer-visible {
+    transform: translateX(0);
+  }
+
+  /* Overlay para cerrar drawer */
+  ::ng-deep .mobile-drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+    opacity: 0;
+    animation: fadeIn 0.3s ease-in-out forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Contenido principal ocupa toda la pantalla */
+  .flex-grow-1.d-flex.flex-column {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  /* AppBar */
+  .flex-grow-1.d-flex.flex-column shared-app-bar-component {
+    ::ng-deep .toolbar {
+      padding: 0.5rem 1rem;
+      min-height: 56px;
+    }
+  }
+
+  /* Breadcrumb más pequeño */
+  .flex-grow-1.d-flex.flex-column > div {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  /* Contenido principal con menos padding */
+  .flex-grow-1.overflow-auto.p-3 {
+    padding: 1rem !important;
+  }
+
+  /* Scroll mejorado para móvil */
+  .overflow-auto {
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 2px;
+    }
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 991px) {
+  /* Contenido principal con padding */
+  .flex-grow-1.overflow-auto.p-3 {
+    padding: 1.5rem !important;
+  }
+
+  /* AppBar con cierto tamaño */
+  .flex-grow-1.d-flex.flex-column shared-app-bar-component {
+    ::ng-deep .toolbar {
+      padding: 0.75rem 1.5rem;
+    }
+  }
+
+  /* Breadcrumb con padding*/
+  .flex-grow-1.d-flex.flex-column > div {
+    padding: 0.75rem 1.5rem;
+  }
+}
+
+/* El diseño de escritorio se mantiene igual */
+@media (min-width: 992px) {
+  /* Asegurar que no hay clases móviles aplicadas */
+  .d-flex.vh-100 shared-drawer-component.mobile-drawer-visible {
+    transform: none;
+    position: static;
+  }
+}

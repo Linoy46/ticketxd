@@ -1,0 +1,517 @@
+<!--Tutorial-->
+<app-tutorial [config]="tutorialConfig" buttonText="Ayuda" [showButton]="true">
+</app-tutorial>
+
+<header class="header text-center text-secondary mb-4">
+  <h1>Salidas de Inventario</h1>
+</header>
+
+<div class="max-w-7xl mx-auto">
+  <div class="container-fluid">
+    <!-- Selección de Área -->
+    <div class="row mb-4" id="area">
+      <div class="col-12">
+        <div class="form-group">
+          <label for="area" class="form-label">Área</label>
+          <div class="d-flex align-items-end gap-2">
+            <div class="flex-grow-1">
+              <p-select
+                [options]="areas"
+                [(ngModel)]="areaSeleccionada"
+                optionLabel="nombre"
+                optionValue="id_area"
+                [filter]="true"
+                filterBy="nombre"
+                [showClear]="true"
+                placeholder="Selecciona un área"
+                styleClass="w-100"
+                (onChange)="onAreaChange($event)"
+              >
+                <ng-template let-area pTemplate="selectedItem">
+                  <div class="area-selected" *ngIf="area">
+                    {{ getAreaDisplayText(area) }}
+                  </div>
+                  <div *ngIf="!area">Selecciona un área</div>
+                </ng-template>
+                <ng-template let-area pTemplate="item">
+                  <div class="area-item">
+                    <div class="fw-medium">{{ area.nombre }}</div>
+                    <div class="text-muted small">
+                      {{
+                        area.id_departamento_ct_infraestructura_departamento
+                          .id_direccion_ct_infraestructura_direccion.nombre
+                      }}
+                      →
+                      {{
+                        area.id_departamento_ct_infraestructura_departamento
+                          .nombre
+                      }}
+                    </div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm"
+              (click)="openAddAreaModal()"
+              title="Agregar nueva área"
+            >
+              <i class="bi bi-plus-circle me-1"></i>
+              Nueva Área
+            </button>
+          </div>
+          <div *ngIf="areaSeleccionada" class="mt-1 text-info small">
+            Área seleccionada: {{ getAreaDisplayText(areaSeleccionada) }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selección de Factura, Partida y Búsqueda de Producto -->
+    <div class="row mb-4" id="factura">
+      <!-- Selección de Factura -->
+      <div class="col-md-4 mb-3 mb-md-0">
+        <div class="form-group">
+          <label for="factura" class="form-label">Factura</label>
+          <p-dropdown
+            [options]="factura"
+            [(ngModel)]="facturaSeleccionada"
+            optionLabel="folio"
+            optionValue="id_Factura"
+            [filter]="true"
+            filterBy="folio"
+            [showClear]="true"
+            placeholder="Selecciona una factura"
+            styleClass="w-100"
+            (onChange)="onFacturaChange($event)"
+            [disabled]="!areaSeleccionada"
+          >
+            <ng-template let-factura pTemplate="item">
+              <div class="factura-item">
+                <div class="fw-medium">Folio: {{ factura.folio }}</div>
+                <div class="text-muted small">
+                  Partida: {{ getPartidaNombre(factura.id_partida) }}
+                </div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+          <small class="form-text text-muted" *ngIf="!areaSeleccionada">
+            Primero selecciona un área
+          </small>
+        </div>
+      </div>
+
+      <!-- Selección de Partida -->
+      <div class="col-md-3 mb-3 mb-md-0">
+        <div class="form-group">
+          <label for="partida" class="form-label">Partida</label>
+          <p-dropdown
+            [options]="partidasFiltradas"
+            [(ngModel)]="partidaSeleccionada"
+            optionLabel="nombre"
+            optionValue="id_partida"
+            [filter]="true"
+            filterBy="nombre,partida"
+            [showClear]="true"
+            placeholder="Selecciona una partida"
+            styleClass="w-100"
+            (onChange)="onPartidaChange($event)"
+            [disabled]="
+              !facturaSeleccionada || productosSeleccionados.length > 0
+            "
+          >
+            <ng-template let-partida pTemplate="item">
+              <div class="partida-item">
+                <div class="fw-medium">{{ partida.nombre }}</div>
+                <div class="text-muted small">{{ partida.partida }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+          <small class="form-text text-muted" *ngIf="!facturaSeleccionada">
+            Primero selecciona una factura
+          </small>
+          <small
+            class="form-text text-muted"
+            *ngIf="productosSeleccionados.length > 0"
+          >
+            No puedes cambiar la partida mientras hay productos seleccionados
+          </small>
+          <div *ngIf="partidaSeleccionada" class="mt-1 text-info small">
+            Partida seleccionada: {{ getPartidaNumero(partidaSeleccionada) }} -
+            {{ getPartidaNombre(partidaSeleccionada) }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Búsqueda de Producto -->
+      <div class="col-md-5">
+        <div class="form-group">
+          <label for="buscarProducto" class="form-label">Buscar producto</label>
+          <div class="d-flex">
+            <p-dropdown
+              [options]="filteredProductos"
+              [(ngModel)]="productoSeleccionado"
+              optionLabel="descripcion"
+              [filter]="true"
+              filterBy="descripcion,folio,description"
+              [showClear]="true"
+              placeholder="Buscar un producto..."
+              [disabled]="!partidaSeleccionada"
+              styleClass="w-100"
+              [resetFilterOnHide]="false"
+              appendTo="body"
+            >
+              <ng-template pTemplate="selectedItem">
+                <div class="producto-seleccionado" *ngIf="productoSeleccionado">
+                  <div>
+                    {{
+                      productoSeleccionado.descripcion ||
+                        productoSeleccionado.description
+                    }}
+                  </div>
+                  <div class="text-muted small">
+                    {{ productoSeleccionado.folio }} - Disp:
+                    {{ productoSeleccionado.cantidad }}
+                  </div>
+                </div>
+                <div *ngIf="!productoSeleccionado">Buscar un producto...</div>
+              </ng-template>
+              <ng-template let-producto pTemplate="item">
+                <div class="producto-item">
+                  <div class="fw-medium">
+                    {{ producto.descripcion || producto.description }}
+                  </div>
+                  <div class="text-muted small">
+                    {{ producto.folio }} - Disponible:
+                    {{ producto.cantidad || producto.resta }}
+                  </div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <button
+              type="button"
+              class="btn btn-primary ms-2"
+              [disabled]="!productoSeleccionado"
+              (click)="handleAgregarProductoSeleccionado()"
+              id="nuevo"
+            >
+              <i class="bi bi-plus"></i>
+              Agregar
+            </button>
+          </div>
+          <small class="form-text text-muted">
+            {{
+              !partidaSeleccionada
+                ? "Primero selecciona una partida para buscar productos"
+                : filteredProductos.length === 0
+                ? "No hay productos disponibles para esta partida"
+                : "Selecciona un producto para agregarlo a la lista"
+            }}
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Escáner de código de barras -->
+    <div class="mb-4">
+      <div class="form-group">
+        <label for="codigoBarras" class="form-label"
+          >Escanear código de barras</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="codigoBarras"
+          placeholder="Escanee el código de barras..."
+          [(ngModel)]="codigoBarras"
+          (keydown)="handleEscanearCodigo($event)"
+        />
+        <small class="form-text text-muted">
+          Escanee el código de barras o ingréselo manualmente y presione Enter
+        </small>
+      </div>
+    </div>
+
+    <!-- Tabla de Productos Seleccionados -->
+    <div class="mb-4 border rounded" id="descripcion">
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th>Partida</th>
+              <th>Factura</th>
+              <th>Cantidad</th>
+              <th class="text-center" style="width: 80px">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="productosSeleccionados.length === 0">
+              <td colspan="5" class="text-center py-4 text-muted">
+                No hay productos seleccionados
+              </td>
+            </tr>
+            <tr *ngFor="let producto of productosSeleccionados">
+              <td>
+                <div class="producto-info">
+                  <div class="producto-descripcion">
+                    {{ producto.descripcion || producto.description }}
+                  </div>
+                  <div class="producto-folio text-muted small">
+                    {{ producto.folio }}
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="partida-info">
+                  <div>
+                    {{
+                      getPartidaNumero(
+                        producto.ct_partida_id ?? producto.id_partida ?? 0
+                      )
+                    }}
+                    -
+                    {{
+                      getPartidaNombre(
+                        producto.ct_partida_id ?? producto.id_partida ?? 0
+                      )
+                    }}
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="factura-info">
+                  <div>
+                    {{
+                      getFacturaFolio(
+                        producto.ct_factura_id ?? producto.id_factura
+                      ) || "No asignada"
+                    }}
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex flex-column quantity-container">
+                  <div class="d-flex align-items-center mb-1">
+                    <!-- Control de cantidad con botones - y + -->
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary btn-sm"
+                      style="width: 30px; height: 30px; padding: 0"
+                      [disabled]="(producto.cantidadSeleccionada ?? 0) <= 1"
+                      (click)="
+                        handleCambiarCantidad(
+                          producto.id_inventario,
+                          (producto.cantidadSeleccionada ?? 1) - 1
+                        )
+                      "
+                    >
+                      -
+                    </button>
+
+                    <!-- Campo de cantidad editable -->
+                    <input
+                      type="number"
+                      class="form-control mx-2 text-center cantidad-input quantity-field"
+                      [class.is-invalid]="producto.errorMessage"
+                      [min]="1"
+                      [max]="producto.cantidad"
+                      [(ngModel)]="producto.cantidadSeleccionada"
+                      (change)="
+                        handleCambiarCantidad(
+                          producto.id_inventario,
+                          producto.cantidadSeleccionada ?? 1
+                        )
+                      "
+                      aria-label="Cantidad del producto"
+                      title="Cantidad del producto"
+                      placeholder="Cantidad"
+                    />
+
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary btn-sm"
+                      style="width: 30px; height: 30px; padding: 0"
+                      [disabled]="
+                        (producto.cantidadSeleccionada ?? 0) >=
+                        producto.cantidad
+                      "
+                      (click)="
+                        handleCambiarCantidad(
+                          producto.id_inventario,
+                          (producto.cantidadSeleccionada ?? 0) + 1
+                        )
+                      "
+                    >
+                      +
+                    </button>
+                    <span class="ms-2 text-muted small"
+                      >(Disponible: {{ producto.cantidad }})</span
+                    >
+                  </div>
+
+                  <!-- Mensaje de error para la cantidad -->
+                  <div
+                    *ngIf="producto.errorMessage"
+                    class="inventory-error-message text-danger small"
+                  >
+                    {{ producto.errorMessage }}
+                  </div>
+                </div>
+              </td>
+              <td class="text-center">
+                <button
+                  type="button"
+                  class="btn btn-outline-danger btn-sm"
+                  (click)="handleEliminarProducto(producto.id_inventario)"
+                  title="Eliminar producto"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- NUEVA SECCIÓN: Datos del formato -->
+    <div
+      class="row mb-4 border rounded p-3"
+      [class.bg-light]="productosSeleccionados.length > 0"
+    >
+      <h4 class="mb-3">Datos del formato de entrega</h4>
+
+      <div class="col-md-6 mb-3" id="mes">
+        <div class="form-group">
+          <label for="mes_cantidad" class="form-label">Mes</label>
+          <input
+            type="text"
+            class="form-control"
+            id="mes_cantidad"
+            [(ngModel)]="formatoData.mes_cantidad"
+            placeholder="Ej: Septiembre 2023"
+            [disabled]="productosSeleccionados.length === 0"
+          />
+          <small class="form-text text-muted">
+            Ingresa el mes y año, ej: "Septiembre 2023"
+          </small>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3" id="recibe">
+        <div class="form-group">
+          <label for="persona_recibe" class="form-label">
+            Persona que recibe <span class="text-danger">*</span>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="persona_recibe"
+            [(ngModel)]="formatoData.persona_recibe"
+            placeholder="Nombre completo de quien recibe"
+            [disabled]="productosSeleccionados.length === 0"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="col-12 mb-3" id="observaciones">
+        <div class="form-group">
+          <label for="observaciones" class="form-label"> Observaciones </label>
+          <textarea
+            class="form-control"
+            id="observaciones"
+            [(ngModel)]="formatoData.observaciones"
+            placeholder="Observaciones adicionales sobre la entrega (opcional)"
+            [disabled]="productosSeleccionados.length === 0"
+            rows="3"
+            maxlength="500"
+          ></textarea>
+          <small class="form-text text-muted">
+            Máximo 500 caracteres. Campo opcional.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones de acción -->
+  <div class="d-flex justify-content-between border-top pt-4 mt-4">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="handleCancel()"
+      id="cancelar"
+    >
+      Cancelar
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="handleSubmit()"
+      [disabled]="
+        productosSeleccionados.length === 0 ||
+        !areaSeleccionada ||
+        !formatoData.persona_recibe.trim() ||
+        loading
+      "
+      id="enviar"
+    >
+      <i class="bi bi-send me-1"></i>
+      {{ loading ? "Enviando..." : "Enviar" }}
+    </button>
+  </div>
+</div>
+
+<!-- Template para el modal de PDF -->
+<ng-template #pdfModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ pdfTitle }}</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss(); onModalClose()"
+    ></button>
+  </div>
+  <div class="modal-body p-0" style="height: 70vh">
+    <div class="pdf-container" style="width: 100%; height: 100%">
+      <div
+        *ngIf="!pdfSrc"
+        class="d-flex justify-content-center align-items-center h-100"
+      ></div>
+      <iframe
+        *ngIf="pdfSrc"
+        [src]="pdfSrc"
+        width="100%"
+        height="100%"
+        frameborder="0"
+        allowtransparency
+        style="background-color: white"
+      ></iframe>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modal.dismiss(); onModalClose()"
+    >
+      Cerrar
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="!pdfSrc"
+      (click)="downloadCurrentPdf()"
+    >
+      <i class="bi bi-download me-1"></i>
+      Descargar
+    </button>
+  </div>
+</ng-template>
+
+<!-- Modal Component -->
+<shared-custom-modal-component></shared-custom-modal-component>

@@ -1,0 +1,159 @@
+// // Variables de color
+// $color-purple: #a11a5c;
+// $color-purple-dark: #7b1fa2;
+// $header-color: #e9ddff;
+// $color-text-header: #a11a5c;
+
+// :host {
+//   width: 100%;
+//   display: block;
+// }
+
+// /* Estilos para el encabezado */
+// .header h1 {
+//   color: $color-purple;
+// }
+
+// /* Estilos para los botones */
+// .btn-secondary {
+//   background-color: $color-purple;
+//   border-color: $color-purple;
+
+//   &:hover {
+//     background-color: $color-purple-dark;
+//     border-color: $color-purple-dark;
+//   }
+// }
+
+// /* Asegúrate de que el contenedor tenga altura y posicionamiento adecuados */
+// ag-grid-angular {
+//   display: block;
+//   min-height: 500px;
+//   width: 100%;
+// }
+
+// /* Estilos específicos para ag-Grid - Importante mantener estas definiciones igual que en users */
+// :host ::ng-deep {
+//   /* Personalizaciones para el tema de ag-Grid */
+//   .ag-theme-quartz {
+//     --ag-header-background-color: #{$header-color} !important;
+//     --ag-header-foreground-color: #{$color-text-header} !important;
+//     --ag-odd-row-background-color: #f9f6ff !important;
+//     --ag-row-hover-color: #fdf7ff !important;
+//     --ag-selected-row-background-color: rgba(233, 221, 255, 0.5) !important;
+
+//     /* Estilos básicos para filas y celdas */
+//     .ag-header {
+//       background-color: #e9ddff;
+//       color: #422b7c;
+//       font-weight: 600;
+//     }
+
+//     .ag-header-cell {
+//       background-color: $header-color !important;
+//       color: $color-text-header !important;
+//       font-weight: 600 !important;
+//     }
+
+//     .ag-row {
+//       border-bottom: 1px solid #e5e7eb;
+
+//       &:hover {
+//         background-color: #fdf7ff !important;
+//       }
+//     }
+
+//     /* Ajustes para las celdas de acción */
+//     .ag-cell {
+//       overflow: visible !important;
+//       line-height: normal !important;
+//       display: flex;
+//       align-items: center;
+//     }
+
+//     /* Estilo para la celda de acciones */
+//     .action-cell {
+//       display: flex !important;
+//       justify-content: center !important;
+//       align-items: center !important;
+//       padding: 0 !important;
+//     }
+//   }
+
+//   // Clase para el spinner
+//   .text-secondary {
+//     color: $color-purple !important;
+//   }
+
+//   // Estilos específicos para los botones de acción
+//   .action-button {
+//     margin: 0 3px;
+//     padding: 4px 8px;
+//     border-radius: 4px;
+//     border: none;
+//     cursor: pointer;
+//     background-color: transparent;
+
+//     &:hover {
+//       background-color: rgba(0, 0, 0, 0.1);
+//     }
+
+//     i {
+//       font-size: 16px;
+//     }
+//   }
+// }
+
+h1 {
+  font-size: 2rem;
+  color: #a11a5c;
+  margin-bottom: 1.5rem;
+}
+
+// Ajustes responsive básicos
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Estilos responsivos para AG Grid by Francisc*/
+.grid-container {
+  height: 70vh;
+  min-height: 400px;
+  margin: 0 -15px;
+  padding-left: 0;
+  padding-right: 0;
+  border-radius: 0;
+}
+.grid-responsive {
+  min-width: 600px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+::ng-deep .ag-theme-quartz .ag-paging-panel {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  padding: 8px 0 !important;
+  background: #fff !important;
+  z-index: 1;
+  display: flex !important;
+  justify-content: center !important;
+  overflow-x: visible !important;
+  border-top: 1px solid #eee !important;
+  border-radius: 0 !important;
+  font-size: 12px !important;
+  position: static !important;
+  left: unset !important;
+  bottom: unset !important;
+  margin: 0 !important;
+}
+::ng-deep .ag-theme-quartz .ag-paging-panel > * {
+  flex-shrink: 0;
+}
+.ag-header-cell,
+.ag-cell {
+  white-space: nowrap !important;
+}

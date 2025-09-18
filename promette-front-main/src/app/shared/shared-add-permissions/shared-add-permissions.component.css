@@ -1,0 +1,15 @@
+/* shared-add-permissions.component.css */
+.card {
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.md\:w-\[30rem\] {
+  width: 30rem;
+}

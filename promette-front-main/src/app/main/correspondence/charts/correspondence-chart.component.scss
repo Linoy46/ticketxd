@@ -1,0 +1,258 @@
+// Estilos para la vista móvil de resumen con barras
+@media (max-width: 768px) {
+  .mobile-summary {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 16px;
+    display: grid;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    margin-bottom: 18px;
+  }
+  .mobile-total {
+    text-align: center;
+  }
+  .mobile-total__value {
+    font-size: clamp(36px, 8vw, 48px);
+    font-weight: 800;
+    color: #222;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .mobile-total__label {
+    font-size: 14px;
+    color: #6b7280;
+    margin-top: 2px;
+  }
+  .mobile-cats {
+    display: grid;
+    gap: 12px;
+  }
+  .mobile-cat__row {
+    display: grid;
+    grid-template-columns: 16px 1fr auto;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+    margin-right: 2px;
+  }
+  .name {
+    font-size: 15px;
+    color: #222;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .count {
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+    margin-left: 4px;
+  }
+  .mobile-cat__meta {
+    margin-top: 2px;
+    font-size: 12px;
+    color: #6b7280;
+    text-align: right;
+  }
+  .bar {
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+    margin-top: 4px;
+    width: 100%;
+    position: relative;
+  }
+  .bar .fill {
+    height: 100%;
+    width: calc(var(--pct, 0) * 1%);
+    display: block;
+    background: currentColor;
+    border-radius: 9999px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .color-0 {
+    color: #3b82f6;
+  }
+  .color-1 {
+    color: #6b7280;
+  }
+  .color-2 {
+    color: #6366f1;
+  }
+  .color-3 {
+    color: #10b981;
+  }
+  .color-4 {
+    color: #f59e0b;
+  }
+  // Oculta el gráfico de ngx en móvil si comparte contenedor
+  .chart-container {
+    display: none !important;
+  }
+}
+/* Ajuste para el campo de fecha en charts, solamente en dispositivos móviles */
+@media (max-width: 767px) {
+  :host ::ng-deep .calendar-full,
+  :host ::ng-deep .calendar-full .p-inputtext,
+  :host ::ng-deep .calendar-full .p-calendar,
+  :host ::ng-deep .calendar-full .p-calendar .p-inputtext {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+}
+
+/* Estilos específicos para iOS - AutoComplete */
+:host ::ng-deep .p-autocomplete {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
+
+:host ::ng-deep .p-autocomplete .p-inputtext {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+:host ::ng-deep .p-autocomplete-panel {
+  -webkit-overflow-scrolling: touch;
+}
+
+:host ::ng-deep .p-autocomplete-item {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+/* Contenedor que replicaba: position:relative; display:flex; align-items:center */
+.filter-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Botones de limpiar (fecha y remitente) */
+.clear-btn {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  height: 1.8rem;
+  width: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.clear-icon {
+  font-size: 1.2rem;
+  color: #888;
+}
+
+/* Padding derecho para inputs con botón limpiar */
+:host ::ng-deep .with-clear .p-inputtext,
+:host ::ng-deep .calendar-full.with-clear .p-inputtext {
+  padding-right: 2.2rem !important;
+}
+
+/* Estilos del ag-grid extraídos del atributo style inline */
+.resumen-grid {
+  width: 100%;
+  height: 350px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor del chart responsivo */
+.chart-container {
+  width: 100%;
+  overflow-x: visible;
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* Ajustes responsivos del chart */
+@media (max-width: 768px) {
+  .chart-container {
+    margin: 15px 0;
+    padding: 0 10px;
+    position: relative;
+  }
+
+  /* Hacer el chart más pequeño y compacto en móviles */
+  :host ::ng-deep .ngx-charts {
+    position: relative !important;
+    max-width: 300px !important;
+    margin: 0 auto !important;
+  }
+
+  /* Regresar el total a su posición original pero con mejor estilo */
+  :host ::ng-deep .total-value,
+  :host ::ng-deep .advanced-pie-total,
+  :host ::ng-deep .pie-chart .total-value {
+    position: static !important;
+    transform: none !important;
+    font-size: 1.8rem !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    margin: 10px 0 !important;
+  }
+
+  /* Mantener el gráfico compacto */
+  :host ::ng-deep .pie-chart,
+  :host ::ng-deep .chart {
+    margin: 0 auto !important;
+  }
+
+  /* Leyenda apilada verticalmente en móviles */
+  :host ::ng-deep .legend-labels {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  :host ::ng-deep .legend-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    font-size: 0.9rem;
+    width: 90%;
+    max-width: 300px;
+  }
+
+  /* Ajustar texto de la leyenda en móviles */
+  :host ::ng-deep .legend-labels text {
+    font-size: 12px !important;
+  }
+
+  /* Ajustar tooltip en móviles */
+  :host ::ng-deep .tooltip-anchor .tooltip {
+    max-width: 200px;
+    font-size: 12px;
+  }
+}

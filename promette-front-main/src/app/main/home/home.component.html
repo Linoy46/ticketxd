@@ -1,0 +1,72 @@
+<div class="home-container">
+  <!-- Header con banner de bienvenida -->
+  <div class="welcome-header">
+    <div class="overlay"></div>
+    <div class="welcome-content">
+      <h1 class="welcome-title">Bienvenido a PROMETTE</h1>
+      <h2 class="welcome-subtitle">
+        Sistema Integrado de Gestión Institucional
+      </h2>
+      <p class="welcome-message" *ngIf="userName">
+        Hola, <strong>{{ userName }}</strong>
+        <span *ngIf="lastLogin" class="last-login">
+          Último acceso: {{ lastLogin }}
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="content-container">
+    <!-- Sección: Acerca del sistema -->
+    <section class="about-section">
+      <!-- <div class="container">
+        <div class="section-header">
+          <h3 class="section-title">Acerca de PROMETTE</h3>
+          <hr class="divider-purple" />
+        </div>
+        <div class="about-content">
+          <p>
+            PROMETTE es una plataforma integral diseñada para optimizar la
+            gestión administrativa y de recursos humanos en la SEPE/USET. El
+            sistema ofrece herramientas avanzadas para el control de personal,
+            seguimiento de inventarios y gestión documental, simplificando
+            procesos administrativos y mejorando la eficiencia operativa de la
+            institución.
+          </p>
+          <p>
+            Con PROMETTE, la transformación digital de los procesos
+            gubernamentales se hace realidad, permitiendo una administración más
+            transparente, eficiente y centrada en el servicio público.
+          </p>
+        </div>
+      </div> -->
+    </section>
+
+    <!-- Sección: ¿Por qué elegir nuestra plataforma? -->
+    <!-- <section class="features-section">
+      <div class="container">
+        <div class="section-header">
+          <h3 class="section-title">Novedades de la nueva plataforma</h3>
+          <hr class="divider-purple" />
+          <p class="text-center mt-3">Descubre las ventajas que te ofrecemos</p>
+        </div>
+
+        <!-- Tarjetas de características -->
+        <!-- <div class="features-container">
+          <div class="row justify-content-center">
+            <div *ngFor="let feature of systemFeatures" class="col-md-4 mb-4">
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="bi" [ngClass]="feature.icon"></i>
+                </div>
+                <h4>{{ feature.title }}</h4>
+                <p>{{ feature.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+  </div>
+</div>

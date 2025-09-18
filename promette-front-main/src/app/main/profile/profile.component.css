@@ -1,0 +1,737 @@
+/* Animación de entrada para elementos */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Fuentes personalizadas del sistema */
+@font-face {
+  font-family: "Intro Regular";
+  src: url("../../../../public/fonts/IntroRegular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Sofia Pro Regular";
+  src: url("../../../../public/fonts/sofia-pro-regular.otf") format("truetype");
+}
+
+/* Variables globales de colores */
+:root {
+  --color-primary: #572771;
+  --color-secondary: #a21a5c;
+  --color-accent: #c8b89a;
+  --color-text: #333;
+  --color-muted: #6c757d;
+  --color-border: #dee2e6;
+}
+
+.profile-photo-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+.profile-photo-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%; /* Hace la imagen circular */
+  border: 5px solid #ffffff; /* Borde de la imagen */
+}
+
+.default-avatar {
+  background-color: #ffffff;
+  border: 3px solid #ffffff;
+}
+
+.btn-camera {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.btn-camera:hover {
+  background-color: #ffffff;
+}
+
+/* Hacer que el input de archivo sea invisible */
+input[type="file"] {
+  display: none;
+}
+
+/* Estilo para el ícono de cámara (si usas Bootstrap Icons o Font Awesome) */
+.bi-camera-fill {
+  font-size: 18px;
+}
+/* Estilo para el acordeón */
+.accordion-button {
+  height: 30px;
+}
+
+:host ::ng-deep .p-float-label label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #495057;
+}
+
+:host ::ng-deep .p-inputtext {
+  font-size: 1rem;
+  color: #333;
+  background: #f8f9fa;
+}
+
+:host ::ng-deep .p-float-label input.p-filled ~ label,
+:host ::ng-deep .p-float-label .p-inputwrapper-filled ~ label {
+  font-size: 1.1rem;
+  font-weight: 100;
+}
+
+.no-data {
+  color: #6c757d;
+  font-style: italic;
+}
+
+.card {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  animation: scaleIn 0.5s ease-out;
+}
+
+h3 {
+  font-family: "Intro Regular", sans-serif;
+  color: #572771;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+h5 {
+  font-family: "Intro Regular", sans-serif;
+  color: #455a64;
+  font-weight: 500;
+}
+
+.btn-purple {
+  background-color: #572771;
+  color: white;
+  border: none;
+  padding: 3px 10px;
+  transition: all 0.3s ease;
+}
+
+.btn-purple:hover {
+  background-color: #572771;
+  color: white;
+  box-shadow: 0 2px px rgba(0, 0, 0, 0.2);
+}
+
+.btn-purple i {
+  margin-right: 8px;
+}
+
+/* Estilos adicionales para los campos de texto */
+.card-body .p-float-label {
+  margin-bottom: 1rem;
+}
+
+.card-body label {
+  color: #a21a5c;
+  font-weight: 500;
+}
+
+.card-body input {
+  background-color: transparent !important;
+  border: none;
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 0;
+  padding-left: 0;
+}
+
+.card-body input:focus {
+  box-shadow: none;
+  border-color: #572771;
+}
+
+.card-body .no-data {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Ajustes para el espaciado */
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+/* Estilos para los inputs */
+.form-label {
+  font-family: "Sofia Pro Regular", sans-serif;
+  color: #a21a5c;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  font-family: "Sofia Pro Regular", sans-serif;
+  background-color: transparent !important;
+  border: none;
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 0;
+  padding: 0.5rem 0;
+  color: #333;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(87, 39, 113, 0.1);
+  border-color: #572771;
+}
+
+.form-control.no-data {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Aplicar fuentes de texto */
+input,
+.p-inputtext,
+.card-body label,
+.btn {
+  font-family: "Sofia Pro Regular", sans-serif !important;
+}
+
+/* Línea divisoria  */
+.divider-purple {
+  border: 0;
+  height: 2px;
+  background-color: #572771;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+/* Sección de información con animación */
+.info-section {
+  padding: 1rem 0;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.info-item {
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.info-item::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #572771;
+  transition: all 0.3s ease;
+}
+
+.info-item:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.info-label {
+  font-family: "Intro Regular", sans-serif;
+  color: #a21a5c;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+.info-text {
+  font-family: "Sofia Pro Regular", sans-serif;
+  color: #333;
+  text-align: center;
+  font-size: 1rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid #dee2e6;
+  transition: transform 0.3s ease;
+}
+
+.info-text.no-data {
+  color: #6c757d;
+  font-style: italic;
+}
+
+.info-text:hover {
+  transform: translateY(-2px);
+}
+
+/* Estilos de la tarjeta de perfil */
+.info-text-container {
+  text-align: center;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* Estilos de tipografía para información personal */
+.nombre {
+  font-size: 1.75rem;
+  font-weight: 100;
+  color: #572771;
+  margin-bottom: 0.15rem;
+  font-family: "Intro Regular", sans-serif;
+  line-height: 1.2;
+  animation: slideIn 0.6s ease-out;
+}
+
+.apellido {
+  font-size: 1.25rem;
+  font-weight: 100;
+  color: #c8b89a;
+  margin-bottom: 0.75rem;
+  font-family: "Sofia Pro Regular", sans-serif;
+  line-height: 1.2;
+  animation: slideIn 0.6s ease-out 0.2s; /* Retraso de 0.2s */
+  animation-fill-mode: both;
+}
+
+.puesto {
+  font-size: 1.25rem;
+  font-weight: 100;
+  color: #572771;
+  font-family: "Intro Regular", sans-serif;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  animation: slideIn 0.6s ease-out 0.4s; /* Retraso de 0.4s */
+  animation-fill-mode: both;
+}
+
+/* Estados de los textos */
+.nombre.no-data,
+.apellido.no-data,
+.puesto.no-data {
+  color: #999;
+  font-style: italic;
+}
+
+/* Efectos de interacción */
+.nombre:hover,
+.apellido:hover {
+  color: #7b3b9e;
+  transition: color 0.3s ease;
+}
+
+/* Estilos para el botón */
+:host ::ng-deep .p-button-edit {
+  background-color: #a21a5c;
+  border-color: #a21a5c;
+  color: white !important;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+:host ::ng-deep .p-button-edit:hover {
+  background-color: #c2acce;
+  border-color: #8c6e9c;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+:host ::ng-deep .p-button-edit .pi-pencil {
+  font-size: 1rem;
+  margin-right: 0 auto;
+}
+
+:host ::ng-deep .p-button {
+  padding: 0.5rem 1rem;
+}
+
+.title-section {
+  font-family: "Intro Regular", sans-serif;
+  color: #572771;
+  font-weight: 100;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.line {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #572771, transparent);
+}
+
+.separator-image {
+  padding: 0 15px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.separator-image img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+/* Estilos para el fondo de la tarjeta de perfil */
+.profile-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 265px; /* Valor fijo en lugar de porcentaje */
+  background-image: url("../../../../public/images/patternColor.jpg");
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+/* Ajustar la curva inferior para que coincida con la altura fija */
+.profile-background::after {
+  content: "";
+  position: absolute;
+  bottom: -30px; /* Ajustado para coincidir con la altura fija */
+  left: -10%;
+  right: -10%;
+  height: 60px; /* Altura reducida para la curva */
+  background: white;
+  border-radius: 50%;
+}
+
+profile-card .card-body {
+  padding-top: 220px; /* Altura del background + espacio extra */
+  z-index: 1;
+  position: relative;
+}
+
+.background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(87, 39, 113, 0.8),
+    rgba(87, 39, 113, 0.6)
+  );
+}
+
+.profile-card .card-body {
+  z-index: 1;
+}
+
+/* Ajuste para el título y contenido */
+.profile-card .title-section {
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.profile-card .divider-purple {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Efecto ovalado en la parte inferior */
+.profile-background::after {
+  content: "";
+  position: absolute;
+  bottom: -50px;
+  left: -10%;
+  right: -10%;
+  height: 100px;
+  background: white;
+  border-radius: 50%;
+}
+
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Reducido de 1rem a 0.5rem */
+}
+
+.info-item-row {
+  display: flex;
+  align-items: baseline;
+  padding: 0.25rem 0; /* Reducido de 0.5rem a 0.25rem */
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.info-label {
+  font-family: "Intro Regular", sans-serif;
+  color: var(--color-secondary);
+  font-weight: 500;
+  min-width: 140px; /* Reducido de 180px a 140px */
+  font-size: 0.9rem;
+  text-align: left;
+  padding-right: 1rem;
+}
+
+.info-value {
+  font-family: "Sofia Pro Regular", sans-serif;
+  color: var(--color-text);
+  flex: 1;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.info-value:empty::after {
+  content: "Sin datos";
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.domicilio-texto {
+  font-family: "Sofia Pro Regular", sans-serif;
+  color: var(--color-text);
+  line-height: 1.5;
+  padding: 0.5rem 0;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+/* Estilos para el icono del campo nueva contraseña en promette/profile */
+.password-toggle-no-border {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.password-toggle-no-border:hover {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.password-toggle-no-border:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.password-toggle-no-border:active {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Asegurar que el ícono no tenga efectos hover */
+.password-toggle-no-border i {
+  color: #000000 !important;
+  transition: none !important;
+}
+
+.password-toggle-no-border:hover i {
+  color: #000000 !important;
+  background: transparent !important;
+  transition: none !important;
+}
+
+.password-toggle-no-border:focus i {
+  color: #000000 !important;
+  background: transparent !important;
+}
+
+.password-toggle-no-border:active i {
+  color: #000000 !important;
+  background: transparent !important;
+}
+
+/* Sobrescribir cualquier estilo de Bootstrap */
+.btn.password-toggle-no-border:hover,
+.btn.password-toggle-no-border:focus,
+.btn.password-toggle-no-border:active,
+.btn.password-toggle-no-border.active {
+  background: transparent !important;
+  border: none !important;
+  color: inherit !important;
+  box-shadow: none !important;
+}
+
+/* Estilos para el botón de actualizar contraseña con mayor especificidad */
+.btn.btn-update-password.btn-sm {
+  background-color: #572771 !important;
+  border-color: #572771 !important;
+  color: white !important;
+  font-family: "Sofia Pro Regular", sans-serif !important;
+  font-size: 0.875rem !important;
+  padding: 0.375rem 0.75rem !important;
+  border-radius: 4px !important;
+  transition: all 0.3s ease !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn.btn-update-password.btn-sm:hover:not(:disabled) {
+  background-color: #a21a5c !important;
+  border-color: #a21a5c !important;
+  color: white !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 4px rgba(87, 39, 113, 0.3) !important;
+}
+
+.btn.btn-update-password.btn-sm:focus {
+  background-color: #572771 !important;
+  border-color: #572771 !important;
+  color: white !important;
+  box-shadow: 0 0 0 0.2rem rgba(87, 39, 113, 0.25) !important;
+}
+
+.btn.btn-update-password.btn-sm:active {
+  background-color: #572771 !important;
+  border-color: #572771 !important;
+  color: white !important;
+}
+
+.btn.btn-update-password.btn-sm:disabled {
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+  color: #ffffff !important;
+  cursor: not-allowed !important;
+  opacity: 0.6 !important;
+}
+
+.btn.btn-update-password.btn-sm i {
+  font-size: 0.875rem !important;
+  color: white !important;
+}
+
+/* Sobrescribir todos los posibles estilos de Bootstrap para el botón */
+.btn.btn-update-password,
+.btn.btn-update-password.btn-sm,
+button.btn.btn-update-password,
+button.btn.btn-update-password.btn-sm,
+button[type="button"].btn.btn-update-password.btn-sm {
+  background: #572771 !important;
+  background-color: #572771 !important;
+  border: 1px solid #572771 !important;
+  border-color: #572771 !important;
+  color: #ffffff !important;
+}
+
+/* Estilos con máxima especificidad para forzar el color */
+button.btn.btn-update-password.btn-sm[type="button"] {
+  background: #572771 !important;
+  background-color: #572771 !important;
+  border: 1px solid #572771 !important;
+  border-color: #572771 !important;
+  color: #ffffff !important;
+  font-family: "Sofia Pro Regular", sans-serif !important;
+  font-size: 0.875rem !important;
+  padding: 0.375rem 0.75rem !important;
+  border-radius: 4px !important;
+  transition: all 0.3s ease !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+button.btn.btn-update-password.btn-sm[type="button"]:hover:not(:disabled) {
+  background: #a21a5c !important;
+  background-color: #a21a5c !important;
+  border-color: #a21a5c !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 4px rgba(87, 39, 113, 0.3) !important;
+}
+
+button.btn.btn-update-password.btn-sm[type="button"]:focus {
+  background: #572771 !important;
+  background-color: #572771 !important;
+  border-color: #572771 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 0.2rem rgba(87, 39, 113, 0.25) !important;
+}
+
+button.btn.btn-update-password.btn-sm[type="button"]:active {
+  background: #572771 !important;
+  background-color: #572771 !important;
+  border-color: #572771 !important;
+  color: #ffffff !important;
+}
+
+button.btn.btn-update-password.btn-sm[type="button"]:disabled {
+  background: #6c757d !important;
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+  color: #ffffff !important;
+  cursor: not-allowed !important;
+  opacity: 0.6 !important;
+}
+
+/* Clase adicional para asegurar el color porque se pone gris*/
+.custom-purple-btn,
+button.custom-purple-btn,
+.btn.custom-purple-btn,
+button.btn.custom-purple-btn {
+  background: #572771 !important;
+  background-color: #572771 !important;
+  border: 1px solid #572771 !important;
+  border-color: #572771 !important;
+  color: #ffffff !important;
+}
+
+.custom-purple-btn:hover:not(:disabled),
+button.custom-purple-btn:hover:not(:disabled),
+.btn.custom-purple-btn:hover:not(:disabled),
+button.btn.custom-purple-btn:hover:not(:disabled) {
+  background: #a21a5c !important;
+  background-color: #a21a5c !important;
+  border-color: #a21a5c !important;
+  color: #ffffff !important;
+}

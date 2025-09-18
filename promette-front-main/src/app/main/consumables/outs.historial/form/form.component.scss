@@ -1,0 +1,72 @@
+// Estilos para el componente modal de formulario
+.modal-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Estilos para la tabla en los detalles
+.table {
+  margin-bottom: 0;
+
+  th {
+    background-color: #f8f9fa;
+    font-weight: 500;
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+}
+
+// Estilos para los iconos
+.bi {
+  margin-right: 5px;
+}
+
+// Estilos para mensajes
+.text-success {
+  color: #198754;
+}
+
+.text-danger {
+  color: #dc3545;
+}
+
+// Estilos para el mensaje de éxito con folio
+.alert-success {
+  background-color: #d1e7dd;
+  border-color: #badbcc;
+  color: #0f5132;
+  border-radius: 4px;
+  padding: 10px 15px;
+}
+
+// Estilos para la información del detalle
+.details-container {
+  p {
+    margin-bottom: 0.5rem;
+  }
+
+  h5 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #495057;
+  }
+
+  .table-responsive {
+    margin-top: 1rem;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}

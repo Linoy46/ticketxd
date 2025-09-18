@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Resultado de la solicitud al programa ANEEC</title>
+    <style>
+        @media only screen and (max-width: 600px) {
+            table {
+                width: 100% !important;
+            }
+            img {
+                max-width: 70% !important;
+                height: auto !important;
+                display: block;
+                margin: 10px auto;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .hero {
+                max-width: 100% !important;
+                height: auto !important;
+                display: block;
+                margin: 10px auto;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            } 
+
+            h1 {
+                font-size: 20px !important;
+            }
+            p {
+                font-size: 14px !important;
+            }
+            .logo-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width: 100%;">
+        <div style="text-align: center; padding: 20px 0;">
+            <div class="logo-container">
+                <img src="https://remi.septlaxcala.gob.mx/img/Logos/Imagotipo-ANEEC.png" alt="Logo ANEEC" style="max-width: 300px; height: auto;">
+                <!-- <img src="https://promette.septlaxcala.gob.mx/img/Logos/SEPE_USET.png" alt="Logo SEPE | USET" style="max-width: 600px; height: auto;"> -->
+            </div>
+        </div>
+        <div style="padding: 20px 0;">
+            <div class="welcome-container">
+                <h1 class="welcome-title">¡Hola, <strong>{{nombre}} {{apellido_paterno}} {{apellido_materno}}!</strong></h1>
+                <p class="welcome-text">
+                    Le informamos que a partir de la revisión de su información y documentación cargada a la plataforma, desafortunadamente
+                    no se ha cumplido con la totalidad de los requisitos establecidos en las  Reglas de Operación del programa “ANEEC” por lo 
+                    que su solicitud no ha sido validada. Si requiere información complementaria o desea solicitar alguna aclaración puede comunicarse 
+                    al número 2464623600 ext. 2348 en horario de 9:00 a 17 horas.
+                </p>
+            </div>
+        </div>
+        <div style="text-align: center; padding: 40px 0;">
+            <img class="hero" src="https://promette.septlaxcala.gob.mx/img/MaterialIU/PROMETTE-desktop-hero-ALT.png" alt="Imagen PROMETTE" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.15);">
+        </div>
+    </div>
+</body>
+
+</html>

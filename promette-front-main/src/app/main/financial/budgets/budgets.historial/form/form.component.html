@@ -1,0 +1,215 @@
+<div class="container-fluid detail-container" *ngIf="data">
+  <!-- Navegación por tabs -->
+  <ul ngbNav #detailNav="ngbNav" [(activeId)]="activeTab" class="nav-tabs mb-3">
+    <li [ngbNavItem]="'general'">
+      <a ngbNavLink>
+        <i class="bi bi-info-circle me-1"></i> Información General
+      </a>
+      <ng-template ngbNavContent>
+        <!-- Información del proyecto simplificada en una sola card -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row">
+              <!-- Columna izquierda: Datos del proyecto -->
+              <div class="col-md-6">
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <div class="detail-item">
+                      <label>ID del Proyecto:</label>
+                      <span class="fw-medium">{{
+                        data.id_proyecto_anual
+                      }}</span>
+                    </div>
+                    <div class="detail-item mb-3">
+                      <label>Área:</label>
+                      <span class="fw-medium">{{ getAreaName() }}</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="detail-item">
+                      <label>Año:</label>
+                      <span class="fw-medium">{{ data["año"] }}</span>
+                    </div>
+                    <div class="detail-item mb-3">
+                      <label>Capítulo:</label>
+                      <span class="fw-medium">{{ getChapterName() }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="detail-item mb-3">
+                  <label>Financiamiento:</label>
+                  <span class="fw-medium">{{ getFinancingName() }}</span>
+                </div>
+              </div>
+
+              <!-- Columna derecha: Montos -->
+              <div class="col-md-6">
+                <div class="budget-summary">
+                  <div class="budget-box mb-3">
+                    <div class="budget-label">Presupuesto Total</div>
+                    <div class="budget-value">
+                      {{ formatCurrency(data.monto_asignado) }}
+                    </div>
+                  </div>
+                  <div class="budget-box mb-3">
+                    <div class="budget-label">Monto Utilizado</div>
+                    <div class="budget-value">
+                      {{ formatCurrency(data.monto_utilizado) }}
+                    </div>
+                  </div>
+                  <div class="budget-box mb-3">
+                    <div class="budget-label">Monto Disponible</div>
+                    <div class="budget-value">
+                      {{ formatCurrency(data.monto_disponible) }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Descripción del proyecto -->
+            <div class="detail-item mt-3">
+              <label>Descripción:</label>
+              <p class="description-box mb-0">
+                {{ data.descripcion || "Sin descripción disponible" }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+
+    <!-- Pestaña de requisiciones -->
+    <li [ngbNavItem]="'requisiciones'">
+      <a ngbNavLink> <i class="bi bi-list-check me-1"></i> Requisiciones </a>
+      <ng-template ngbNavContent>
+        <!-- Error message if applicable -->
+        <div *ngIf="hasError" class="alert alert-warning mt-3" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i> {{ errorMessage }}
+        </div>
+
+        <!-- No requisitions message -->
+        <div
+          *ngIf="
+            !hasError && (!requisitionsData || requisitionsData.length === 0)
+          "
+          class="alert alert-info mt-3"
+          role="alert"
+        >
+          <i class="bi bi-info-circle me-2"></i> No hay requisiciones asociadas
+          a este proyecto.
+        </div>
+
+        <!-- Requisitions table -->
+        <div
+          *ngIf="!hasError && requisitionsData && requisitionsData.length > 0"
+          class="mt-3"
+        >
+          <div class="detail-grid-container">
+            <ag-grid-angular
+              class="ag-theme-quartz detail-table"
+              [rowData]="requisitionsData"
+              [columnDefs]="columnDefs"
+              [components]="frameworkComponents"
+              [defaultColDef]="gridOptions.defaultColDef"
+              [pagination]="true"
+              [paginationPageSize]="paginationPageSize"
+              [localeText]="gridOptions.localeText"
+              (gridReady)="onGridReady($event)"
+              style="width: 100%; height: 100%"
+            >
+            </ag-grid-angular>
+          </div>
+
+          <!-- Resumen de montos -->
+          <div class="d-flex flex-wrap mt-4 mb-3 gap-3">
+            <div class="stat-card">
+              <div class="stat-header">Presupuesto Asignado</div>
+              <div class="stat-value">
+                {{ formatCurrency(totalSolicitado) }}
+              </div>
+              <small class="text-muted">
+                Monto asignado al proyecto anual
+              </small>
+            </div>
+            <!-- ✅ AÑADIR: Mostrar también el monto utilizado si está disponible -->
+            <div class="stat-card" *ngIf="data?.monto_utilizado !== undefined">
+              <div class="stat-header">Monto Utilizado</div>
+              <div class="stat-value">
+                {{ formatCurrency(data.monto_utilizado) }}
+              </div>
+              <small class="text-muted">
+                Total utilizado en requisiciones
+              </small>
+            </div>
+            <!-- ✅ AÑADIR: Mostrar monto disponible si está disponible -->
+            <div class="stat-card" *ngIf="data?.monto_disponible !== undefined">
+              <div class="stat-header">Monto Disponible</div>
+              <div class="stat-value">
+                {{ formatCurrency(data.monto_disponible) }}
+              </div>
+              <small class="text-muted">
+                Saldo disponible del presupuesto
+              </small>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+
+    <li [ngbNavItem]="'Justificaciones'">
+      <a ngbNavLink> <i class="bi bi-list-check me-1"></i> Justificaciones </a>
+      <ng-template ngbNavContent>
+        <!-- Error message if applicable -->
+        <div *ngIf="hasError" class="alert alert-warning mt-3" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i> {{ errorMessage }}
+        </div>
+
+        <!-- No requisitions message -->
+        <div
+          *ngIf="
+            !hasError && (!requisitionsData || requisitionsData.length === 0)
+          "
+          class="alert alert-info mt-3"
+          role="alert"
+        >
+          <i class="bi bi-info-circle me-2"></i> No hay requisiciones asociadas
+          a este proyecto.
+        </div>
+
+        <!-- Requisitions table -->
+        <div
+          *ngIf="!hasError && requisitionsData && requisitionsData.length > 0"
+          class="mt-3"
+        >
+          <div class="detail-grid-container">
+            <ag-grid-angular
+              class="ag-theme-quartz detail-table"
+              [rowData]="justificacionesData"
+              [columnDefs]="columnDefsJustificaciones"
+              [pagination]="true"
+              [paginationPageSize]="paginationPageSize"
+              [localeText]="gridOptions.localeText"
+              (gridReady)="onGridReady($event)"
+              style="width: 100%; height: 100%"
+            >
+            </ag-grid-angular>
+          </div>
+
+          <!-- Resumen de montos -->
+        </div>
+      </ng-template>
+    </li>
+  </ul>
+  <!-- Contenido del tab activo -->
+  <div [ngbNavOutlet]="detailNav"></div>
+</div>
+
+<!-- Mensaje si no hay datos -->
+<div *ngIf="!data" class="text-center py-4">
+  <div class="alert alert-warning">
+    <i class="bi bi-exclamation-circle me-2"></i>
+    No se recibió la información del proyecto anual.
+  </div>
+</div>

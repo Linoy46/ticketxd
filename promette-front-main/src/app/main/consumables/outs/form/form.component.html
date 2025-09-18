@@ -1,0 +1,46 @@
+<div class="container">
+  <!-- Contenido del formulario... -->
+
+  <!-- Modal para mostrar PDF -->
+  <ng-template #pdfModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">{{ pdfTitle }}</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss()"
+      ></button>
+    </div>
+    <div class="modal-body p-0" style="height: 70vh">
+      <div class="pdf-container" style="width: 100%; height: 100%">
+        <div
+          *ngIf="!pdfSrc"
+          class="d-flex justify-content-center align-items-center h-100"
+        ></div>
+        <iframe
+          *ngIf="pdfSrc"
+          [src]="pdfSrc"
+          width="100%"
+          height="100%"
+          frameborder="0"
+          style="background-color: white"
+        ></iframe>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+        Cerrar
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        [disabled]="!pdfSrc"
+        (click)="downloadPdf()"
+      >
+        <i class="bi bi-download me-1"></i>
+        Descargar
+      </button>
+    </div>
+  </ng-template>
+</div>

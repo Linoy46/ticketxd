@@ -1,0 +1,24 @@
+  /*--------------------------------------------------------------
+  # Stats Section
+  --------------------------------------------------------------*/
+  .flowersALT {
+    background-image: url("../../../../../public/img/MaterialIU/LogoPromete.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 200px;
+  }
+
+  @media (max-width: 768px) {
+    .flowersALT {
+    background-image: url("../../../../../public/img/MaterialIU/LogoPromete.png");
+      height: 150px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .flowersALT {
+      height: 120px;
+      background-size: contain;
+    }
+  }

@@ -1,0 +1,46 @@
+<form class="container w-100">
+  <div class="row py-3">
+    <div class="col-md-3">
+      <label>Origen</label>
+      <input type="text" class="w-100" />
+    </div>
+    <div class="col-md-3">
+      <label>Fecha de asignación de:</label>
+      <p-datepicker
+        [(ngModel)]="date"
+        [iconDisplay]="'input'"
+        [showIcon]="true"
+        inputId="icondisplay"
+        class="w-100"
+      />
+    </div>
+    <div class="col-md-3">
+      <label>Fecha de asignación a:</label>
+      <p-datepicker
+        [(ngModel)]="date"
+        [iconDisplay]="'input'"
+        [showIcon]="true"
+        inputId="icondisplay"
+        class="w-100"
+      />
+    </div>
+    <div class="col-md-3">
+      <label>Prioridad</label>
+      <input type="text" class="w-100" />
+    </div>
+  </div>
+  <div class="row py-3">
+    <div class="col-md-3">
+      <label>Tipo</label>
+      <input type="text" class="w-100" />
+    </div>
+    <div class="col-md-3">
+      <label>Estatus</label>
+      <input type="text" class="w-100" />
+    </div>
+  </div>
+
+  <div class="text-center py-3">
+    <button class="btn btn-secondary">Aceptar</button>
+  </div>
+</form>

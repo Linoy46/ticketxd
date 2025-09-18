@@ -1,0 +1,54 @@
+  /*--------------------------------------------------------------
+  # Stats Section
+  --------------------------------------------------------------*/
+  .flowers {
+    background-image: url("../../../../../public/img/MaterialIU/PROMETTE-desktop-hero-ALT.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100px;
+    width: auto;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .flowers {
+      background-image: url("../../../../../public/img/MaterialIU/PROMETTE-mobile-hero.png");
+      height: 150px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .flowers {
+      height: 120px;
+      background-size: contain;
+    }
+  }
+
+  .flowers2 {
+    background-image: url("../../../../../public/img/MaterialIU/PROMETTE-desktop-hero-ALT.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100px;
+    width: auto;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .flowers2 {
+      background-image: url("../../../../../public/img/MaterialIU/PROMETTE-mobile-hero.png");
+      height: 150px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .flowers2 {
+      height: 120px;
+      background-size: contain;
+    }
+  }

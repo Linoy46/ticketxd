@@ -1,0 +1,139 @@
+<div class="add-area-modal">
+  <form [formGroup]="areaForm" (ngSubmit)="onSubmit()">
+    <!-- Nombre del Área -->
+    <div class="form-group mb-4">
+      <label for="nombre" class="form-label">
+        <i class="bi bi-building me-2"></i>
+        Nombre del Área *
+      </label>
+      <input
+        type="text"
+        pInputText
+        id="nombre"
+        formControlName="nombre"
+        class="w-100"
+        placeholder="Ingrese el nombre del área"
+        [class.is-invalid]="hasFieldError('nombre')"
+      />
+      <div class="invalid-feedback" *ngIf="hasFieldError('nombre')">
+        {{ getFieldError("nombre") }}
+      </div>
+    </div>
+
+    <!-- Selección de Dirección -->
+    <div class="form-group mb-4">
+      <label for="direccion" class="form-label">
+        <i class="bi bi-geo-alt me-2"></i>
+        Dirección *
+      </label>
+      <p-dropdown
+        id="direccion"
+        formControlName="direccionId"
+        [options]="direcciones"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Seleccione una dirección"
+        [filter]="true"
+        filterBy="label"
+        [showClear]="true"
+        styleClass="w-100"
+        [class.is-invalid]="hasFieldError('direccionId')"
+        [loading]="loading"
+      >
+        <ng-template let-direccion pTemplate="item">
+          <div class="dropdown-item">
+            <i class="bi bi-building-gear me-2 text-primary"></i>
+            {{ direccion.label }}
+          </div>
+        </ng-template>
+      </p-dropdown>
+      <div class="invalid-feedback" *ngIf="hasFieldError('direccionId')">
+        {{ getFieldError("direccionId") }}
+      </div>
+    </div>
+
+    <!-- Selección de Departamento -->
+    <div class="form-group mb-4">
+      <label for="departamento" class="form-label">
+        <i class="bi bi-diagram-3 me-2"></i>
+        Departamento *
+      </label>
+      <p-dropdown
+        id="departamento"
+        formControlName="departamentoId"
+        [options]="departamentos"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Primero seleccione una dirección"
+        [filter]="true"
+        filterBy="label"
+        [showClear]="true"
+        styleClass="w-100"
+        [class.is-invalid]="hasFieldError('departamentoId')"
+        [loading]="loadingDepartamentos"
+        [disabled]="!areaForm.get('direccionId')?.value || loadingDepartamentos"
+      >
+        <ng-template let-departamento pTemplate="item">
+          <div class="dropdown-item">
+            <i class="bi bi-diagram-2 me-2 text-success"></i>
+            {{ departamento.label }}
+          </div>
+        </ng-template>
+      </p-dropdown>
+      <div class="invalid-feedback" *ngIf="hasFieldError('departamentoId')">
+        {{ getFieldError("departamentoId") }}
+      </div>
+      <small class="text-muted" *ngIf="!areaForm.get('direccionId')?.value">
+        Seleccione primero una dirección para ver los departamentos disponibles
+      </small>
+      <small class="text-info" *ngIf="loadingDepartamentos">
+        <i class="bi bi-hourglass-split me-1"></i>
+        Cargando departamentos...
+      </small>
+    </div>
+
+    <!-- Información adicional -->
+    <div
+      class="info-box mb-4"
+      *ngIf="
+        areaForm.get('direccionId')?.value &&
+        areaForm.get('departamentoId')?.value
+      "
+    >
+      <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>
+        <strong>Jerarquía:</strong>
+        {{ getDireccionLabel() }} → {{ getDepartamentoLabel() }} →
+        {{ areaForm.get("nombre")?.value || "[Nombre del área]" }}
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="onCancelClick()"
+        [disabled]="submitting"
+      >
+        <i class="bi bi-x-circle me-1"></i>
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="areaForm.invalid || submitting"
+      >
+        <span
+          *ngIf="submitting"
+          class="spinner-border spinner-border-sm me-2"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        <i *ngIf="!submitting" class="bi bi-plus-circle me-1"></i>
+        {{ submitting ? "Creando..." : "Crear Área" }}
+      </button>
+    </div>
+  </form>
+</div>

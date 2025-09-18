@@ -1,0 +1,274 @@
+<div class="container py-3">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- Form Header -->
+    <h3 class="text-center text-secondary">Gestión de Usuarios</h3>
+
+    <!-- Nombre Modulo Input Group -->
+    <div class="mb-4 mt-4">
+      <p-inputgroup>
+        <p-floatlabel>
+          <input
+            pInputText
+            formControlName="nombre_usuario"
+            id="nombre_usuario"
+            [ngClass]="{
+              'is-invalid':
+                form.get('nombre_usuario')?.invalid &&
+                form.get('nombre_usuario')?.touched
+            }"
+            class="form-control"
+          />
+          <label for="nombre_usuario">Nombre del Usuario</label>
+        </p-floatlabel>
+      </p-inputgroup>
+      <div
+      *ngIf="form.get('nombre_usuario')?.hasError('fieldTaken')"
+      class="text-danger"
+    >
+      Este nombre de usuario no esta permitido
+    </div>
+    <div
+      *ngIf="
+        form.get('nombre_usuario')?.invalid &&
+        form.get('nombre_usuario')?.touched
+      "
+      class="invalid-feedback"
+    >
+      <div *ngIf="form.get('nombre_usuario')?.errors?.['required']">
+        Nombre es requerido
+      </div>
+    </div>
+    </div>
+
+    <!-- CURP Input Group -->
+    <div class="mb-4">
+      <p-inputgroup>
+        <p-floatlabel>
+          <input
+            pInputText
+            formControlName="curp"
+            id="curp"
+            [ngClass]="{
+              'is-invalid':
+                form.get('curp')?.invalid &&
+                form.get('curp')?.touched
+            }"
+            class="form-control"
+          />
+          <label for="curp">CURP</label>
+        </p-floatlabel>
+      </p-inputgroup>
+      <div
+        *ngIf="form.get('curp')?.hasError('fieldTaken')"
+        class="text-danger"
+      >
+        Este CURP ya está registrado.
+      </div>
+      <div
+        *ngIf="
+          form.get('curp')?.invalid && form.get('curp')?.touched
+        "
+        class="invalid-feedback"
+      >
+        <div *ngIf="form.get('curp')?.errors?.['required']">
+          CURP es requerido
+        </div>
+        <div *ngIf="form.get('curp')?.errors?.['pattern']">
+          CURP invalido
+        </div>
+      </div>
+    </div>
+
+    <!-- Telefono Input Group -->
+    <div class="mb-4">
+      <p-inputgroup>
+        <p-floatlabel>
+          <input
+            pInputText
+            formControlName="telefono"
+            id="telefono"
+            [ngClass]="{
+              'is-invalid':
+                form.get('telefono')?.invalid &&
+                form.get('telefono')?.touched
+            }"
+            class="form-control"
+          />
+          <label for="telefono">Teléfono</label>
+        </p-floatlabel>
+      </p-inputgroup>
+      <div
+        *ngIf="
+          form.get('telefono')?.invalid &&
+          form.get('telefono')?.touched
+        "
+        class="invalid-feedback"
+      >
+        <div *ngIf="form.get('telefono')?.errors?.['required']">
+          Teléfono es requerido
+        </div>
+      </div>
+    </div>
+
+    <!-- Email Input Group -->
+    <div class="mb-4">
+      <p-inputgroup>
+        <p-floatlabel>
+          <input
+            pInputText
+            formControlName="email"
+            id="email"
+            [ngClass]="{
+              'is-invalid':
+                form.get('email')?.invalid &&
+                form.get('email')?.touched
+            }"
+            class="form-control"
+          />
+          <label for="email">Correo electrónico</label>
+        </p-floatlabel>
+      </p-inputgroup>
+      <div
+        *ngIf="form.get('email')?.hasError('fieldTaken')"
+        class="text-danger"
+      >
+        Este email ya está registrado.
+      </div>
+      <div
+        *ngIf="
+          form.get('email')?.invalid &&
+          form.get('email')?.touched
+        "
+        class="invalid-feedback"
+      >
+        <div *ngIf="form.get('email')?.errors?.['required']">
+          Email es requerido
+        </div>
+        <div *ngIf="form.get('email')?.errors?.['email']">
+          Formato de email inválido
+        </div>
+      </div>
+    </div>
+
+    <!-- Email Inst Input Group -->
+    <div class="mb-4">
+      <p-inputgroup>
+        <p-floatlabel>
+          <input
+            pInputText
+            formControlName="email_institucional"
+            id="email_institucional"
+            [ngClass]="{
+              'is-invalid':
+                form.get('email_institucional')?.invalid &&
+                form.get('email_institucional')?.touched
+            }"
+            class="form-control"
+          />
+          <label for="email_institucional">Correo electrónico institucional</label>
+        </p-floatlabel>
+      </p-inputgroup>
+      <div
+        *ngIf="form.get('email_institucional')?.hasError('fieldTaken')"
+        class="text-danger"
+      >
+        Este email ya está registrado.
+      </div>
+      <div
+        *ngIf="
+          form.get('email_institucional')?.invalid &&
+          form.get('email_institucional')?.touched
+        "
+        class="invalid-feedback"
+      >
+        <div *ngIf="form.get('email_institucional')?.errors?.['required']">
+          Email es requerido
+        </div>
+        <div *ngIf="form.get('email_institucional')?.errors?.['email_institucional']">
+          Formato de email inválido
+        </div>
+      </div>
+    </div>
+
+    <!-- Contraseña Input Group -->
+    <div class="mb-4" *ngIf="data?.mode === 'add'
+    ">
+      <p-inputgroup>
+        <p-floatlabel>
+          <input
+            pInputText
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="contrasena"
+            id="contrasena"
+            [ngClass]="{
+              'is-invalid':
+                form.get('contrasena')?.invalid &&
+                form.get('contrasena')?.touched
+            }"
+            class="form-control"
+          />
+          <label for="contrasena">Contraseña</label>
+        </p-floatlabel>
+        <button
+        type="button"
+        pButton
+        class="p-button-text"
+        (click)="togglePasswordVisibility()"
+      ><i class="bi bi-eye"></i></button>
+      </p-inputgroup>
+      <div
+        *ngIf="
+          form.get('contrasena')?.invalid &&
+          form.get('contrasena')?.touched
+        "
+        class="invalid-feedback"
+      >
+        <div *ngIf="form.get('contrasena')?.errors?.['required']">
+          Contraseña es requerida
+        </div>
+        <div *ngIf="form.get('contrasena')?.errors?.['minlength']">
+          Contraseña debe tener al menos 6 caracteres
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+      <button
+        type="button"
+        class="btn btn-outline-secondary w-25 fw-bold"
+        (click)="close()"
+      >
+        Cerrar
+      </button>
+      <div *ngIf="data?.mode !== 'view'" class="w-25">
+        <button
+          type="submit"
+          class="btn btn-primary w-100 fw-bold"
+          [disabled]="form.invalid && data?.mode !== 'view'"
+        >
+          {{
+            data?.mode === "add"
+              ? "Agregar"
+              : data?.mode === "edit"
+              ? "Guardar Cambios"
+              : "Ver"
+          }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!--
+  Display Form Data for Debugging
+  <div class="mt-4">
+    <pre>{{ data | json }}</pre>
+  </div>
+
+
+  Display Form Data for Debugging
+  <div class="mt-4">
+    <pre>{{ form.value | json }}</pre>
+  </div>
+  -->

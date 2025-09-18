@@ -1,0 +1,39 @@
+<form [formGroup]="financingForm" (ngSubmit)="submitForm()">
+  <div class="mb-3">
+    <label for="nombre_financiamiento" class="form-label">Nombre del Financiamiento</label>
+    <span class="p-input-icon-left w-100">
+      <input
+        pInputText
+        id="nombre_financiamiento"
+        formControlName="nombre_financiamiento"
+        class="w-100"
+        placeholder="Ingrese el nombre del financiamiento">
+    </span>
+    <div *ngIf="isInvalid('nombre_financiamiento')" class="text-danger">
+      El nombre del financiamiento es requerido
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="estado" class="form-label">Estado</label>
+    <div class="form-control">
+      <div class="form-check form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="estado"
+          formControlName="estadoSwitch">
+        <label class="form-check-label" for="estado">
+          {{ financingForm.get('estadoSwitch')?.value ? 'Activo' : 'Inactivo' }}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end mt-4">
+    <button type="button" class="btn btn-outline-secondary me-2" (click)="close()">Cancelar</button>
+    <button type="submit" class="btn btn-primary" [disabled]="financingForm.invalid">
+      {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+</form>

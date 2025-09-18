@@ -1,0 +1,51 @@
+/* Footer */
+:host ::ng-deep .ag-paging-panel {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  padding: 8px 0 !important;
+  background: #fff !important;
+  z-index: 1;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 12px !important;
+  overflow-x: visible !important;
+  border-top: 1px solid #eee !important;
+  border-radius: 0 !important;
+  font-size: 12px !important;
+  position: static !important;
+  left: unset !important;
+  bottom: unset !important;
+  margin: 0 !important;
+  flex-wrap: nowrap;
+}
+
+:host ::ng-deep .ag-paging-panel > * {
+  flex-shrink: 0;
+}
+
+/* Ajustes móviles: permitir wrapping elegante y centrado */
+@media (max-width: 768px) {
+  :host ::ng-deep .ag-paging-panel {
+    flex-wrap: wrap !important;
+    row-gap: 4px !important;
+    font-size: 11px !important;
+    padding: 10px 0 !important;
+  }
+  :host ::ng-deep .ag-paging-panel .ag-paging-row-summary-panel {
+    order: 2;
+    width: 100%;
+    text-align: center;
+  }
+  :host ::ng-deep .ag-paging-panel .ag-paging-page-summary-panel {
+    order: 1;
+  }
+  :host ::ng-deep .ag-paging-panel .ag-paging-page-size {
+    order: 3;
+  }
+}
+:host ::ng-deep .ag-paging-panel {
+  transition: padding 0.2s ease, gap 0.2s ease;
+}

@@ -1,0 +1,201 @@
+// Solo para inventories: botón de ayuda alineado a la derecha debajo de la tabla by Francisco
+
+:host ::ng-deep .tutorial-btn {
+  position: fixed !important;
+  bottom: 65px !important;
+  right: 20px !important;
+  margin: 0 !important;
+  display: flex !important;
+  z-index: 1000 !important;
+}
+
+// Bloque para hacer estático el botón en inventories (desactivado para que sea flotante como en inputs)
+/*
+@media (max-width: 768px) {
+  :host ::ng-deep .tutorial-btn {
+    position: static !important;
+    margin: 32px 0 0 auto !important;
+    display: block !important;
+    right: unset !important;
+    bottom: unset !important;
+    z-index: auto !important;
+  }
+}
+*/
+// Essential variables
+$color-rose: #a11a5c;
+$color-purple: #a11a5c;
+$border-radius: 6px;
+$header-color: #e9ddff;
+$color-text-header: #422b7c;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+// Header styling - simplified
+.header {
+  margin-bottom: 0.5rem;
+  h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    color: $color-rose;
+    margin-bottom: 1.5rem;
+  }
+}
+
+//Tirulo
+.inventory-title {
+  color: $color-rose;
+  font-weight: 500;
+}
+
+.search-container {
+  max-width: 400px;
+  width: 100%;
+
+  .input-group {
+    border-radius: $border-radius;
+
+    .input-group-text {
+      background-color: white;
+      border-right: none;
+      color: #6b7280;
+    }
+
+    .form-control {
+      border-left: none;
+      box-shadow: none;
+
+      &:focus {
+        box-shadow: none;
+        border-color: #ced4da;
+      }
+    }
+  }
+}
+
+// Loading overlay styles
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px #a11a5c;
+}
+
+// ngx-datatable essential styles
+:host ::ng-deep {
+  .ngx-datatable.material {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    border-radius: $border-radius;
+    overflow: hidden;
+
+    // Headers
+    .datatable-header {
+      background-color: $header-color;
+
+      .datatable-header-cell {
+        padding: 0.75rem;
+        font-weight: 600;
+        color: $color-text-header;
+      }
+    }
+
+    // Body cells
+    .datatable-body {
+      .datatable-body-row {
+        border-bottom: 1px solid #e5e7eb;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.025);
+        }
+
+        .datatable-body-cell {
+          padding: 0.75rem;
+        }
+      }
+    }
+
+    // Footer
+    .datatable-footer {
+      background-color: white;
+      padding: 0.5rem 1rem;
+
+      .page-count {
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  // Stock status colors
+  .badge {
+    &.bg-danger {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    &.bg-warning {
+      background-color: #fd7e14;
+      color: white;
+    }
+
+    &.bg-success {
+      background-color: #198754;
+      color: white;
+    }
+  }
+}
+
+// Cell styling for specific columns
+.partida-cell,
+.observaciones-cell {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: help;
+}
+
+.observaciones-cell {
+  font-style: italic;
+  color: #6b7280;
+
+  &:empty::after {
+    content: "Sin observaciones";
+    color: #9ca3af;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .search-container {
+    max-width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .btn-add-responsive {
+    width: 100%;
+    min-width: unset;
+    font-size: 1.2rem;
+    padding: 16px 0;
+    border-radius: 8px;
+    margin-top: 8px;
+  }
+}

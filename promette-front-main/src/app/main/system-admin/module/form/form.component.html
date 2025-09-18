@@ -1,0 +1,147 @@
+<div class="container py-3">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- Form Header -->
+    <h3 class="text-center text-secondary mb-4">Gestión de Módulos</h3>
+
+    <!-- Nombre Modulo Input Group -->
+    <div class="mb-4 mt-4">
+      <p-inputgroup>
+        <p-floatlabel>
+          <input
+            pInputText
+            formControlName="nombre_modulo"
+            id="nombre_modulo"
+            [ngClass]="{
+              'is-invalid':
+                form.get('nombre_modulo')?.invalid &&
+                form.get('nombre_modulo')?.touched
+            }"
+            class="form-control"
+          />
+          <label for="nombre_modulo">Nombre del Módulo</label>
+        </p-floatlabel>
+      </p-inputgroup>
+      <div
+        *ngIf="
+          form.get('nombre_modulo')?.invalid && form.get('nombre_modulo')?.touched
+        "
+        class="invalid-feedback d-block"
+      >
+        El nombre es requerido.
+      </div>
+    </div>
+
+    <!-- Módulo Autocomplete que muestra el nombre del módulo
+    <div class="mb-4">
+      <p-autocomplete
+        formControlName="ct_modulo"
+        [suggestions]="filteredModules"
+        (completeMethod)="filterModule($event)"
+        optionLabel="Pertenece al módulo"
+        field="nombre_modulo"
+        (onSelect)="onModuleSelect($event)"
+        placeholder="Buscar módulo"
+        class=""
+        [style]="{'width':'100%'}"
+        [inputStyle]="{'width':'100%'}"
+      />
+    </div>
+-->
+    <!-- Área Autocomplete de tipo hide que guarda el ID del módulo
+    <div class="mb-4" [hidden]="true">
+      <p-autocomplete
+      formControlName="modulo_padre"
+      [suggestions]="filteredModules"
+      (completeMethod)="filterModule($event)"
+      field="nombre_modulo"
+      (onSelect)="onModuleSelect($event)"
+      />
+    </div>
+    -->
+
+    <!-- URL de Modulo (Clave) Input Group -->
+     <!--
+    <div class="mb-4">
+      <p-inputgroup>
+        <p-floatlabel>
+          <input
+            pInputText
+            formControlName="clave"
+            id="clave"
+            [ngClass]="{
+              'is-invalid':
+                form.get('clave')?.invalid &&
+                form.get('clave')?.touched
+            }"
+            class="form-control"
+          />
+          <label for="clave">URL del Módulo</label>
+        </p-floatlabel>
+      </p-inputgroup>
+      <div
+        *ngIf="
+          form.get('clave')?.invalid && form.get('clave')?.touched
+        "
+        class="invalid-feedback d-block"
+      >
+        La URL es requerida.
+      </div>
+    </div>
+  -->
+
+    <!-- Icono Modulo Input Group -->
+     <!--
+    <div class="mb-4">
+      <p-inputgroup>
+        <p-floatlabel>
+          <input
+            pInputText
+            formControlName="icono"
+            id="icono"
+            [ngClass]="{
+              'is-invalid':
+                form.get('icono')?.invalid &&
+                form.get('icono')?.touched
+            }"
+            class="form-control"
+          />
+          <label for="icono">Icono</label>
+        </p-floatlabel>
+      </p-inputgroup>
+    </div>
+  -->
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+      <button
+        type="button"
+        class="btn btn-outline-secondary w-25 fw-bold"
+        (click)="close()"
+      >
+        Cerrar
+      </button>
+      <div *ngIf="data?.mode !== 'view'" class="w-25">
+        <button
+          type="submit"
+          class="btn btn-primary w-100 fw-bold"
+          [disabled]="form.invalid && data?.mode !== 'view'"
+        >
+          {{
+            data?.mode === "add"
+              ? "Agregar"
+              : data?.mode === "edit"
+              ? "Guardar Cambios"
+              : "Ver"
+          }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!--
+  Display Form Data for Debugging
+  <div class="mt-4">
+    <pre>{{ form.value | json }}</pre>
+  </div>
+  -->
