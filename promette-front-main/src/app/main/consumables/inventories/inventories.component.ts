@@ -50,9 +50,8 @@ interface TableColumn {
     NgxDatatableModule,
     FormsModule,
     SharedCustomModalComponent,
-    SharedActionsGridComponent,
-    TutorialComponent,
-  ],
+    TutorialComponent
+],
   templateUrl: './inventories.component.html',
   styleUrl: './inventories.component.scss',
 })
